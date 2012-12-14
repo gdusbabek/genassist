@@ -1,0 +1,26 @@
+extends layout
+
+block scripts
+	script(src='/js/jquery-1.8.3.min.js')
+	script(src='/js/search.js')
+
+block content
+	div.pagination-centered
+		h1 Genassi.st
+
+	div.pagination-centered
+		form(method="post", name="query")
+			div
+				input(type="text", name="query", placeholder='Friday I&apos;m in Love The Cure')
+				input(type="button", value="Go")
+			div
+				span Rdio
+					input(type="radio", name="api", val="rdio", checked=true)
+				span Spotify
+					input(type="radio", name="api", val="spotify")
+				
+
+	div.container.pagination-centered(class="hide", id="mood")
+		h2 Mood?
+	div.container.pagination-centered(class="hide", id="results") Results
+		h2 Results
