@@ -10,14 +10,10 @@ block content
 
 	div.pagination-centered
 		form(method="post", name="query")
-			div
-				input(type="text", name="query", placeholder='Friday I&apos;m in Love The Cure')
-				input(type="button", value="Go")
-			div
-				span Rdio
-					input(type="radio", name="api", val="rdio", checked=true)
-				span Spotify
-					input(type="radio", name="api", val="spotify")
+			div.input-append
+				input(type="text", name="query", placeholder='Friday I&apos;m in Love The Cure', class="textbox-wide", id="query")
+				button(type="button", value="rdio", class="btn", data-toggle="button", id="rdioBtn") Rdio
+				button(type="button", value="spotify", class="btn", data-toggle="button", id="spotifyBtn") Spotify
 				
 
 	div.container.pagination-centered(class="hide", id="mood")

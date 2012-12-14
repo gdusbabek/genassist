@@ -35,6 +35,10 @@ app.get('/index.html', function(req, res) {
 	res.render('index', params);
 });
 
+app.get('/search', function(req, res) {
+    res.send('Search for ' + req.query.query);
+});
+
 app.listen(2000);
 console.log('Listening on ' + 2000);
 
