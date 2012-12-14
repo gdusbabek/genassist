@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var rdio = require('./lib/rdio');
 
 app.configure(function() {
 	app.set('view engine', 'jade');
@@ -8,7 +9,6 @@ app.configure(function() {
 	//app.use(express.bodyParser());
 	//app.use(express.cookieParser());
 	//app.use(app.router);
-	console.log(__dirname + '/public');
 	app.use(express.static(__dirname + '/public'));
 });
 	
@@ -36,7 +36,16 @@ app.get('/index.html', function(req, res) {
 });
 
 app.get('/search', function(req, res) {
-    res.send('Search for ' + req.query.query);
+    var query = decodeURIComponent(req.query.query),
+        service = req.query.service;
+    
+    rdio.search(query, function(err, results) {
+        if (err) {
+            res.send(JSON.stringify({status: 'error', result: err}));
+        } else {
+            res.send(JSON.stringify({status: 'ok', result:results}));
+        }
+    });
 });
 
 app.listen(2000);

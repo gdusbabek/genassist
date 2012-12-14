@@ -5,6 +5,7 @@
 	"private": true,
 	"dependencies": {
 		"express": "3.0.4",
-		"jade": "0.27.7"
+		"jade": "0.27.7",
+        "rdio-node": "git://github.com/monsur/rdio-node.git"
 	}
 }
