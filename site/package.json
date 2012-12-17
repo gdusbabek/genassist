@@ -5,7 +5,8 @@
 	"private": true,
 	"dependencies": {
 		"express": "3.0.4",
+        	"echonost": "git://github.com/badamson/node-echonest.git",
 		"jade": "0.27.7",
-        "rdio-node": "git://github.com/monsur/rdio-node.git"
+        	"rdio-node": "git://github.com/monsur/rdio-node.git"
 	}
 }
