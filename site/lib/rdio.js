@@ -32,7 +32,7 @@ exports.search = function(q, callback) {
             songs = results.result.results,
             songsBack = [];
         songs.forEach(function(song) {
-            songsBack[songsBack.length] = {artist: song.artist, name: song.name};
+            songsBack[songsBack.length] = {artist: song.artist, title: song.name};
         });
         songsBack = dedupeSongs(songsBack);
         callback(err, songsBack);

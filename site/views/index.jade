@@ -16,25 +16,39 @@ block content
 				button(type="button", value="rdio", class="btn", data-toggle="button", id="rdioBtn") Rdio
 				button(type="button", value="spotify", class="btn", data-toggle="button", id="spotifyBtn") Spotify
 				
-	div.container.pagination-centered(class="hihhde", id="candidates")
+	div.container.pagination-centered(class="hide", id="candidates")
 		h2 Were you thinking of one of these?
 		table(id="candidate-table")
+			thead
+				tr
+					th
+					th Artist
+					th Song
+			tbody
+				tr
+					td button
+					td fooo
+					td barr
+				tr
+					td button
+					td fooo
+					td barr
+				tr
+					td button
+					td fooo
+					td barr
+
+	div.container.pagination-centered(class="hide", id="mood")
+		h2 Mood?
+	div.container.pagination-centered(class="hide", id="playlist") Results
+		h2 Your playlist
+		table(id="playlist-table")
 			thead
 				tr
 					th Artist
 					th Song
 			tbody
 				tr
-					td fooo
-					td barr
-				tr
-					td fooo
-					td barr
-				tr
-					td fooo
-					td barr
-
-	div.container.pagination-centered(class="hide", id="mood")
-		h2 Mood?
-	div.container.pagination-centered(class="hide", id="results") Results
-		h2 Results
+					td foo
+					td bar
+	

@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var rdio = require('./lib/rdio');
+var echo = require('./lib/echo');
 
 app.configure(function() {
 	app.set('view engine', 'jade');
@@ -35,17 +36,24 @@ app.get('/index.html', function(req, res) {
 	res.render('index', params);
 });
 
+function resultCallback(req, res, err, results) {
+    if (err) {
+        res.send(JSON.stringify({status: 'error', result: err}));
+    } else {
+        res.send(JSON.stringify({status: 'ok', result: results}));
+    }
+}
+
 app.get('/search', function(req, res) {
     var query = decodeURIComponent(req.query.query),
         service = req.query.service;
     
-    rdio.search(query, function(err, results) {
-        if (err) {
-            res.send(JSON.stringify({status: 'error', result: err}));
-        } else {
-            res.send(JSON.stringify({status: 'ok', result:results}));
-        }
-    });
+    echo.search(query, resultCallback.bind(null, req, res));
+});
+
+app.get('/seed', function(req, res) {
+    var songId = req.query.songId;
+    echo.seed(songId, resultCallback.bind(null, req, res));
 });
 
 app.listen(2000);
