@@ -17,8 +17,11 @@ Skinning the UI will take some work.  Resist the urge to do this first. Get thin
 
 ### Later
 
-Playback. This will be easy for Rdio.
-Crawler that searches for songs. Turn those into a playlist.
+* Playback. This will be easy for Rdio.
+* Crawler that searches for songs. 
+* Turn those into a playlist somehow.
+
+Playlistica?
 
 ## Dependencies
 
