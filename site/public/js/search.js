@@ -35,8 +35,8 @@ function seedWith(echoSongId) {
 }
 
 $(document).ready(function() {
-    $('#rdioBtn').click(function() {
-        $.get('/search', {query: getQuery(), service: 'rdio'}, function(json) {
+    $('#searchSongBtn').click(function() {
+        $.get('/search', {query: getQuery()}, function(json) {
             // filll up the table
             var songs = JSON.parse(json);
             if (songs.status !== 'error') {
