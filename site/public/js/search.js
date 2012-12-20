@@ -9,7 +9,7 @@ function getQuery() {
 }
 
 function seedWith(echoSongId) {
-    $.get('/seed', {songId: echoSongId}, function(json) {
+    $.get('/seed', {songId: echoSongId, sinceYear: '1990'}, function(json) {
         var obj = JSON.parse(json),
             sessionId, songs;
         if (obj.status !== 'error') {
@@ -52,9 +52,4 @@ $(document).ready(function() {
         });
     });
 
-    $('#spotifyBtn').click(function() {
-        $.get('/search', {query: getQuery(), service: 'spotify'}, function(result) {
-            // dynamically build a table.
-        });
-    });
 });

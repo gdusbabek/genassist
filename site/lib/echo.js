@@ -52,7 +52,7 @@ exports.search = function(songQuery, callback) {
 }
 
 // callbeck(err, songs); // songs is an array of song objects.
-exports.seed = function(songId, callback) {
+exports.seed = function(songId, sinceYear, callback) {
     var nest = new echonest.Echonest(params);
     async.waterfall([
         function createPlaylist(callback) {
@@ -63,7 +63,7 @@ exports.seed = function(songId, callback) {
                 distribution: 'wandering', // focused
                 adventurousness: 0.5,
                 song_id: songId,
-                artist_start_year_after: '1990'
+                artist_start_year_after: sinceYear
 
             },
             function playlistCreateCallback(err, results) {

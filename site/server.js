@@ -52,8 +52,9 @@ app.get('/search', function(req, res) {
 });
 
 app.get('/seed', function(req, res) {
-    var songId = req.query.songId;
-    echo.seed(songId, resultCallback.bind(null, req, res));
+    var songId = req.query.songId,
+        sinceYear = req.query.sinceYear
+    echo.seed(songId, sinceYear, resultCallback.bind(null, req, res));
 });
 
 app.listen(2000);
