@@ -28,10 +28,7 @@ app.get('/example.2', function(req, res) {
 
 app.get('/index.html', function(req, res) {
     var params = {
-        title: 'Build a playlist',
-        query: {
-            text: 'Friday I\'m in Love The Cure'
-        }
+        title: 'Choose One'
     };
 	res.render('index', params);
 });

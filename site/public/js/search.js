@@ -1,9 +1,5 @@
 /*global $, document, window */
 
-function showContainer(which, visible) {
-    $(which).removeClass().addClass(visible ? 'container' : 'hide');
-}
-
 function getQuery() {
     return encodeURIComponent($('#query').val());
 }
@@ -27,14 +23,26 @@ function seedWith(echoSongId) {
             songs.forEach(function(song) {
                 $('#playlist-table tbody').append('<tr><td>' + song.artist_name + '</td><td>' + song.title + '</td></tr>');
             });
-            showContainer('#playlist', true);
+            $('#playlist').toggle();
         } else {
             alert('error :/');
         }
     });
 }
 
+function getOptionContent() {
+    return $('#searchOptionsContent').html();
+}
+
 $(document).ready(function() {
+    $('#btnAdvanced').popover({
+        animation: false,
+        placement: 'bottom',
+        html: true,
+        content: function() {
+            return $('#searchOptionsContent').html();
+        }
+    });
     $('#searchSongBtn').click(function() {
         $.get('/search', {query: getQuery()}, function(json) {
             // filll up the table
@@ -42,10 +50,11 @@ $(document).ready(function() {
             if (songs.status !== 'error') {
                 $('#candidate-table tbody').empty()
                 songs.result.forEach(function(song) {
-                    $('#candidate-table tbody').append('<tr><td><button id="' + song.id + '" onClick="seedWith(\'' + song.id + '\');">this one</button></td><td>' + song.artist + '</td><td>' + song.title + '</td></tr>');
+                    $('#candidate-table tbody').append('<tr onClick="seedWith(\'' + song.id + '\');"><td><a>' + song.artist + '</a></td><td><a>' + song.title + '</a></td></tr>');
                 });
                 // show it.
-                showContainer('#candidates', true);
+                // $('#candidates').toggle();
+                $('#candidates-modal').modal({});
             } else {
                 alert('error :/');
             }

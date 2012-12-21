@@ -2,6 +2,8 @@ extends layout
 
 block scripts
 	script(src='/js/jquery-1.8.3.min.js')
+	script(src='/js/jquery.cookie.js')
+	script(src='/bootstrap/js/bootstrap.js')
 	script(src='/js/search.js')
 
 block content
@@ -14,32 +16,26 @@ block content
 			div.input-append
 				input(type="text", name="query", placeholder='Friday I&apos;m in Love The Cure', class="textbox-wide", id="query")
 				button(type="button", value="searchSong", class="btn", data-toggle="button", id="searchSongBtn") Search
+			div(class="hide")
+				a(class="btn btn-mini", href="#", id="btnAdvanced", Xdata-content="filler") Options 
+					
 				
-	div.container.pagination-centered(class="hide", id="candidates")
-		h2 Were you thinking of one of these?
-		table(id="candidate-table")
-			thead
-				tr
-					th
-					th Artist
-					th Song
-			tbody
-				tr
-					td button
-					td fooo
-					td barr
-				tr
-					td button
-					td fooo
-					td barr
-				tr
-					td button
-					td fooo
-					td barr
+			
+	div.container(class="hide", id="searchOptionsContent") Include songs since
+		input(type="text", name="minSearchYear", id="minSearchYear", value="1900")
 
-	div.container.pagination-centered(class="hide", id="mood")
-		h2 Mood?
-	div.container.pagination-centered(class="hide", id="playlist")
+	div.container.span3(class="modal hide fade", id="candidates-modal")
+		div.pagination-centered(id="candidates")
+			h2 Were you thinking of one of these?
+			table(class="table table-hover table-condensed", id="candidate-table")
+				thead
+					tr
+						th Artist
+						th Song
+				tbody.pagination-centered
+				
+
+	div.pagination-centered(class="hide", id="playlist")
 		h2 Let's Start Here
 		table(id="playlist-table")
 			thead
@@ -47,7 +43,4 @@ block content
 					th Artist
 					th Song
 			tbody
-				tr
-					td foo
-					td bar
-					
+

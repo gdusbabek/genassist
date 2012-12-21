@@ -12,55 +12,7 @@ html(lang="en")
 
     link(rel="stylesheet", href="/bootstrap/css/bootstrap.css", type="text/css", media="screen, projection")
 
-    style
-      .sidebar-nav-fixed {
-          padding: 9px 0;
-          position:fixed;
-          left:20px;
-          top:60px;
-          width:14.89361702%;
-      }
-
-      .row-fluid > .span-fixed-sidebar {
-          margin-left: 290px;
-      }
-
   body
-    div.navbar(class="hide")
-     div.navbar-inner
-        div.container
-          a(href='/_dashboard/').brand Genassi.st
-
-          ul.nav
-            li
-              a(href='/_dashboard/') AAAAA
-            li.dropdown
-              a(href='#', data-toggle='dropdown').dropdown-toggle BBBBBB
-                b.caret
-              ul.dropdown-menu
-                li
-                  a(href='/_dashboard/services') CCCCCCCC
-                li
-                  a(href='/_dashboard/monitoring_zones') DDDDDD
-            li.dropdown
-              a(href='#', data-toggle='dropdown').dropdown-toggle EEEEEEE
-                b.caret
-              ul.dropdown-menu
-                li
-                  a(href='/_dashboard/support/accounts') FFFFFF
-                li
-                  a(href='/_dashboard/support/account_overview') GGGGGG
-            li.dropdown
-              a(href='#', data-toggle='dropdown').dropdown-toggle HHHHHH
-                b.caret
-              ul.dropdown-menu
-                li
-                  a(href='/_dashboard/demo_alarm/') IIIII
-            li.dropdown
-              a(href='#', data-toggle='dropdown').dropdown-toggle Links
-                b.caret
-
-    div(class="container" + layout)
+    div
       block content
-    script(src='/js/nothing.js') 
     block scripts
