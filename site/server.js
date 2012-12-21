@@ -33,6 +33,26 @@ app.get('/index.html', function(req, res) {
 	res.render('index', params);
 });
 
+app.get('/seed.html', function(req, res) {
+    var songId = req.query.songId,
+        sinceYear = req.query.sinceYear || '1900',
+        songName = req.query.songName || 'Not defined';
+    echo.seed(songId, sinceYear, function(err, results) {
+        if (err) {
+            res.render('error', {echoError: err});
+        } else if (!results) {
+            res.render('error', {apiError: 'results were empty.'})
+        } else {
+            res.render('playlist_builder', {
+                sessionId: results.sessionId,
+                songName: songName,
+                sinceYear: sinceYear,
+                songs: results.songs
+            });
+        }
+    });
+})
+
 function resultCallback(req, res, err, results) {
     if (err) {
         res.send(JSON.stringify({status: 'error', result: err}));
@@ -41,17 +61,25 @@ function resultCallback(req, res, err, results) {
     }
 }
 
-app.get('/search', function(req, res) {
+// json method
+app.get('/api/search', function(req, res) {
     var query = decodeURIComponent(req.query.query),
         service = req.query.service;
     
     echo.search(query, resultCallback.bind(null, req, res));
 });
 
-app.get('/seed', function(req, res) {
+// json method
+app.get('/api/seed', function(req, res) {
     var songId = req.query.songId,
-        sinceYear = req.query.sinceYear
+        sinceYear = req.query.sinceYear || '1900';
     echo.seed(songId, sinceYear, resultCallback.bind(null, req, res));
+});
+
+app.get('/api/next_songs_in_session', function(req, res) {
+    var sessionId = req.query.sessionId,
+        numSongs = req.query.numSongs
+    echo.addSongsToPlaylist(sessionId, numSongs, resultCallback.bind(null, req, res));
 });
 
 app.listen(2000);

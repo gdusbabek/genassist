@@ -51,6 +51,51 @@ exports.search = function(songQuery, callback) {
     });
 }
 
+// callback(err, {sessionId, songs})
+function augmentPlaylist(nest, sessionId, count, callback) {
+    if (!sessionId) {
+        callback(new Error('No session id was supplied'));
+        return;
+    }
+    count = Math.min(25, count);
+    var songs =[],
+        params = {
+            format: 'json',
+            session_id: sessionId,
+            results: Math.min(5, count),
+            lookahead: 0
+        }
+
+    async.whilst(
+        function conditional() { return songs.length < count; },
+        function getMoar(callback) {
+            nest.playlist.dynamic.next(params, function playlistNextCallback(err, results) {
+                if (err) {
+                    console.log(err);
+                    callback(err);
+                } else {
+                    results.songs.forEach(function(song) {
+                        songs[songs.length] = song;
+                    });
+                    callback(null);
+                }
+            });
+        },
+        function whilstCallback(err) {
+            if (err) {
+                callback(err);
+            } else {
+                callback(null, {sessionId: sessionId, songs: songs});
+            }
+        }
+    );
+            
+}
+
+exports.addSongsToPlaylist = function(sessionId, count, callback) {
+    augmentPlaylist(new echonest.Echonest(params), sessionId, count, callback);
+}
+
 // callbeck(err, songs); // songs is an array of song objects.
 exports.seed = function(songId, sinceYear, callback) {
     var nest = new echonest.Echonest(params);
@@ -74,42 +119,8 @@ exports.seed = function(songId, sinceYear, callback) {
                 }
             });
         },
-
         function addSongsToPlaylist(sessionId, callback) {
-            var count = 15,
-                songs = [];
-            async.whilst(
-                function conditional() {
-                    return songs.length < count;
-                },
-                function getMore(callback) {
-                    nest.playlist.dynamic.next({
-                        format: 'json',
-                        session_id: sessionId,
-                        results: 5,
-                        lookahead: 0
-                    },
-                    function playlistNextCallback(err, results) {
-                        if (err) {
-                            callback(err);
-                        } else {
-                            results.songs.forEach(function(song) {
-                                songs[songs.length] = song;
-                            });
-                            callback(null);
-                        }
-                    });
-                },
-                function whilstCallback(err) {
-                    if (err) {
-                        callback(err);
-                    } else {
-                        // console.log(songs.length);
-                        // console.log(songs);
-                        callback(null, {sessionId: sessionId, songs: songs});
-                    }
-                }
-            );
+            augmentPlaylist(nest, sessionId, 5, callback);
         }
     ],
     function waterfallCallback(err, obj) {

@@ -5,14 +5,22 @@ html(lang="en")
       title #{pageTitle} | Genassi.st
     - else
       title Genassi.st
-    - if (typeof fluid !== "undefined")
-      layout = "-fluid";
-    - else
-      layout = "";
 
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
     link(rel="stylesheet", href="/bootstrap/css/bootstrap.css", type="text/css", media="screen, projection")
+    link(rel="stylesheet", href="/bootstrap/css/bootstrap-responsive.css", type="text/css", media="screen, projection")
 
   body
-    div
+    div.row-fluid
+      div.span2
+      div.span8(class="pagination-centered")
+        block header
+      div.span2
+    div.row-fluid
       block content
+    div.row-fluid
+      div.span2
+      div.span8
+        block footer
+      div.span2
     block scripts

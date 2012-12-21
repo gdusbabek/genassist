@@ -1,46 +1,45 @@
 extends layout
 
 block scripts
-	script(src='/js/jquery-1.8.3.min.js')
-	script(src='/js/jquery.cookie.js')
-	script(src='/bootstrap/js/bootstrap.js')
-	script(src='/js/search.js')
+    script(src='/js/async.js')
+    script(src='/js/jquery-1.8.3.min.js')
+    script(src='/js/jquery.cookie.js')
+    script(src='/bootstrap/js/bootstrap.js')
+    script(src='/js/search.js')
 
 block content
-	div.pagination-centered
-		h1 Genassi.st
-		p Friday I'm in Love The Cure
+    div.pagination-centered
+        h1 Genassi.st
+        p Friday I'm in Love The Cure
 
-	div.pagination-centered
-		form(method="post", name="query")
-			div.input-append
-				input(type="text", name="query", placeholder='Friday I&apos;m in Love The Cure', class="textbox-wide", id="query")
-				button(type="button", value="searchSong", class="btn", data-toggle="button", id="searchSongBtn") Search
-			div(class="hide")
-				a(class="btn btn-mini", href="#", id="btnAdvanced", Xdata-content="filler") Options 
-					
-				
-			
-	div.container(class="hide", id="searchOptionsContent") Include songs since
-		input(type="text", name="minSearchYear", id="minSearchYear", value="1900")
+    div.pagination-centered
+        form(method="post", name="query")
+            div.input-append
+                input(type="text", name="query", placeholder='Friday I&apos;m in Love The Cure', class="textbox-wide", id="query")
+                button(type="button", value="searchSong", class="btn", id="searchSongBtn") Search
+                button(type="button", class="btn dropdown-toggle", id="options", onclick="showOptions();")
+                    span.caret
+            div.row(class="modal hide fade", id="options-modal")
+                h2 Playlist options
+                span Include songs released since
+                input(type="text", name="sinceYear", value="1990", class="span2", id="sinceYear") starting year
 
-	div.container.span3(class="modal hide fade", id="candidates-modal")
-		div.pagination-centered(id="candidates")
-			h2 Were you thinking of one of these?
-			table(class="table table-hover table-condensed", id="candidate-table")
-				thead
-					tr
-						th Artist
-						th Song
-				tbody.pagination-centered
-				
 
-	div.pagination-centered(class="hide", id="playlist")
-		h2 Let's Start Here
-		table(id="playlist-table")
-			thead
-				tr
-					th Artist
-					th Song
-			tbody
+
+    div.container(class="hide", id="searchOptionsContent") Include songs since
+        input(type="text", name="minSearchYear", id="minSearchYear", value="1900")
+
+    div.container(class="modal hide fade", id="candidates-modal")
+        div.pagination-centered(id="candidates")
+            h2 Were you thinking of one of these?
+            table(class="table table-hover table-condensed", id="candidate-table")
+                thead
+                    tr
+                        th
+                        th Artist
+                        th Song
+                tbody.pagination-centered
+            div.btn-toolbar
+                button(class="btn btn-navbar", href="#", onclick="$('#candidates-modal').modal('hide');") Sorry, none of these are good
+                
 
