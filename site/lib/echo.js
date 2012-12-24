@@ -115,6 +115,7 @@ exports.seed = function(songId, sinceYear, callback) {
                 if (err) {
                     callback(err);
                 } else {
+                    console.log('new echo session: ' + results.session_id);
                     callback(null, results.session_id);
                 }
             });
@@ -132,5 +133,34 @@ exports.seed = function(songId, sinceYear, callback) {
         title: 'Ruins' },
         */
         callback(null, obj);
+    });
+}
+
+// callback expects(err, msg)
+exports.steer = function(sessionId, songId, direction, callback) {
+    var nest = new echonest.Echonest(params),
+        params = {
+            session_id: sessionId
+        };
+
+    if (direction === 'more') {
+        params.more_like_this = songId;
+    } else if (direction === 'less') {
+        params.less_like_this = songId;
+    } else {
+        callback(new Error('Invalid direction: ' + direction), null);
+        return;
+    }
+
+    nest.playlist.dynamic.steer(params, function steerCallback(err, results) {
+        if (err) {
+            callback(err, null);
+        } else {
+            if (results.status && results.status.code === 0) {
+                callback(null, 'Ok');
+            } else {
+                callback(new Error('Unexpected status: ' + results.status.code), null);
+            }
+        }
     });
 }

@@ -62,6 +62,28 @@ function resultCallback(req, res, err, results) {
 }
 
 // json method
+app.get('/api/steer_session', function(req, res) {
+    var songId = req.query.songId,
+        sessionId = req.query.sessionId,
+        direction = req.query.direction;
+    echo.steer(sessionId, songId, direction, function(err, results) {
+        if (err) {
+            res.send(JSON.stringify({
+                status: 'error',
+                result: err,
+                message: 'Feedback was not registered.'
+            }));
+        } else {
+            res.send(JSON.stringify({
+                status: 'ok',
+                result: results,
+                message: 'Feedback was received.'
+            }));
+        }
+    });
+});
+
+// json method
 app.get('/api/search', function(req, res) {
     var query = decodeURIComponent(req.query.query),
         service = req.query.service;

@@ -26,6 +26,10 @@ function seedWith(echoSongId) {
 
 // helpers.
 
+function findSessionId() {
+    return $('#sessionId').html();
+}
+
 function savePlaylist(sessionId) {
     sessionId = sessionId || findSessionId();
 }
@@ -35,8 +39,19 @@ function toggleOptions() {
 }
 
 function formatPlaylistRow(song) {
-    return '<tr><td>' + song.artist_name + '</td><td>' + song.title + '</td></tr>';
+    var str = '<tr id="row_' + song.id + '">' + 
+    '<td>' + 
+    '<i class="icon-thumbs-up" id="up_' + song.id + '" onclick="steer(null, \'more\',\'' + song.id + '\');"/>' +
+    '<i class="icon-thumbs-down" id="down_' + song.id + '" onclick="steer(null, \'less\',\'' + song.id + '\');"/>' +
+    '<i class="icon-remove" id="remove_' + song.id + '" onclick="steer(null, \'remove\',\'' + song.id + '\');"/>' +
+    '<span> ' + song.artist_name + '</span>' +
+    '</td>' +
+    '<td>' + song.title + '</td>'
+    '</tr>';
+    return str;
+    //return '<span>' + song.artist_name + '</span></td><td>' + song.title + '</td></tr>';
 }
+
 
 // contacts the server, gets json, converts to objects.
 function serverAddSongs(numSongs, sessionId, callback) {
@@ -46,6 +61,17 @@ function serverAddSongs(numSongs, sessionId, callback) {
             callback(null, obj.result.songs);
         } else {
             callback(obj.result, null);
+        }
+    });
+}
+
+function serverSteer(sessionId, direction, songId, callback) {
+    $.get('/api/steer_session', {sessionId: sessionId, direction: direction, songId: songId}, function(json) {
+        var obj = JSON.parse(json);
+        if (obj.status !== 'error') {
+            callback(null, obj.message);
+        } else {
+            callback(obj.message, null);
         }
     });
 }
@@ -70,5 +96,39 @@ function addSongs(numSongs, sessionId) {
             $('#options-modal').modal('hide');
         }
     });
+}
 
+function steer(sessionId, direction, songId) {
+    sessionId = sessionId || findSessionId();
+    async.waterfall([
+        function maybeSteer(callback) {
+            if (direction !== 'remove') {
+                serverSteer(sessionId, direction, songId, function(err, msg) {
+                    if (err) {
+                        callback(err, null);
+                    } else {
+                        callback(null, msg);
+                    }
+                });
+            } else {
+                callback(null, 'Removed, but did not affect generation.');
+            }
+        },
+        function maybeRemove(msg, callback) {
+            if (direction !== 'more') {
+                $('#row_' + songId).remove();
+            }
+            callback(null, msg);
+        }
+    ], function(err, msg) {
+        console.log(arguments);
+        if (err) {
+            $('#alert_string').text('Error:');
+            $('#alert_message').text(err);
+        } else {
+            $('#alert_string').text('OK:');
+            $('#alert_message').text(msg);
+        }
+        $('#alert').removeClass('hide alert-error alert-success').addClass('alert').addClass(err ? 'alert-error' : 'alert-success');
+    });
 }
