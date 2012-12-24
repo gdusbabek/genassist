@@ -115,7 +115,7 @@ exports.seed = function(songId, sinceYear, callback) {
                 if (err) {
                     callback(err);
                 } else {
-                    console.log('new echo session: ' + results.session_id);
+                    console.log('./bin/session_cleanup.js ' + results.session_id);
                     callback(null, results.session_id);
                 }
             });
