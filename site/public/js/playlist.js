@@ -38,18 +38,49 @@ function toggleOptions() {
     $('#options-modal').modal({});
 }
 
+/*
+tr(id="row_#{song.id}")
+    td
+        div(class="btn-group", id="song_action_menu_#{song.id}")
+            a(class="btn btn-mini dropdown-toggle", data-toggle="dropdown", href="#")
+                i(class="icon-cog")
+                span(class="caret")
+            ul(class="dropdown-menu")
+                li
+                    a(href="#", onclick="steer(null, 'more', '#{song.id}');")
+                        i(class="icon-thumbs-up")
+                        span  More like this
+                li
+                    a(href="#", onclick="steer(null, 'less', '#{song.id}');")
+                        i(class="icon-thumbs-down")
+                        span  Less like this (and remove)
+                li
+                    a(href="#", onclick="steer(null, 'remove', '#{song.id}');")
+                        i(class="icon-remove")
+                        span  Remove
+        span.offset20  #{song.artist_name}
+    td #{song.title}
+    */
 function formatPlaylistRow(song) {
     var str = '<tr id="row_' + song.id + '">' + 
     '<td>' + 
-    '<i class="icon-thumbs-up" id="up_' + song.id + '" onclick="steer(null, \'more\',\'' + song.id + '\');"/>' +
-    '<i class="icon-thumbs-down" id="down_' + song.id + '" onclick="steer(null, \'less\',\'' + song.id + '\');"/>' +
-    '<i class="icon-remove" id="remove_' + song.id + '" onclick="steer(null, \'remove\',\'' + song.id + '\');"/>' +
-    '<span> ' + song.artist_name + '</span>' +
+        '<div class="btn-group" id="song_action_menu_' + song.id + '">' +
+            '<a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">' +
+                '<i class="icon-cog"/>' +
+                '<span class="caret"/>' +
+            '</a>' + 
+            '<ul class="dropdown-menu">' +
+                '<li><a href="#" onclick="steer(null, \'more\', \'' + song.id + '\');"><i class="icon-thumbs-up"/> <span> More like this</a>' +
+                '<li><a href="#" onclick="steer(null, \'less\', \'' + song.id + '\');"><i class="icon-thumbs-down"/> <span> Less like this (and remove)</a>' +
+                '<li><a href="#" onclick="steer(null, \'remove\', \'' + song.id + '\');"><i class="icon-remove"/> <span> Remove</a>' +
+            '</ul>' +
+        '</div>' +
+    
+    '<span class="offset20"> ' + song.artist_name + '</span>' +
     '</td>' +
     '<td>' + song.title + '</td>'
     '</tr>';
     return str;
-    //return '<span>' + song.artist_name + '</span></td><td>' + song.title + '</td></tr>';
 }
 
 
