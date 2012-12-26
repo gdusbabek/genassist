@@ -38,29 +38,6 @@ function toggleOptions() {
     $('#options-modal').modal({});
 }
 
-/*
-tr(id="row_#{song.id}")
-    td
-        div(class="btn-group", id="song_action_menu_#{song.id}")
-            a(class="btn btn-mini dropdown-toggle", data-toggle="dropdown", href="#")
-                i(class="icon-cog")
-                span(class="caret")
-            ul(class="dropdown-menu")
-                li
-                    a(href="#", onclick="steer(null, 'more', '#{song.id}');")
-                        i(class="icon-thumbs-up")
-                        span  More like this
-                li
-                    a(href="#", onclick="steer(null, 'less', '#{song.id}');")
-                        i(class="icon-thumbs-down")
-                        span  Less like this (and remove)
-                li
-                    a(href="#", onclick="steer(null, 'remove', '#{song.id}');")
-                        i(class="icon-remove")
-                        span  Remove
-        span.offset20  #{song.artist_name}
-    td #{song.title}
-    */
 function formatPlaylistRow(song) {
     var str = '<tr id="row_' + song.id + '">' + 
     '<td>' + 
