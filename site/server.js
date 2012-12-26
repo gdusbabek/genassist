@@ -104,6 +104,13 @@ app.get('/api/next_songs_in_session', function(req, res) {
     echo.addSongsToPlaylist(sessionId, numSongs, resultCallback.bind(null, req, res));
 });
 
+app.get('/api/save_playlist', function(req, res) {
+    var playlistName = req.query.playlistName,
+        songIds = req.query.songIds;
+    console.log(songIds);
+    res.send(JSON.stringify({status: 'ok', result: null, message: 'none'}));
+});
+
 app.listen(2000);
 console.log('Listening on ' + 2000);
 

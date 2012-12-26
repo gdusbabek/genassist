@@ -38,8 +38,12 @@ function toggleOptions() {
     $('#options-modal').modal({});
 }
 
+function toggleSave() {
+    $('#save-modal').modal({});
+}
+
 function formatPlaylistRow(song) {
-    var str = '<tr id="row_' + song.id + '">' + 
+    var str = '<tr id="row_' + song.id + ' songId="' + song.id + '">' + 
     '<td>' + 
         '<div class="btn-group">' +
             '<button class="btn btn-mini" onclick="steer(null, \'more\', \'' + song.id + '\');"><i class="icon-thumbs-up"/></button>' + 
@@ -77,6 +81,13 @@ function serverSteer(sessionId, direction, songId, callback) {
     });
 }
 
+function serverSavePlaylist(playlistName, songIds, callback) {
+    $.get('/api/save_playlist', {playlistName: playlistName, songIds: songIds}, function (json) {
+        console.log(json);
+        callback(null, null);
+    });
+}
+
 // called when addSongs button is clicked.
 function addSongs(numSongs, sessionId) {
     if (numSongs === undefined) {
@@ -92,7 +103,7 @@ function addSongs(numSongs, sessionId) {
             alert('Error adding songs');
         } else {
             songs.forEach(function(song) {
-                $('#playlist-table tbody').append(formatPlaylistRow(song));
+                $('#playlist_table tbody').append(formatPlaylistRow(song));
             });
             $('#options-modal').modal('hide');
         }
@@ -152,5 +163,16 @@ function steer(sessionId, direction, songId) {
     ], function(err) {
         
         //$('#alert').removeClass('hide alert-error alert-success').addClass('alert').addClass(err ? 'alert-error' : 'alert-success');
+    });
+}
+
+function savePlaylist() {
+    var playlistName = $('#playlist_name').val(),
+        songIds = [];
+    $('#playlist_table > tbody  > tr').each(function(index, row) {
+        songIds.push($(this).attr('songId'));
+    });
+    serverSavePlaylist(playlistName, songIds, function(err, msg) {
+        console.log('back from serverSavePlaylist');
     });
 }
