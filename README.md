@@ -27,3 +27,13 @@ Playlistica?
 
 The echonost dependency has been hacked to add support to the newer dynamic playlist API.
 
+## Currently working on...
+
+* change where the steer message appears.  A slide-thru thing that stays up for 3 seconds would be fine.
+* save playlist, will beget...
+* deeper integration into last.fm, spotify, rdio, etc.
+
+## If you get bored...
+
+* tooltips on the the playlist buttons
+
