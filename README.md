@@ -29,10 +29,16 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
-* save playlist, will beget...
+* save playlist
+  1. do oauth in new window.
+  2. go back to playlist window to enter pin
+  3. save playlist.
+ 
+* todo: need full oauth landing, etc. need to put this on a public space.
 * deeper integration into last.fm, spotify, rdio, etc.
 
 ## If you get bored...
 
+* easy deployment to a new server.
 * tooltips on the the playlist buttons
 
