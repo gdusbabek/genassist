@@ -29,16 +29,6 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
-* on 'less like this' do:
-  1. highlight the row (pink or something like that)
-  2. do the server side work.
-  3. replace the row with a message.
-  4. remove the row.
-* on 'more like this' do:
-  1. highlight thr row (pink or something like that)
-  2. do the server side work.
-  3. replace with a message.
-* change where the steer message appears.  A slide-thru thing that stays up for 3 seconds would be fine.
 * save playlist, will beget...
 * deeper integration into last.fm, spotify, rdio, etc.
 

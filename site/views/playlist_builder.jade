@@ -15,12 +15,6 @@ block content
         div.pagination-centered
             p Songs released since #{sinceYear} based on "#{songName}"
             button(class="btn pagination-centered", onclick="toggleOptions();") Modify
-        div.pagination-centered
-            div.span2
-            div.span8(id="alert", class="alert alert-error hide fade in")
-                button(class="close", onclick="$('#alert').addClass('hide');") &times;
-                strong(id="alert_string") strong part!
-                span(id="alert_message") this is the message!
     div.row-fluid
         div(class='span2')
         //-     div.row-fluid

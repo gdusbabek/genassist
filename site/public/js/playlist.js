@@ -100,36 +100,57 @@ function addSongs(numSongs, sessionId) {
 }
 
 function steer(sessionId, direction, songId) {
+    var originalRowContents, message = '';
     sessionId = sessionId || findSessionId();
+    if (direction === 'more') {
+        message = 'Steering generator toward this song.';
+    } else if (direction === 'less') {
+        message = 'Steering generate away from this song.';
+    } else if (direction === 'remove') {
+        message = 'Removing form playlist without steering the generator';
+    }
     async.waterfall([
+        function installMarkerRow(callback) {
+            originalRowContents = $('#row_' + songId).html();
+            $('#row_' + songId).replaceWith('<tr id="row_' + songId + '"><td colspan="3">' + message + '</td></tr>');
+            $('#row_' + songId).addClass('info');
+            callback(null);
+        },
         function maybeSteer(callback) {
             if (direction !== 'remove') {
                 serverSteer(sessionId, direction, songId, function(err, msg) {
-                    if (err) {
-                        callback(err, null);
-                    } else {
-                        callback(null, msg);
-                    }
+                    callback(null, {err: err, msg: msg});
                 });
             } else {
-                callback(null, 'Removed, but did not affect generation.');
+                callback(null, {err: null, msg: 'Removed, but did not affect generation.'});
             }
+        },
+        function displayResults(status, callback) {
+            $('#row_' + songId).removeClass('info');
+            if (status.err) {
+                message = status.err;
+                $('#row_' + songId).replaceWith('<tr id="row_' + songId + '"><td colspan="3">' + message + '</td></tr>');
+                $('#row_' + songId).addClass('error');
+            } else {
+                $('#row_' + songId).addClass('success');
+            }
+            setTimeout(function(){
+                callback(null, status);
+            }, 750);
         },
         function maybeRemove(msg, callback) {
             if (direction !== 'more') {
                 $('#row_' + songId).remove();
+            } else {
+                // hmm. not entirely correct.
+                console.log(originalRowContents);
+                $('#row_' + songId).replaceWith('<tr id="row_' + songId + '">' + originalRowContents + '</tr>');
+                $('#row_' + songId).removeClass('info');
             }
-            callback(null, msg);
+            callback(null);
         }
-    ], function(err, msg) {
-        console.log(arguments);
-        if (err) {
-            $('#alert_string').text('Error:');
-            $('#alert_message').text(err);
-        } else {
-            $('#alert_string').text('OK:');
-            $('#alert_message').text(msg);
-        }
-        $('#alert').removeClass('hide alert-error alert-success').addClass('alert').addClass(err ? 'alert-error' : 'alert-success');
+    ], function(err) {
+        
+        //$('#alert').removeClass('hide alert-error alert-success').addClass('alert').addClass(err ? 'alert-error' : 'alert-success');
     });
 }
