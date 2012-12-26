@@ -64,20 +64,13 @@ tr(id="row_#{song.id}")
 function formatPlaylistRow(song) {
     var str = '<tr id="row_' + song.id + '">' + 
     '<td>' + 
-        '<div class="btn-group" id="song_action_menu_' + song.id + '">' +
-            '<a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">' +
-                '<i class="icon-cog"/>' +
-                '<span class="caret"/>' +
-            '</a>' + 
-            '<ul class="dropdown-menu">' +
-                '<li><a href="#" onclick="steer(null, \'more\', \'' + song.id + '\');"><i class="icon-thumbs-up"/> <span> More like this</a>' +
-                '<li><a href="#" onclick="steer(null, \'less\', \'' + song.id + '\');"><i class="icon-thumbs-down"/> <span> Less like this (and remove)</a>' +
-                '<li><a href="#" onclick="steer(null, \'remove\', \'' + song.id + '\');"><i class="icon-remove"/> <span> Remove</a>' +
-            '</ul>' +
+        '<div class="btn-group">' +
+            '<button class="btn btn-mini" onclick="steer(null, \'more\', \'' + song.id + '\');"><i class="icon-thumbs-up"/></button>' + 
+            '<button class="btn btn-mini" onclick="steer(null, \'less\', \'' + song.id + '\');"><i class="icon-thumbs-down"/></button>' + 
+            '<button class="btn btn-mini" onclick="steer(null, \'remove\', \'' + song.id + '\');"><i class="icon-remove"/></button>' + 
         '</div>' +
-    
-    '<span class="offset20"> ' + song.artist_name + '</span>' +
     '</td>' +
+    '<td>' + song.artist_name + '</td>' +
     '<td>' + song.title + '</td>'
     '</tr>';
     return str;
