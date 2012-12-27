@@ -15,7 +15,15 @@ app.configure(function() {
 	
 // routes are here.
 
+app.get('/rdio_comeback.html', function(req, res) {
+    console.log(req);
+    // set a cookie with the value here!
+    res.render('cookies', {});
+}
+
 app.get('/cookies.html', function(req, res) {
+    console.log(req.headers.cookie);
+    // dump the cookie.
     res.render('cookies', {});
 });
 

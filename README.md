@@ -29,9 +29,11 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
-* specify hookup earlier on.
-  1. set rdio or spotify cookie, will need UI for clearing it.
-  
+* deep oauth integration
+  1. go to /rdio_link?with_return_url
+  2. that returns a URL, redirect them there.
+  3. they click yes, get redirected to a new url
+
 * save playlist
   1. do oauth in new window.
   2. go back to playlist window to enter pin
