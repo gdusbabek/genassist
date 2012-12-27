@@ -43,6 +43,7 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## If you get bored...
 
+* region support for rdio.
 * easy deployment to a new server.
 * tooltips on the the playlist buttons
 
