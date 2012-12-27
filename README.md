@@ -29,6 +29,10 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
+* specify hookup earlier on.
+  1. modify code to read spotify & rdio results.
+  2. write some tests for crap sake.
+  
 * save playlist
   1. do oauth in new window.
   2. go back to playlist window to enter pin
