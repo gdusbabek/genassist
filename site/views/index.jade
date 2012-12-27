@@ -21,13 +21,16 @@ block content
                     span.caret
             div.row(class="modal hide fade", id="options-modal")
                 h2 Playlist options
-                span Include songs released since
-                input(type="text", name="sinceYear", value="1990", class="span2", id="sinceYear") starting year
-
-
-
-    div.container(class="hide", id="searchOptionsContent") Include songs since
-        input(type="text", name="minSearchYear", id="minSearchYear", value="1900")
+                div
+                    span Include songs released since
+                        input(type="text", name="sinceYear", value="1990", class="span2", id="sinceYear") starting year
+                div
+                    span Use service
+                    span(id="service-radios")
+                        label(class="radio inline") Rdio
+                            input(type="radio", name="service", id="rdioOption", value="RDIO", checked="true")
+                        label(class="radio inline") Spotify
+                            input(type="radio", name="service", id="spotifyOption", value="SPOTIFY")
 
     div.container(class="modal hide fade", id="candidates-modal")
         div.pagination-centered(id="candidates")
