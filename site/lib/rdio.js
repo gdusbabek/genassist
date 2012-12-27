@@ -1,3 +1,6 @@
+var fs = require('fs');
+var path = require('path');
+
 var Rdio = require('rdio-node').Rdio;
 
 var params = {
@@ -45,13 +48,9 @@ exports.search = function(q, callback) {
     });
 }
 
-function Store(data) {
-    this.data = data || {}
-}
-
-Store.parse = function(strInput) {
-    var data = strInput ? JSON.parse(strInput) : null;
-    return new Store(data);
+function Store(contextKey) {
+    this.data = {}
+    this.contextKey = contextKey;
 }
 
 Store.prototype.get = function(key) {
@@ -70,16 +69,30 @@ Store.prototype.removeAll = function() {
     this.data = {};
 }
 
-Store.prototype.stringify = function() {
-    return JSON.stringify(this.data);
+Store.dump = function(store, dir) {
+    var buf = JSON.stringify(store.data);
+    fs.writeFileSync(path.join(dir, store.contextKey), buf, 'utf8');
 }
 
-exports.getAuthRdio = function(callbackUrl) {
+Store.load = function(contextKey, dir) {
+    var fd = path.join(dir, contextKey),
+        buf = fs.readFileSync(fd, 'utf8'),
+        store = new Store(contextKey);
+    store.data = JSON.parse(buf);
+    return store;
+}
+
+exports.Store = Store;
+
+// options:
+//   {String} callbackUrl,
+//   {String} contextId
+exports.getAuthRdio = function(options) {
     var p = {
         consumerKey: process.env.RDIO_KEY,
         consumerSecret: process.env.RDIO_SECRET,
-        authorizeCallback: callbackUrl,
-        dataStore: new Store()
+        authorizeCallback: options.callbackUrl,
+        dataStore: new Store(options.contextId)
     },
     r = new Rdio(p);
     return r;
