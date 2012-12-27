@@ -1,0 +1,42 @@
+{
+   "status":{
+      "version":"4.2",
+      "code":0,
+      "message":"Success"
+   },
+   "lookahead":[
+
+   ],
+   "songs":[
+      {
+         "artist_id":"ARWA6NT1187FB3F15C",
+         "id":"SOEDTDD13774FFBA03",
+         "artist_name":"The Cure",
+         "title":"Just Like Heaven"
+      },
+      {
+         "artist_id":"ARLD7161187FB4587B",
+         "id":"SOUZVEQ13134397D9A",
+         "artist_name":"Audra",
+         "title":"What Your Eyes Had Seen"
+      },
+      {
+         "artist_id":"ARFCG1N1187B98D6E4",
+         "id":"SOWGNFT12A67AE21E6",
+         "artist_name":"Electrafixion",
+         "title":"Never"
+      },
+      {
+         "artist_id":"ARVG4OK1187B9B6BD3",
+         "id":"SOKUECJ12A6D4F6129",
+         "artist_name":"The Killers",
+         "title":"Somebody Told Me"
+      },
+      {
+         "artist_id":"ARNVG9C1187B9B771F",
+         "id":"SOANLMX13134387450",
+         "artist_name":"The Long Blondes",
+         "title":"Giddy Stratospheres"
+      }
+   ]
+}

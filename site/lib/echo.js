@@ -51,6 +51,30 @@ exports.search = function(songQuery, callback) {
     });
 }
 
+exports.convertServiceSong = function(song) {
+    var foreignIdParts, foreignId, foreignService, newSong = {};
+
+    // get normal stuff.
+    ['artist_id', 'id', 'artist_name', 'title'].forEach(function(key) {
+        if (song.hasOwnProperty(key)) {
+            newSong[key] = song[key];
+        }
+    });
+
+    if (song.hasOwnProperty('tracks')) {
+        foreignIdParts = song.tracks[0].foreign_id.split(':'),
+        foreignId = foreignIdParts[foreignIdParts.length - 1],
+        foreignService = foreignIdParts[0].split('-')[0];
+        delete song.tracks
+        newSong.foreign_id = foreignId;
+        newSong.foreign_service = foreignService;
+    } else {
+        newSong.foreign_id = null;
+        newSong.foreign_service = null;
+    }
+    return newSong;
+}
+
 // callback(err, {sessionId, songs})
 function augmentPlaylist(nest, sessionId, count, callback) {
     if (!sessionId) {
@@ -74,8 +98,9 @@ function augmentPlaylist(nest, sessionId, count, callback) {
                     console.log(err);
                     callback(err);
                 } else {
+                    console.log(JSON.stringify(results));
                     results.songs.forEach(function(song) {
-                        songs[songs.length] = song;
+                        songs[songs.length] = exports.convertServiceSong(song);
                     });
                     callback(null);
                 }
@@ -109,6 +134,8 @@ exports.seed = function(songId, sinceYear, callback) {
                 adventurousness: 0.5,
                 song_id: songId,
                 artist_start_year_after: sinceYear
+                //bucket: ['id:spotify-WW', 'tracks']
+                //bucket: ['id:rdio-US', 'tracks']
 
             },
             function playlistCreateCallback(err, results) {
