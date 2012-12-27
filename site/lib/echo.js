@@ -13,6 +13,12 @@ var params = {
     secret: process.env.ECHO_SECRET
 };
 
+var SERVICE = {
+    SPOTIFY: 'id:spotify-WW',
+    RDIO: 'id:rdio-US',
+    NONE: null
+}
+
 function dedupeSongs(songs) {
     var newSongs = [];
     var concatSongs = [];
@@ -98,7 +104,6 @@ function augmentPlaylist(nest, sessionId, count, callback) {
                     console.log(err);
                     callback(err);
                 } else {
-                    console.log(JSON.stringify(results));
                     results.songs.forEach(function(song) {
                         songs[songs.length] = exports.convertServiceSong(song);
                     });
@@ -122,22 +127,26 @@ exports.addSongsToPlaylist = function(sessionId, count, callback) {
 }
 
 // callbeck(err, songs); // songs is an array of song objects.
-exports.seed = function(songId, sinceYear, callback) {
-    var nest = new echonest.Echonest(params);
+exports.seed = function(songId, sinceYear, service, callback) {
+    var nest = new echonest.Echonest(params),
+        createParams = {
+            format: 'json',
+            type: 'song-radio',
+            variety: 0.75,
+            distribution: 'wandering', // focused
+            adventurousness: 0.5,
+            song_id: songId,
+            artist_start_year_after: sinceYear
+        };
+
+    // see if we should include foreign ids.
+    if (service && service !== 'NONE' && SERVICE[service]) {
+        createParams.bucket = [SERVICE[service], 'tracks'];
+    }
+
     async.waterfall([
         function createPlaylist(callback) {
-            nest.playlist.dynamic.create({
-                format: 'json',
-                type: 'song-radio',
-                variety: 0.75,
-                distribution: 'wandering', // focused
-                adventurousness: 0.5,
-                song_id: songId,
-                artist_start_year_after: sinceYear
-                //bucket: ['id:spotify-WW', 'tracks']
-                //bucket: ['id:rdio-US', 'tracks']
-
-            },
+            nest.playlist.dynamic.create(createParams,
             function playlistCreateCallback(err, results) {
                 if (err) {
                     callback(err);

@@ -36,8 +36,10 @@ app.get('/index.html', function(req, res) {
 app.get('/seed.html', function(req, res) {
     var songId = req.query.songId,
         sinceYear = req.query.sinceYear || '1900',
-        songName = req.query.songName || 'Not defined';
-    echo.seed(songId, sinceYear, function(err, results) {
+        songName = req.query.songName || 'Not defined',
+        service = req.query.service || 'RDIO';
+
+    echo.seed(songId, sinceYear, service, function(err, results) {
         if (err) {
             res.render('error', {echoError: err});
         } else if (!results) {

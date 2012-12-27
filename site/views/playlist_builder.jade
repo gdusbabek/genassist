@@ -34,7 +34,7 @@ block content
                         th Song
                 tbody
                     each song, i in songs
-                        tr(id="row_#{song.id}", songId="#{song.id}")
+                        tr(id="row_#{song.id}", songId="#{song.id}", service='#{song.foreign_service}', foreignId='#{song.foreign_id}')
                             td(style="width: 10%")
                                 div(class="btn-group")
                                     button(class="btn btn-mini", onclick="steer(null, 'more', '#{song.id}');")

@@ -43,7 +43,7 @@ function toggleSave() {
 }
 
 function formatPlaylistRow(song) {
-    var str = '<tr id="row_' + song.id + ' songId="' + song.id + '">' + 
+    var str = '<tr id="row_' + song.id + '" songId="' + song.id + '" service="' + song.foreign_service + '" foreignId="' + song.foreign_id + '">' + 
     '<td>' + 
         '<div class="btn-group">' +
             '<button class="btn btn-mini" onclick="steer(null, \'more\', \'' + song.id + '\');"><i class="icon-thumbs-up"/></button>' + 
