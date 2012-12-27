@@ -15,15 +15,8 @@ app.configure(function() {
 	
 // routes are here.
 
-app.get('/example.1', function(req, res) {
-	var body = 'Example 1';
-	res.setHeader('Content-Type', 'text/plain');
-	res.setHeader('Content-Length', body.length);
-	res.end(body);
-});
-
-app.get('/example.2', function(req, res) {
-	res.send('Example 2');
+app.get('/cookies.html', function(req, res) {
+    res.render('cookies', {});
 });
 
 app.get('/index.html', function(req, res) {
