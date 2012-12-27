@@ -2,27 +2,37 @@ var express = require('express');
 var app = express();
 var rdio = require('./lib/rdio');
 var echo = require('./lib/echo');
+var util = require('./lib/util');
 
 app.configure(function() {
 	app.set('view engine', 'jade');
 	app.set('views', __dirname + '/views');
 	app.set('view options', {layout: false});
 	//app.use(express.bodyParser());
-	//app.use(express.cookieParser());
+	app.use(express.cookieParser());
 	//app.use(app.router);
 	app.use(express.static(__dirname + '/public'));
+
+    app.use(function(req, res, next) {
+        // see if there is a context cookie
+        if (!req.cookies || !req.cookies.context) {
+            res.cookie('context', util.randomHash(128), {path: '/', });
+        }
+        next();
+    });
 });
 	
 // routes are here.
 
 app.get('/rdio_comeback.html', function(req, res) {
+    // http://localhost:2000/rdio_comeback.html?oauth_verifier=6099&oauth_token=rbzccfjuwptcqcyth3bacmj7
     console.log(req);
     // set a cookie with the value here!
     res.render('cookies', {});
-}
+});
 
 app.get('/cookies.html', function(req, res) {
-    console.log(req.headers.cookie);
+    //console.log(req.headers.cookie);
     // dump the cookie.
     res.render('cookies', {});
 });

@@ -8,8 +8,11 @@ block scripts
     script(src='/js/cookies.js')
 
 block content
-    div Set the service cookie
+    div Service: 
         button(type="button", class="btn", onclick="setCookie('service','RDIO');") Rdio
         button(type="button", class="btn", onclick="setCookie('service','SPOTIFY');") Spotify
         button(type="button", class="btn", onclick="setCookie('service','!!CLEAR');") Clear it
         span(id="currentService") Dunno
+    div Context: 
+        span(id="context") Dunno
+        button(type="button", class="btn", onclick="setCookie('context', '!!CLEAR');") Clear it

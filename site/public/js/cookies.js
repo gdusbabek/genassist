@@ -1,7 +1,7 @@
 
 function setCookie(key, value) {
     if (value === '!!CLEAR') {
-        $.removeCookie(key, { path: '/' });
+        $.removeCookie(key  , { path: '/' });
     } else {
         $.cookie(key, value, { expires: 60, path: '/' });
             
@@ -19,7 +19,8 @@ function showCookieValue(cookie, element) {
 
 function displayAllCookies() {
     var showThese = [
-        ['service', 'currentService']
+        ['service', 'currentService'],
+        ['context', 'context']
     ];
 
     showThese.forEach(function(tuple) {
