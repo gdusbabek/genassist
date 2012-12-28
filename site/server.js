@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var async = require('async');
 var rdio = require('./lib/rdio');
 var echo = require('./lib/echo');
 var util = require('./lib/util');
@@ -23,12 +24,80 @@ app.configure(function() {
 });
 	
 // routes are here.
+var contextDir = '/tmp/genassist_contexts';
+
+app.get('/rdio_register.html', function(req, res) {
+    async.waterfall([
+        function getRdio(callback) {
+            rdio.getAuthRdio({
+                callbackUrl: 'http://localhost:2000/rdio_comeback.html',
+                contextId: req.cookies.context,
+                contextDir: contextDir // for now.
+            }, callback);
+        },
+        
+        function beginAuth(client, callback) {
+            client.beginAuthentication(function(err, loginUrl) {
+                callback(null, client, loginUrl);
+            });
+        },
+        function(client, loginUrl, callback) {
+            rdio.Store.dump(client.dataStore_, contextDir, function(err) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, loginUrl);
+                }
+            })
+        },
+        function redirectToRdio(loginUrl, callback) {
+            res.redirect(loginUrl);
+            callback(null);
+        }
+    ], function(err, loginUrl) {
+        if (err) {
+            res.render('err', {unknownErr: err});
+        }
+    });
+});
 
 app.get('/rdio_comeback.html', function(req, res) {
     // http://localhost:2000/rdio_comeback.html?oauth_verifier=6099&oauth_token=rbzccfjuwptcqcyth3bacmj7
-    console.log(req);
-    // set a cookie with the value here!
-    res.render('cookies', {});
+    async.waterfall([
+            function getRdio(callback) {
+                rdio.getAuthRdio({
+                    callbackUrl: 'http://localhost:2000/rdio_comeback.html',
+                    contextId: req.cookies.context,
+                    contextDir: contextDir
+                }, callback);
+            },
+            function completeAuth(rdioClient, callback) {
+                rdioClient.completeAuthentication(req.query.oauth_verifier, function() {                  
+                    // we should be able to get playlists now.
+                    callback(null, rdioClient);
+                });
+            },
+            function saveData(client, callback) {
+                rdio.Store.dump(client.dataStore_, contextDir, function(err) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        callback(null, client);
+                    }
+                });
+            },
+            function testPlaylistFetch(client, callback) {
+                client.makeRequest('getPlaylists', function(err, results) {
+                    callback(err);
+                });
+            }
+    ], function(err) {
+        if (err) {
+            res.render('error', {unknownErr: err});
+        } else {
+            res.render('cookies', {});
+        }
+    }); 
 });
 
 app.get('/cookies.html', function(req, res) {

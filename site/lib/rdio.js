@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 
+var async = require('async');
 var Rdio = require('rdio-node').Rdio;
 
 var params = {
@@ -47,9 +48,9 @@ exports.search = function(q, callback) {
     });
 }
 
-function Store(contextKey) {
+function Store(contextId) {
     this.data = {}
-    this.contextKey = contextKey;
+    this.contextId = contextId;
 }
 
 Store.prototype.get = function(key) {
@@ -71,17 +72,19 @@ Store.prototype.removeAll = function() {
 // callback expects(err)
 Store.dump = function(store, dir, callback) {
     // todo: handle err & prevent double callback.
-    var stream = fs.createWriteStream(path.join(dir, store.contextKey));
+    var location = path.join(dir, fileNameFromContextId(store.contextId)),
+        stream = fs.createWriteStream(location);
     stream.on('close', callback);
     stream.write(JSON.stringify(store.data), 'utf8');
     stream.end();
 }
 
 
-Store.load = function(contextKey, dir, callback) {
-    var stream = fs.createReadStream(path.join(dir, contextKey)),
+Store.load = function(contextId, dir, callback) {
+    var location = path.join(dir, fileNameFromContextId(contextId)),
+        stream = fs.createReadStream(location),
         buf = '',
-        store = new Store(contextKey);
+        store = new Store(contextId);
     stream.setEncoding('utf8');
     stream.on('data', function(data) {
         buf += data;
@@ -93,18 +96,45 @@ Store.load = function(contextKey, dir, callback) {
 }
 
 exports.Store = Store;
-exports.Rdio = Rdio;
+
+function fileNameFromContextId(str) {
+    return str.substr(0, Math.min(64, str.length));
+}
 
 // options:
 //   {String} callbackUrl,
-//   {String} contextId
-exports.getAuthRdio = function(options) {
+//   {String} contextId,
+//   {String} contextDir
+// callback expects(err, rdio)
+exports.getAuthRdio = function(options, callback) {
     var p = {
         consumerKey: process.env.RDIO_KEY,
         consumerSecret: process.env.RDIO_SECRET,
-        authorizeCallback: options.callbackUrl,
-        dataStore: new Store(options.contextId)
+        authorizeCallback: options.callbackUrl
+        //dataStore: new Store(options.contextId)
+    };
+    async.waterfall([
+    function maybeCreate(callback) {
+        fs.exists(path.join(options.contextDir, fileNameFromContextId(options.contextId)), function(exists) {
+            if (exists) {
+                Store.load(options.contextId, options.contextDir, function(err, store) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        p.dataStore = store;
+                        callback(null);
+                    }
+                });
+            } else {
+                // create it.
+                p.dataStore = new Store(options.contextId);
+                Store.dump(p.dataStore, options.contextDir, callback);
+            }
+        });
     },
-    r = new Rdio(p);
-    return r;
+    function create(callback) {
+        var r = new Rdio(p);
+        callback(null, r);
+    }
+    ], callback);
 }

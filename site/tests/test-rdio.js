@@ -25,8 +25,20 @@ exports['test_dump_and_load'] = function(test, assert) {
         assert.ifError(err);
         assert.deepEqual(store.data, newStore.data);
         test.finish();
+    });   
+}
+
+exports['test_get_auth_rdio'] = function(test, assert) {
+    var options = {
+        callbackUrl: 'http://www.example.com/bogus_callback.html',
+        contextId: 'test_get_auth_rdio',
+        contextDir: '/tmp'
+    };
+    rdio.getAuthRdio(options, function(err, client) {
+        assert.ifError(err);
+        assert.ok(fs.existsSync(path.join(options.contextDir, options.contextId)));
+        test.finish();
     });
-    
 }
 
 exports['test_streams_write'] = function(test, assert) {
