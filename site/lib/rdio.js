@@ -5,11 +5,9 @@ var Rdio = require('rdio-node').Rdio;
 
 var params = {
     consumerKey: process.env.RDIO_KEY,
-    consumerSecret: process.env.RDIO_SECRET,
-    authorizeCallback: 'http://localhost:2000/rdio_comeback.html'
+    consumerSecret: process.env.RDIO_SECRET
+//    authorizeCallback: 'http://localhost:2000/rdio_comeback.html'
 };
-
-var rdio = new Rdio(params);
 
 function dedupeSongs(songs) {
     var newSongs = [];
@@ -26,10 +24,11 @@ function dedupeSongs(songs) {
 
 // expects?
 exports.search = function(q, callback) {
-    var rdioQuery = {
+    var rdio = new Rdio(params),
+        rdioQuery = {
             query: q,
             types: 'Song'
-        };
+        }
     rdio.makeRequest('search', rdioQuery, function(err, results) {
         if (err) {
             callback(err, null);
@@ -69,20 +68,32 @@ Store.prototype.removeAll = function() {
     this.data = {};
 }
 
-Store.dump = function(store, dir) {
-    var buf = JSON.stringify(store.data);
-    fs.writeFileSync(path.join(dir, store.contextKey), buf, 'utf8');
+// callback expects(err)
+Store.dump = function(store, dir, callback) {
+    // todo: handle err & prevent double callback.
+    var stream = fs.createWriteStream(path.join(dir, store.contextKey));
+    stream.on('close', callback);
+    stream.write(JSON.stringify(store.data), 'utf8');
+    stream.end();
 }
 
-Store.load = function(contextKey, dir) {
-    var fd = path.join(dir, contextKey),
-        buf = fs.readFileSync(fd, 'utf8'),
+
+Store.load = function(contextKey, dir, callback) {
+    var stream = fs.createReadStream(path.join(dir, contextKey)),
+        buf = '',
         store = new Store(contextKey);
-    store.data = JSON.parse(buf);
-    return store;
+    stream.setEncoding('utf8');
+    stream.on('data', function(data) {
+        buf += data;
+    });
+    stream.on('end', function() {
+        store.data = JSON.parse(buf);
+        callback(null, store);
+    });
 }
 
 exports.Store = Store;
+exports.Rdio = Rdio;
 
 // options:
 //   {String} callbackUrl,
