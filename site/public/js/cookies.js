@@ -20,7 +20,8 @@ function showCookieValue(cookie, element) {
 function displayAllCookies() {
     var showThese = [
         ['service', 'currentService'],
-        ['context', 'context']
+        ['context', 'context'],
+        ['rdioLink', 'rdioLink']
     ];
 
     showThese.forEach(function(tuple) {
