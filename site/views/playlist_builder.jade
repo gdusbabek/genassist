@@ -46,15 +46,13 @@ block content
                     div.input-prepend
                         button(class="btn", onclick="addSongs();") Add songs
                         input(type="text", class="span2", id="numSongsToAdd", placeholder="5")
-
-block footer
     div.row-fluid
         div.pagination-centered
             button(class="btn", onclick="toggleSave();") Save this playlist!
-    div.row-fluid(class="modal hide fade", id="save-modal")
-        fieldset
-            legend Save this puppy!
-            label Playlist name
-            input(type="text", placeholder="My awesome new playlist", id="playlist_name")
-            button(class="btn btn-primary", onclick="savePlaylist();") Save
+        div.row-fluid(class="modal hide fade", id="save-modal")
+            fieldset
+                legend Save this puppy!
+                label Playlist name
+                input(type="text", placeholder="My awesome new playlist", id="playlist_name")
+                button(class="btn btn-primary", onclick="savePlaylist();") Save
 
