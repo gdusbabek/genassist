@@ -175,20 +175,20 @@ exports.seed = function(songId, sinceYear, service, callback) {
 // callback expects(err, msg)
 exports.steer = function(sessionId, songId, direction, callback) {
     var nest = new echonest.Echonest(params),
-        params = {
+        callParams = {
             session_id: sessionId
         };
 
     if (direction === 'more') {
-        params.more_like_this = songId;
+        callParams.more_like_this = songId;
     } else if (direction === 'less') {
-        params.less_like_this = songId;
+        callParams.less_like_this = songId;
     } else {
         callback(new Error('Invalid direction: ' + direction), null);
         return;
     }
 
-    nest.playlist.dynamic.steer(params, function steerCallback(err, results) {
+    nest.playlist.dynamic.steer(callParams, function steerCallback(err, results) {
         if (err) {
             callback(err, null);
         } else {
