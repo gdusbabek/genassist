@@ -39,7 +39,12 @@ function toggleOptions() {
 }
 
 function toggleSave() {
-    $('#save-modal').modal({});
+    if (!$.cookie('rdioLink')) {
+        // todo: prettier error
+        alert('rdio not linked');
+    } else {
+        $('#save-modal').modal({});
+    }
 }
 
 function formatPlaylistRow(song) {
@@ -169,10 +174,24 @@ function steer(sessionId, direction, songId) {
 function savePlaylist() {
     var playlistName = $('#playlist_name').val(),
         songIds = [];
-    $('#playlist_table > tbody  > tr').each(function(index, row) {
-        songIds.push($(this).attr('songId'));
-    });
-    serverSavePlaylist(playlistName, songIds, function(err, msg) {
-        console.log('back from serverSavePlaylist');
-    });
+    
+    if (!$.cookie('rdioLink')) {
+        // todo: prettier error
+        alert('rdio not linked');
+    } else {
+    
+        $('#playlist_table > tbody  > tr').each(function(index, row) {
+            songIds.push($(this).attr('songId'));
+        });
+        serverSavePlaylist(playlistName, songIds, function(err, msg) {
+            console.log('back from serverSavePlaylist');
+        });
+    }
 }
+
+$(document).ready(function() {
+    
+    if (!$.cookie('rdioLink')) {
+        $('#savePlaylistModalBtn').addClass('disabled');
+    }
+});

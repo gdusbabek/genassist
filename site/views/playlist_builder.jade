@@ -48,7 +48,7 @@ block content
                         input(type="text", class="span2", id="numSongsToAdd", placeholder="5")
     div.row-fluid
         div.pagination-centered
-            button(class="btn", onclick="toggleSave();") Save this playlist!
+            button(class="btn", onclick="toggleSave();", id="savePlaylistModalBtn") Save this playlist!
         div.row-fluid(class="modal hide fade", id="save-modal")
             fieldset
                 legend Save this puppy!
