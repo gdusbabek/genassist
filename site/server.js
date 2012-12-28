@@ -127,12 +127,15 @@ app.get('/cookies.html', function(req, res) {
     res.render('cookies', {});
 });
 
-app.get('/index.html', function(req, res) {
+function root(req, res) {
     var params = {
         title: 'Choose One'
     };
 	res.render('index', params);
-});
+}
+
+app.get('/', root);
+app.get('/index.html', root);
 
 app.get('/seed.html', function(req, res) {
     var songId = req.query.songId,

@@ -14,17 +14,9 @@ block content
     div.row-fluid
         div.pagination-centered
             p Songs released since #{sinceYear} based on "#{songName}"
-            button(class="btn pagination-centered", onclick="toggleOptions();") Modify
+            button(class="btn pagination-centered", onclick="toggleOptions();") Moar!
     div.row-fluid
         div(class='span2')
-        //-     div.row-fluid
-        //-         span only add songs since
-        //-             input(type="text", class="span3", id="songsSince", placeholder="2005")
-        //-     div.input-prepend
-        //-         button(class="btn") Add songs
-        //-         input.span2(type="text", id="numSongsToAdd", placeholder="5")
-        //-     div.row-fluid
-        //-         button(href="#", class="btn", onclick="savePlaylist()") Looks good. Save it
         div.span8
             table(id="playlist_table", class="table table-striped table-condensed")
                 thead

@@ -10,7 +10,6 @@ block scripts
 block content
     div.pagination-centered
         h1 Genassi.st
-        p Friday I'm in Love The Cure
 
     div.pagination-centered
         form(method="post", name="query")
@@ -24,13 +23,6 @@ block content
                 div
                     span Include songs released since
                         input(type="text", name="sinceYear", value="1990", class="span2", id="sinceYear") starting year
-                div
-                    span Use service
-                    span(id="service-radios")
-                        label(class="radio inline") Rdio
-                            input(type="radio", name="service", id="rdioOption", value="RDIO", checked="true")
-                        label(class="radio inline") Spotify
-                            input(type="radio", name="service", id="spotifyOption", value="SPOTIFY")
 
     div.container(class="modal hide fade", id="candidates-modal")
         div.pagination-centered(id="candidates")
