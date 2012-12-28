@@ -35,24 +35,43 @@ app.get('/rdio_register.html', function(req, res) {
                 contextDir: contextDir // for now.
             }, callback);
         },
-        
-        function beginAuth(client, callback) {
-            client.beginAuthentication(function(err, loginUrl) {
-                callback(null, client, loginUrl);
-            });
-        },
-        function(client, loginUrl, callback) {
-            rdio.Store.dump(client.dataStore_, contextDir, function(err) {
-                if (err) {
-                    callback(err);
-                } else {
-                    callback(null, loginUrl);
-                }
-            })
-        },
-        function redirectToRdio(loginUrl, callback) {
-            res.redirect(loginUrl);
-            callback(null);
+        function checkIfLinked(client, callback) {
+            if (req.cookies.rdioLink && client.dataStore_.get('accessToken')) {
+                // short circuit
+                async.waterfall([
+                        function testRequest(callback) {
+                            client.makeRequest('getPlaylists', function(err, results) {
+                                callback(err);
+                            });            
+                        },
+                        function render(callback) {
+                            res.render('cookies', {});
+                            callback(null);
+                        }
+                ], callback);
+            } else {
+                // continue with registration.
+                async.waterfall([
+                    function beginAuth(callback) {
+                        client.beginAuthentication(function(err, loginUrl) {
+                            callback(null, client, loginUrl);
+                        });
+                    },
+                    function(client, loginUrl, callback) {
+                        rdio.Store.dump(client.dataStore_, contextDir, function(err) {
+                            if (err) {
+                                callback(err);
+                            } else {
+                                callback(null, loginUrl);
+                            }
+                        })
+                    },
+                    function redirectToRdio(loginUrl, callback) {
+                        res.redirect(loginUrl);
+                        callback(null);
+                    }               
+                ], callback);
+            }
         }
     ], function(err, loginUrl) {
         if (err) {
@@ -78,6 +97,7 @@ app.get('/rdio_comeback.html', function(req, res) {
                 });
             },
             function saveData(client, callback) {
+                // set the cookie.
                 rdio.Store.dump(client.dataStore_, contextDir, function(err) {
                     if (err) {
                         callback(err);
@@ -95,6 +115,7 @@ app.get('/rdio_comeback.html', function(req, res) {
         if (err) {
             res.render('error', {unknownErr: err});
         } else {
+            res.cookie('rdioLink', true, {path: '/'});
             res.render('cookies', {});
         }
     }); 
