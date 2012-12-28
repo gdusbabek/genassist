@@ -86,10 +86,15 @@ function serverSteer(sessionId, direction, songId, callback) {
     });
 }
 
-function serverSavePlaylist(playlistName, songIds, callback) {
-    $.get('/api/save_playlist', {playlistName: playlistName, songIds: songIds}, function (json) {
-        console.log(json);
-        callback(null, null);
+// callback expects(error, SMR)
+function serverSavePlaylist(playlistName, songs, callback) {
+    $.get('/api/save_playlist', {playlistName: playlistName, songs: songs}, function (json) {
+        var response = JSON.parse(json);
+        if (response.status === 'error') {
+            callback(new Error(response.message));
+        } else {
+            callback(null, response)
+        }
     });
 }
 
@@ -173,7 +178,7 @@ function steer(sessionId, direction, songId) {
 
 function savePlaylist() {
     var playlistName = $('#playlist_name').val(),
-        songIds = [];
+        songs = [];
     
     if (!$.cookie('rdioLink')) {
         // todo: prettier error
@@ -181,10 +186,38 @@ function savePlaylist() {
     } else {
     
         $('#playlist_table > tbody  > tr').each(function(index, row) {
-            songIds.push($(this).attr('songId'));
+            songs.push({
+                songId: $(this).attr('songid'),
+                foreignId: $(this).attr('foreignid')
+            });
         });
-        serverSavePlaylist(playlistName, songIds, function(err, msg) {
-            console.log('back from serverSavePlaylist');
+        serverSavePlaylist(playlistName, songs, function(err, smr) {
+            if (err) {
+                console.log(err);
+                alert(err);
+            } else {
+                // make the playlist popup go away.
+                $('#save-modal').modal('hide');
+                // populate the playlist div
+                // show it.
+                $('#playlist-link').attr('href', smr.result.shortUrl);
+                $('#playlist-icon-link').attr('href', smr.result.shortUrl);
+                $('#playlist-caption').text(smr.result.shortUrl);
+                $('#playlist-link').text(playlistName);
+                $('#your-playlist').text(playlistName);
+                $('#playlist-icon').attr('src', smr.result.icon);
+                $('#playlist-links').removeClass('hide');
+                
+                // remove the moar button
+                $('#moar-btn').addClass('hide');
+                $('#savePlaylistModalBtn').addClass('hide');
+                
+                // and the button tds.
+                $("#playlist_table tbody tr td:first-child").each(function(){
+                    $(this).replaceWith('<td></td>');
+                });
+                
+            }
         });
     }
 }

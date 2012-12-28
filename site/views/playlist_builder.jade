@@ -8,13 +8,13 @@ block scripts
     script(src='/js/playlist.js')
 
 block header
-    h2 Your playlist
+    h2(id="your-playlist") Your playlist
 
 block content
     div.row-fluid
         div.pagination-centered
             p Songs released since #{sinceYear} based on "#{songName}"
-            button(class="btn pagination-centered", onclick="toggleOptions();") Moar!
+            button(class="btn pagination-centered", onclick="toggleOptions();", id="moar-btn") Moar!
     div.row-fluid
         div(class='span2')
         div.span8
@@ -46,7 +46,18 @@ block content
                     div.input-prepend
                         button(class="btn", onclick="addSongs();") Add songs
                         input(type="text", class="span2", id="numSongsToAdd", placeholder="5")
-    div.row-fluid
+    
+    div(class="row-fluid hide", id="playlist-links")
+        div(class="span2")
+        div(class="span8 pagination-centered")
+            div
+                a(id="playlist-icon-link", href="#")
+                    img(id="playlist-icon", src="https://twimg0-a.akamaihd.net/profile_images/190746611/Picture_1.png")
+            h3
+                a(id="playlist-link", href="#") link
+            p(font-size="10px", id="playlist-caption") link
+            
+    div(class="row-fluid", id="playlist-save")
         div.pagination-centered
             button(class="btn", onclick="toggleSave();", id="savePlaylistModalBtn") Save this playlist!
         div.row-fluid(class="modal hide fade", id="save-modal")

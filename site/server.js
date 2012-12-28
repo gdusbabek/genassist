@@ -212,9 +212,49 @@ app.get('/api/next_songs_in_session', function(req, res) {
 
 app.get('/api/save_playlist', function(req, res) {
     var playlistName = req.query.playlistName,
-        songIds = req.query.songIds;
-    console.log(songIds);
-    res.send(JSON.stringify({status: 'ok', result: null, message: 'none'}));
+        songs = req.query.songs;
+    
+    async.waterfall([
+        function getRdio(callback) {
+            rdio.getAuthRdio({
+                callbackUrl: 'http://localhost:2000/rdio_comeback.html',
+                contextId: req.cookies.context,
+                contextDir: contextDir // for now.
+            }, callback);
+        },
+        function savePlaylist(client, callback) {
+            client.makeRequest('createPlaylist', {
+                name: playlistName,
+                description: 'Created by Genassist',
+                tracks: songs.map(function(obj) { return obj.foreignId}).join(',')
+            }, function(err, results) {
+                if (err) {
+                    callback(err);
+                } else if (!results) {
+                    callback(new Error('no results'));
+                } else if (results.status !== 'ok') {
+                    console.log(results);
+                    callback(results.status);
+                } else {
+                    callback(null, results.result);
+                }
+            });
+        }
+    ], function(err, playlist) {
+        if (err) {
+            res.send(JSON.stringify({status: 'error', result: null, message: 'something bad happened'}));
+        } else {
+            res.send(JSON.stringify({
+                status: 'ok',
+                message: 'Created playlist',
+                result: {
+                    shortUrl: playlist.shortUrl,
+                    icon: playlist.icon
+                }
+                
+            }));
+        }
+    });
 });
 
 app.listen(2000);
