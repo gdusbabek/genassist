@@ -29,17 +29,13 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
-* deep oauth integration
-  1. go to /rdio_link?with_return_url
-  2. that returns a URL, redirect them there.
-  3. they click yes, get redirected to a new url
+* pretty rdio landing page
+* footer that shows linking status, what to do, etc.
 
 * save playlist
-  1. do oauth in new window.
   2. go back to playlist window to enter pin
   3. save playlist.
  
-* todo: need full oauth landing, etc. need to put this on a public space.
 * deeper integration into last.fm, spotify, rdio, etc.
 
 ## If you get bored...
@@ -47,4 +43,5 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 * region support for rdio.
 * easy deployment to a new server.
 * tooltips on the the playlist buttons
+* secure storage of access tokens
 
