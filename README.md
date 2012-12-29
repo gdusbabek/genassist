@@ -30,12 +30,8 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 ## Currently working on...
 
 * pretty rdio landing page
-* footer that shows linking status, what to do, etc.
+* pretty save popup
 
-* save playlist
-  2. go back to playlist window to enter pin
-  3. save playlist.
- 
 * deeper integration into last.fm, spotify, rdio, etc.
 
 ## If you get bored...

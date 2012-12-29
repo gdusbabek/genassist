@@ -9,6 +9,7 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     link(rel="stylesheet", href="/bootstrap/css/bootstrap.css", type="text/css", media="screen, projection")
     link(rel="stylesheet", href="/bootstrap/css/bootstrap-responsive.css", type="text/css", media="screen, projection")
+    link(rel="stylesheet", href="/css/custom.css", type="text/css")
 
   body
     div.row-fluid
@@ -21,6 +22,10 @@ html(lang="en")
     div.row-fluid
       div.span2
       div.span8
-        p <!-- footer will go here! -->
+        br
+        br
+        include footer
       div.span2
     block scripts
+    script(src='/js/jquery.cookie.js')
+    script(src='/js/footer.js')
