@@ -121,7 +121,7 @@ function addSongs(numSongs, sessionId) {
 }
 
 function steer(sessionId, direction, songId) {
-    var originalRowContents, message = '';
+    var originalRowContents, service, foreignId, message = '';
     sessionId = sessionId || findSessionId();
     if (direction === 'more') {
         message = 'Steering generator toward this song.';
@@ -133,6 +133,8 @@ function steer(sessionId, direction, songId) {
     async.waterfall([
         function installMarkerRow(callback) {
             originalRowContents = $('#row_' + songId).html();
+            service = $('#row_' + songId).attr('service');
+            foreignId = $('#row_' + songId).attr('foreignid');
             $('#row_' + songId).replaceWith('<tr id="row_' + songId + '"><td colspan="3">' + message + '</td></tr>');
             $('#row_' + songId).addClass('info');
             callback(null);
@@ -164,8 +166,7 @@ function steer(sessionId, direction, songId) {
                 $('#row_' + songId).remove();
             } else {
                 // hmm. not entirely correct.
-                console.log(originalRowContents);
-                $('#row_' + songId).replaceWith('<tr id="row_' + songId + '">' + originalRowContents + '</tr>');
+                $('#row_' + songId).replaceWith('<tr id="row_' + songId + '" songId="' + songId + '" service="' + service + '" foreignId="' + foreignId + '">' + originalRowContents + '</tr>');
                 $('#row_' + songId).removeClass('info');
             }
             callback(null);
