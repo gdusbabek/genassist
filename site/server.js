@@ -212,7 +212,8 @@ app.get('/api/next_songs_in_session', function(req, res) {
 
 app.get('/api/save_playlist', function(req, res) {
     var playlistName = req.query.playlistName,
-        songs = req.query.songs;
+        songs = req.query.songs,
+        sessionId = req.query.sessionId;
     
     async.waterfall([
         function getRdio(callback) {
@@ -237,6 +238,16 @@ app.get('/api/save_playlist', function(req, res) {
                     callback(results.status);
                 } else {
                     callback(null, results.result);
+                }
+            });
+        },
+        function deleteSession(playlist, callback) {
+            echo.deleteSession(sessionId, function(err, result) {
+                if (err) {
+                    console.log('NOT DELETED: ./bin/session_cleanup.js ' + session_id);
+                    callback(err);
+                } else {
+                    callback(null, playlist);
                 }
             });
         }

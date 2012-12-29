@@ -87,8 +87,8 @@ function serverSteer(sessionId, direction, songId, callback) {
 }
 
 // callback expects(error, SMR)
-function serverSavePlaylist(playlistName, songs, callback) {
-    $.get('/api/save_playlist', {playlistName: playlistName, songs: songs}, function (json) {
+function serverSavePlaylist(playlistName, songs, sessionId, callback) {
+    $.get('/api/save_playlist', {playlistName: playlistName, songs: songs, sessionId: sessionId}, function (json) {
         var response = JSON.parse(json);
         if (response.status === 'error') {
             callback(new Error(response.message));
@@ -178,7 +178,8 @@ function steer(sessionId, direction, songId) {
 
 function savePlaylist() {
     var playlistName = $('#playlist_name').val(),
-        songs = [];
+        songs = [],
+        sessionId = $('#sessionId').html();
     
     if (!$.cookie('rdioLink')) {
         // todo: prettier error
@@ -191,7 +192,7 @@ function savePlaylist() {
                 foreignId: $(this).attr('foreignid')
             });
         });
-        serverSavePlaylist(playlistName, songs, function(err, smr) {
+        serverSavePlaylist(playlistName, songs, sessionId, function(err, smr) {
             if (err) {
                 console.log(err);
                 alert(err);

@@ -57,6 +57,15 @@ exports.search = function(songQuery, callback) {
     });
 }
 
+// callback expects(err, res);
+exports.deleteSession = function(sessionId, callback) {
+    var nest = new echonest.Echonest(params);
+    nest.playlist.dynamic['delete']({
+        session_id: sessionId,
+        format: 'json'
+    }, callback);
+}
+
 exports.convertServiceSong = function(song) {
     var foreignIdParts, foreignId, foreignService, newSong = {};
 
@@ -151,7 +160,6 @@ exports.seed = function(songId, sinceYear, service, callback) {
                 if (err) {
                     callback(err);
                 } else {
-                    console.log('./bin/session_cleanup.js ' + results.session_id);
                     callback(null, results.session_id);
                 }
             });
