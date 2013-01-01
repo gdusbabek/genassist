@@ -12,4 +12,7 @@ cd $DIR
 npm install
 
 #todo restart node.
+
+sudo /etc/init.d/nginx restart
+
 echo Successfully updated.
