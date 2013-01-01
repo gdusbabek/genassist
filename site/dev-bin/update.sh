@@ -9,7 +9,7 @@ sudo ln -f -s ${DIR}/conf/nginx-site /etc/nginx/sites-enabled/genassist
 
 # npm install
 cd $DIR
-npm update
+npm install
 
 #todo restart node.
 echo Successfully updated.
