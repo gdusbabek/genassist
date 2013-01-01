@@ -11,8 +11,8 @@ sudo cp ${DIR}/conf/nginx-site /etc/nginx/sites-available/genassist
 sudo ln -f -s /etc/nginx/sites-available/genassist /etc/nginx/sites-enabled/genassist
 
 # npm install
-cd $DIR
-npm install
+cd /home/node/site
+HOME=/home/node sudo -u node npm install
 
 # node and nginx
 #sudo stop genassist
