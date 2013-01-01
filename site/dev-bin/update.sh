@@ -13,18 +13,22 @@ sudo ln -f -s /etc/nginx/sites-available/genassist /etc/nginx/sites-enabled/gena
 # npm install
 cd /home/node/site
 HOME=/home/node sudo -u node npm install
+cd /home/node/site/node_modules/echonest
+HOME=/home/node sudo -u node npm install
+HOME=/home/node sudo -u node rake clean build dist
 
-# node and nginx
-#sudo stop genassist
+# upstart
+sudo stop genassist
 sudo touch /var/log/genassist-node.log
 sudo cp ${DIR}/conf/upstart-genassist /etc/init/genassist.conf
-#sudo start genassist
 
 # chowning
 sudo chown -R node:node ${DIR}
 sudo chown -R node:node /home/node/site
 sudo chown node /var/log/genassist-node.log
 
+# startup
+sudo start genassist
 sudo /etc/init.d/nginx restart
 
 

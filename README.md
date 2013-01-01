@@ -49,7 +49,7 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 sudo adduser --system --shell /bin/bash --gecos 'for running node.js apps' --group --disabled-password --home /home/node node
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install python-software-properties
+sudo apt-get install python-software-properties rake
 sudo add-apt-repository ppa:chris-lea/node.js
 sudo add-apt-repository ppa:nginx/stable
 sudo apt-get update
