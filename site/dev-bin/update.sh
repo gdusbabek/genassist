@@ -15,10 +15,10 @@ cd $DIR
 npm install
 
 # node and nginx
-sudo stop genassist
+#sudo stop genassist
 sudo touch /var/log/genassist-node.log
 sudo cp ${DIR}/conf/upstart-genassist /etc/init/genassist.conf
-sudo start genassist
+#sudo start genassist
 
 # chowning
 sudo chown -R node ${DIR}
