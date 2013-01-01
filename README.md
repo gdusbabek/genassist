@@ -29,6 +29,9 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
+* uncaught exception
+* upstart
+* package.json "install"
 * pretty rdio landing page
 * pretty save popup
 
@@ -41,3 +44,12 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 * tooltips on the the playlist buttons
 * secure storage of access tokens
 
+## Installing
+
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install python-software-properties
+sudo add-apt-repository ppa:chris-lea/node.js
+sudo add-apt-repository ppa:nginx/stable
+sudo apt-get update
+sudo apt-get install nodejs npm nginx
