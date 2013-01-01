@@ -6,6 +6,7 @@ DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DIR=`dirname ${DIR}`
 
 echo using upgrade dir $DIR
+rm /home/node/site
 ln -f -s ${DIR} /home/node/site
 sudo cp ${DIR}/conf/nginx-site /etc/nginx/sites-available/genassist
 sudo ln -f -s /etc/nginx/sites-available/genassist /etc/nginx/sites-enabled/genassist
