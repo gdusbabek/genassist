@@ -21,8 +21,8 @@ sudo cp ${DIR}/conf/upstart-genassist /etc/init/genassist.conf
 #sudo start genassist
 
 # chowning
-sudo chown -R node ${DIR}
-sudo chown -R node /home/node/site
+sudo chown -R node:node ${DIR}
+sudo chown -R node:node /home/node/site
 sudo chown node /var/log/genassist-node.log
 
 sudo /etc/init.d/nginx restart
