@@ -7,5 +7,5 @@
 
 #todo restart node.
 sudo ls
-
+# perms!
 echo Successfully updated.
