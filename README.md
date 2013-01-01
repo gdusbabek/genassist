@@ -53,3 +53,4 @@ sudo add-apt-repository ppa:chris-lea/node.js
 sudo add-apt-repository ppa:nginx/stable
 sudo apt-get update
 sudo apt-get install nodejs npm nginx
+sudo apt-get install git-core make build-essential
