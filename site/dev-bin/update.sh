@@ -1,10 +1,12 @@
 #!/bin/bash
 
+# remember, this script is not being run as the node user.
+
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DIR=`dirname ${DIR}`
 
 echo using upgrade dir $DIR
-ln -f -s ${DIR} /home/gdusbabek/site
+ln -f -s ${DIR} /home/node/site
 sudo cp ${DIR}/conf/nginx-site /etc/nginx/sites-available/genassist
 sudo ln -f -s /etc/nginx/sites-available/genassist /etc/nginx/sites-enabled/genassist
 
@@ -19,7 +21,8 @@ sudo cp ${DIR}/conf/upstart-genassist /etc/init/genassist.conf
 sudo start genassist
 
 # chowning
-sudo chown -r node ${DIR}
+sudo chown -R node ${DIR}
+sudo chown -R node /home/node/site
 sudo chown node /var/log/genassist-node.log
 
 sudo /etc/init.d/nginx restart

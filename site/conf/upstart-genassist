@@ -14,7 +14,8 @@ script
     export HOME="/var/www"
 
     echo $$ > /var/run/genassist.pid
-    exec sudo -u www-data /usr/bin/node /home/gdusbabek/site/server.js >> var/log/genassist-node.log 2>&1
+    cd /home/node/site
+    exec sudo -u node /usr/bin/node server.js >> var/log/genassist-node.log 2>&1
 end script
 
 pre-start script
