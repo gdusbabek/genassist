@@ -5,19 +5,23 @@ author "gdusbabek"
 
 start on startup
 stop on shutdown
+respawn
+respawn limit 20 5
+
+limit nofile 32768 32768
 
 script
-    export HOME="/root"
+    export HOME="/var/www"
 
     echo $$ > /var/run/genassist.pid
-    exec sudo -u gdusbabek /usr/local/bin/hode /home/gdusbabek/site/server.js >> var/log/genassist.log 2>&1
+    exec sudo -u www-data /usr/bin/node /home/gdusbabek/site/server.js >> var/log/genassist-node.log 2>&1
 end script
 
 pre-start script
-    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Starting" >> /var/log/genassist.log
+    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Starting" >> /var/log/genassist-node.log
 end script
 
 pre-stop script
     rm /var/run/genassist.pid
-    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Stopping" >> /var/log/genassist.log
+    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Stopping" >> /var/log/genassist-node.log
 end script
