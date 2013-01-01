@@ -6,7 +6,7 @@
 	"dependencies": {
 		"async": "0.1.22",
 		"express": "3.0.4",
-		"echonost": "git://github.com/gdusbabek/node-echonest.git",
+		"echonest": "git://github.com/gdusbabek/node-echonest.git",
 		"jade": "0.27.7",
 		"rdio-node": "git://github.com/monsur/rdio-node.git"
 	},
