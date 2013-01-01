@@ -12,10 +12,8 @@ git archive --format tar --output ${BUNDLE_PATH} master
  
 
 scp ${BUNDLE_PATH} ${SSHHOST}:/home/gdusbabek/site_bundles/${BUNDLE}
-# ssh gdusbabek@$host 'sudo iptables -I FWR -i eth0 -s 10.4.229.68 -p tcp -j ACCEPT'
 ssh ${SSHHOST} \'\'mkdir -p /home/gdusbabek/site_bundles/site_${STAMP}\'\'
 ssh ${SSHHOST} \'\'tar -C /home/gdusbabek/site_bundles/site_${STAMP} -xf /home/gdusbabek/site_bundles/${BUNDLE}\'\'
-ssh ${SSHHOST} \'\'ln -s /home/gdusbabek/site_bundles/site_${STAMP} /home/gdusbabek/site\'\'
-ssh ${SSHHOST} \'\'sudo ln -s /home/gdusbabek/site_bundles/site_${STAMP}/conf/nginx-site /etc/nginx/sites-enabled/genassist\'\'
 
-#todo restart node.
+# now it is time for the local update script to take over.
+ssh ${SSHHOST} \'\'sudo /home/gdusbabek/site_bundles/site_${STAMP}/dev-bin/update.sh\'\'
