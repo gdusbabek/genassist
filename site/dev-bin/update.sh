@@ -1,11 +1,15 @@
 #!/bin/bash
 
-#ssh ${SSHHOST} \'\'ln -s /home/gdusbabek/site_bundles/site_${STAMP} /home/gdusbabek/site\'\'
-#ssh ${SSHHOST} \'\'sudo ln -s /home/gdusbabek/site_bundles/site_${STAMP}/conf/nginx-site /etc/nginx/sites-enabled/genassist\'\'
+DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DIR=`dirname ${DIR}`
 
-# npm install.
+echo using upgrade dir $DIR
+ln -f -s ${DIR} /home/gdusbabek/site
+sudo ln -f -s ${DIR}/conf/nginx-site /etc/nginx/sites-enabled/genassist
+
+# npm install
+cd $DIR
+npm update
 
 #todo restart node.
-sudo ls
-# perms!
 echo Successfully updated.
