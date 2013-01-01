@@ -16,5 +16,6 @@ scp ${BUNDLE_PATH} ${SSHHOST}:/home/gdusbabek/site_bundles/${BUNDLE}
 ssh ${SSHHOST} \'\'mkdir -p /home/gdusbabek/site_bundles/site_${STAMP}\'\'
 ssh ${SSHHOST} \'\'tar -C /home/gdusbabek/site_bundles/site_${STAMP} -xf /home/gdusbabek/site_bundles/${BUNDLE}\'\'
 ssh ${SSHHOST} \'\'ln -s /home/gdusbabek/site_bundles/site_${STAMP} /home/gdusbabek/site\'\'
+ssh ${SSHHOST} \'\'sudo ln -s /home/gdusbabek/site_bundles/site_${STAMP}/conf/nginx-site /etc/nginx/sites-enabled/genassist\'\'
 
 #todo restart node.
