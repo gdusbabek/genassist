@@ -1,12 +1,13 @@
 var fs = require('fs');
 var path = require('path');
 
+var settings = require('../config').settings;
 var async = require('async');
 var Rdio = require('rdio-node').Rdio;
 
 var params = {
-    consumerKey: process.env.RDIO_KEY,
-    consumerSecret: process.env.RDIO_SECRET
+    consumerKey: settings.RDIO_KEY,
+    consumerSecret: settings.RDIO_SECRET
 //    authorizeCallback: 'http://localhost:2000/rdio_comeback.html'
 };
 

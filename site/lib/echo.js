@@ -6,11 +6,12 @@ rake build
 
 var async = require('async');
 var echonest = require('echonest');
+var settings = require('../config').settings;
 
 var params = {
-    api_key: process.env.ECHO_KEY,
-    consumer_key: process.env.ECHO_CONSUMER,
-    secret: process.env.ECHO_SECRET
+    api_key: settings.ECHO_KEY,
+    consumer_key: settings.ECHO_CONSUMER,
+    secret: settings.ECHO_SECRET
 };
 
 var SERVICE = {
