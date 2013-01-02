@@ -24,7 +24,7 @@ doStage() {
   ssh ${SSHHOST} \'\'sudo cp /home/gdusbabek/site_bundles/${BUNDLE} /home/node/site_bundles/${BUNDLE}\'\'
   ssh ${SSHHOST} \'\'sudo chown node /home/node/site_bundles/${BUNDLE}\'\'
   ssh ${SSHHOST} \'\'sudo -u node mkdir -p /home/node/site_bundles/site_${STAMP}\'\'
-  ssh ${SSHHOST} \'\'sudo -u node tar -C /home/node/site_bundles/site_${STAMP} -xf /home/node/site_bundles/${BUNDLE}\'\'
+  ssh ${SSHHOST} \'\'sudo -u node tar -C /home/node/site_bundles/site_${STAMP} -xzf /home/node/site_bundles/${BUNDLE}\'\'
   ssh ${SSHHOST} \'\'sudo /home/node/site_bundles/site_${STAMP}/dev-bin/update_staging\'\'
 }
 
