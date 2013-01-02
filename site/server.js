@@ -27,10 +27,11 @@ app.configure(function() {
 var contextDir = '/tmp/genassist_contexts';
 
 app.get('/rdio_register.html', function(req, res) {
+    console.log(req);
     async.waterfall([
         function getRdio(callback) {
             rdio.getAuthRdio({
-                callbackUrl: 'http://localhost:2000/rdio_comeback.html',
+                callbackUrl: 'http://genassist.tagfriendly.com/rdio_comeback.html',
                 contextId: req.cookies.context,
                 contextDir: contextDir // for now.
             }, callback);
@@ -81,11 +82,11 @@ app.get('/rdio_register.html', function(req, res) {
 });
 
 app.get('/rdio_comeback.html', function(req, res) {
-    // http://localhost:2000/rdio_comeback.html?oauth_verifier=6099&oauth_token=rbzccfjuwptcqcyth3bacmj7
+    // http://genassist.tagfriendly.com/rdio_comeback.html?oauth_verifier=6099&oauth_token=rbzccfjuwptcqcyth3bacmj7
     async.waterfall([
             function getRdio(callback) {
                 rdio.getAuthRdio({
-                    callbackUrl: 'http://localhost:2000/rdio_comeback.html',
+                    callbackUrl: 'http:/genassist.tagfriendly.com/rdio_comeback.html',
                     contextId: req.cookies.context,
                     contextDir: contextDir
                 }, callback);
@@ -218,7 +219,7 @@ app.get('/api/save_playlist', function(req, res) {
     async.waterfall([
         function getRdio(callback) {
             rdio.getAuthRdio({
-                callbackUrl: 'http://localhost:2000/rdio_comeback.html',
+                callbackUrl: 'http://genassist.tagfriendly.com/rdio_comeback.html',
                 contextId: req.cookies.context,
                 contextDir: contextDir // for now.
             }, callback);

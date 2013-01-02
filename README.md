@@ -29,8 +29,11 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
+* environments for dev/prod
+* a staging deploy
+* export keys into node user env.
+  * server will probably need to read from resource file or something.
 * uncaught exception
-* upstart
 * package.json "install"
 * pretty rdio landing page
 * pretty save popup
