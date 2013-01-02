@@ -8,6 +8,7 @@ env APP_DIR=/home/node/site-staging
 env SCRIPT_FILE=server.js
 env LOG_FILE=/var/log/genassist-staging-node.log
 env RUN_AS=node
+env SERVER_ENV=staging
 
 
 start on startup
@@ -21,7 +22,7 @@ script
     touch $LOG_FILE
     chown $RUN_AS:$RUN_AS $LOG_FILE
     chdir $APP_DIR
-    su -s /bin/sh -c 'exec "$0" "$@"' $RUN_AS -- $NODE_BIN $SCRIPT_FILE >> $LOG_FILE
+    NODE_ENV=$SERVER_ENV su -s /bin/sh -c 'exec "$0" "$@"' $RUN_AS -- $NODE_BIN $SCRIPT_FILE >> $LOG_FILE
 end script
 
 pre-start script
