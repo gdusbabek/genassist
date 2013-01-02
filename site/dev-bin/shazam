@@ -7,13 +7,13 @@ else
   STAMP=$2
 fi
 
-BUNDLE=site_${STAMP}.tar
+BUNDLE=site_${STAMP}.tgz
 BUNDLE_PATH=dist/${BUNDLE}
 SSHHOST=gdusbabek@genassist.tagfriendly.com
 
 doArtifact(){
   mkdir -p dist
-  git archive --format tar --output ${BUNDLE_PATH} master
+  git archive --format tar.gz --output ${BUNDLE_PATH} master
 }
 
 doStage() {
@@ -32,10 +32,6 @@ doPromote() {
   echo foo
 }
 
-doNginx() {
-  echo foo
-}
-
 doClean() {
   echo foo
 }
@@ -47,8 +43,6 @@ artifact) doArtifact
 stage)    doStage
           ;;
 promote)  doPromote
-          ;;
-nginx)    doNginx
           ;;
 clean)    doClean
           ;;
