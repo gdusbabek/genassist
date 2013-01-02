@@ -45,13 +45,13 @@ app.configure(function() {
 	
 // routes are here.
 var contextDir = '/tmp/genassist_contexts';
+var callbackUrl = 'http://' + settings.PROXY_HOST + ':' + settings.PROXY_PORT + '/rdio_comeback.html';
 
 app.get('/rdio_register.html', function(req, res) {
-    console.log(req);
     async.waterfall([
         function getRdio(callback) {
             rdio.getAuthRdio({
-                callbackUrl: 'http://genassist.tagfriendly.com/rdio_comeback.html',
+                callbackUrl: callbackUrl,
                 contextId: req.cookies.context,
                 contextDir: contextDir // for now.
             }, callback);
@@ -75,7 +75,6 @@ app.get('/rdio_register.html', function(req, res) {
                 async.waterfall([
                     function beginAuth(callback) {
                         client.beginAuthentication(function(err, loginUrl) {
-                            console.log('will redirect to ' + loginUrl)
                             callback(null, client, loginUrl);
                         });
                     },
@@ -107,7 +106,7 @@ app.get('/rdio_comeback.html', function(req, res) {
     async.waterfall([
             function getRdio(callback) {
                 rdio.getAuthRdio({
-                    callbackUrl: 'http://genassist.tagfriendly.com/rdio_comeback.html',
+                    callbackUrl: callbackUrl,
                     contextId: req.cookies.context,
                     contextDir: contextDir
                 }, callback);
@@ -240,7 +239,7 @@ app.get('/api/save_playlist', function(req, res) {
     async.waterfall([
         function getRdio(callback) {
             rdio.getAuthRdio({
-                callbackUrl: 'http://genassist.tagfriendly.com/rdio_comeback.html',
+                callbackUrl: callbackUrl,
                 contextId: req.cookies.context,
                 contextDir: contextDir // for now.
             }, callback);
@@ -290,7 +289,7 @@ app.get('/api/save_playlist', function(req, res) {
     });
 });
 
-app.listen('127.0.0.1', settings.APP_PORT);
+app.listen(settings.APP_PORT, settings.APP_HOST);
 console.log('Listening on ' + settings.APP_HOST + ':' + settings.APP_PORT);
 
 module.exports = app;

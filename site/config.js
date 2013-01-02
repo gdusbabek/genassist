@@ -61,7 +61,10 @@ var settings = {
     
     CONTEXT_DIR: '/tmp/genassist/contexts',
     APP_HOST: null,
-    APP_PORT: null
+    APP_PORT: null,
+    
+    PROXY_HOST: null,
+    PROXY_PORT: null
 };
 
 // search for the first config available.
