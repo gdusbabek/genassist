@@ -45,7 +45,9 @@ app.configure(function() {
 	
 // routes are here.
 var contextDir = '/tmp/genassist_contexts';
-var callbackUrl = 'http://' + settings.PROXY_HOST + ':' + settings.PROXY_PORT + '/rdio_comeback.html';
+var callbackUrl = 'http://' + settings.PROXY_HOST + 
+        (settings.PROXY_PORT === 80 ? '' : (':' + settings.PROXY_PORT)) + 
+        '/rdio_comeback.html';
 
 app.get('/rdio_register.html', function(req, res) {
     async.waterfall([
