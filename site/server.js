@@ -86,7 +86,7 @@ app.get('/rdio_comeback.html', function(req, res) {
     async.waterfall([
             function getRdio(callback) {
                 rdio.getAuthRdio({
-                    callbackUrl: 'http:/genassist.tagfriendly.com/rdio_comeback.html',
+                    callbackUrl: 'http://genassist.tagfriendly.com/rdio_comeback.html',
                     contextId: req.cookies.context,
                     contextDir: contextDir
                 }, callback);
