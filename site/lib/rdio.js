@@ -109,8 +109,8 @@ function fileNameFromContextId(str) {
 // callback expects(err, rdio)
 exports.getAuthRdio = function(options, callback) {
     var p = {
-        consumerKey: process.env.RDIO_KEY,
-        consumerSecret: process.env.RDIO_SECRET,
+        consumerKey: settings.RDIO_KEY,
+        consumerSecret: settings.RDIO_SECRET,
         authorizeCallback: options.callbackUrl
         //dataStore: new Store(options.contextId)
     };
