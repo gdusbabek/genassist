@@ -44,7 +44,7 @@ app.configure(function() {
 });
 	
 // routes are here.
-var contextDir = '/tmp/genassist_contexts';
+var contextDir = settings.CONTEXT_DIR;
 var callbackUrl = 'http://' + settings.PROXY_HOST + 
         (settings.PROXY_PORT === 80 ? '' : (':' + settings.PROXY_PORT)) + 
         '/rdio_comeback.html';
