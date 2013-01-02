@@ -1,0 +1,59 @@
+#!/bin/bash
+
+CMD=$1
+if [ -z $2 ] ; then
+  STAMP=`date '+%Y%m%d_%H%M%S'`
+else
+  STAMP=$2
+fi
+
+BUNDLE=site_${STAMP}.tar
+BUNDLE_PATH=dist/${BUNDLE}
+SSHHOST=gdusbabek@genassist.tagfriendly.com
+
+doArtifact(){
+  mkdir -p dist
+  git archive --format tar --output ${BUNDLE_PATH} master
+}
+
+doStage() {
+  if [ ! -a $BUNDLE_PATH ] ; then
+    doArtifact
+  fi
+  scp ${BUNDLE_PATH} ${SSHHOST}:/home/gdusbabek/site_bundles/${BUNDLE}
+  ssh ${SSHHOST} \'\'sudo cp /home/gdusbabek/site_bundles/${BUNDLE} /home/node/site_bundles/${BUNDLE}\'\'
+  ssh ${SSHHOST} \'\'sudo chown node /home/node/site_bundles/${BUNDLE}\'\'
+  ssh ${SSHHOST} \'\'sudo -u node mkdir -p /home/node/site_bundles/site_${STAMP}\'\'
+  ssh ${SSHHOST} \'\'sudo -u node tar -C /home/node/site_bundles/site_${STAMP} -xf /home/node/site_bundles/${BUNDLE}\'\'
+  ssh ${SSHHOST} \'\'sudo /home/node/site_bundles/site_${STAMP}/dev-bin/update_staging\'\'
+}
+
+doPromote() {
+  echo foo
+}
+
+doNginx() {
+  echo foo
+}
+
+doClean() {
+  echo foo
+}
+
+case "$CMD" in
+
+artifact) doArtifact
+          ;;
+stage)    doStage
+          ;;
+promote)  doPromote
+          ;;
+nginx)    doNginx
+          ;;
+clean)    doClean
+          ;;
+*)        echo nothing to do
+          ;;
+esac
+
+exit $?

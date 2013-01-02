@@ -290,7 +290,7 @@ app.get('/api/save_playlist', function(req, res) {
     });
 });
 
-app.listen(settings.APP_HOST, settings.APP_PORT);
+app.listen('127.0.0.1', settings.APP_PORT);
 console.log('Listening on ' + settings.APP_HOST + ':' + settings.APP_PORT);
 
 module.exports = app;

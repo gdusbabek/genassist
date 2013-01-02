@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# remember this is not run as the node user!
+
+DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DIR=`dirname ${DIR}`
+
+echo using upgrade dir $DIR
+rm /home/node/site-staging
+ln -f -s ${DIR} /home/node/site-staging
+sudo cp ${DIR}/conf/nginx-staging /etc/nginx/sites-available/genassist-staging
+sudo ln -f -s /etc/nginx/sites-available/genassist-staging /etc/nginx/sites-enabled/genassist-staging
+
+# npm install
+cd /home/node/site-staging
+HOME=/home/node sudo -u node npm install
+cd /home/node/site-staging/node_modules/echonest
+HOME=/home/node sudo -u node npm install
+HOME=/home/node sudo -u node rake clean build dist
+
+# upstart
+sudo stop genassist-staging
+sudo touch /var/log/genassist-staging-node.log
+sudo cp ${DIR}/conf/upstart-genassist-staging /etc/init/genassist-staging.conf
+
+# chowning
+sudo chown -R node:node ${DIR}
+sudo chown -R node:node /home/node/site-staging
+sudo chown node /var/log/genassist-staging-node.log
+
+# startup
+sudo start genassist-staging
+sudo /etc/init.d/nginx restart
+
+
+echo Successfully updated staging
