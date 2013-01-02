@@ -29,15 +29,13 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
-* environments for dev/prod
+* pretty rdio landing page
+* pretty save popup
 * a staging deploy
 * export keys into node user env.
   * server will probably need to read from resource file or something.
 * uncaught exception
 * package.json "install"
-* pretty rdio landing page
-* pretty save popup
-
 * deeper integration into last.fm, spotify, rdio, etc.
 
 ## If you get bored...

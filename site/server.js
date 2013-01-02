@@ -4,8 +4,28 @@ var async = require('async');
 var rdio = require('./lib/rdio');
 var echo = require('./lib/echo');
 var util = require('./lib/util');
+var settings = require('./config').settings;
+
+app.configure('development', function() {
+    if (!process.env.NODE_ENV) {
+        process.env.NODE_ENV = 'development';
+    }
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    console.log(settings);
+});
+
+app.configure('production', function() {
+    app.use(express.errorHandler());
+    
+});
+
+app.configure('staging', function() {
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
 
 app.configure(function() {
+    console.log('Environment is: ' + process.env.NODE_ENV);
+    app.enable('trust proxy')
 	app.set('view engine', 'jade');
 	app.set('views', __dirname + '/views');
 	app.set('view options', {layout: false});
@@ -55,6 +75,7 @@ app.get('/rdio_register.html', function(req, res) {
                 async.waterfall([
                     function beginAuth(callback) {
                         client.beginAuthentication(function(err, loginUrl) {
+                            console.log('will redirect to ' + loginUrl)
                             callback(null, client, loginUrl);
                         });
                     },
@@ -269,7 +290,7 @@ app.get('/api/save_playlist', function(req, res) {
     });
 });
 
-app.listen(2000);
-console.log('Listening on ' + 2000);
+app.listen(settings.APP_HOST, settings.APP_PORT);
+console.log('Listening on ' + settings.APP_HOST + ':' + settings.APP_PORT);
 
 module.exports = app;
