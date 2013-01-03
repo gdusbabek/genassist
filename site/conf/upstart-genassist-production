@@ -1,10 +1,10 @@
 #!upstart
 
-description "genassist node.js process"
+description "genassist production node.js process"
 author "gdusbabek"
 
 env NODE_BIN=/usr/bin/node
-env APP_DIR=/home/node/site
+env APP_DIR=/home/node/site-production
 env SCRIPT_FILE=server.js
 env LOG_FILE=/var/log/genassist-production-node.log
 env RUN_AS=node
