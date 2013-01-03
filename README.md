@@ -4,22 +4,14 @@
 
 ### First iteration
 
-1. You enter in the name of the song
-2. Conduct a search, let the user show his preference
-    * select a song, then generate a popup asking:
-        * number of songs
-        * date preference
-3. Generate
-    * regenerate
-5. Save
-
-Skinning the UI will take some work.  Resist the urge to do this first. Get things working, then futz with the UI.
+The first iteration included simply generating a playlist and saving it.  This work is done.
 
 ### Later
 
 * Playback. This will be easy for Rdio.
 * Crawler that searches for songs. 
 * Turn those into a playlist somehow.
+* Make the UI suck less.
 
 Playlistica?
 
@@ -29,13 +21,10 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
+* pretty save popup, also fix off-center bug.
 * pretty rdio landing page
-* pretty save popup
-* a staging deploy
-* export keys into node user env.
-  * server will probably need to read from resource file or something.
+* serve static content directly from nginx.
 * uncaught exception
-* package.json "install"
 * deeper integration into last.fm, spotify, rdio, etc.
 
 ## If you get bored...
@@ -43,7 +32,7 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 * region support for rdio.
 * easy deployment to a new server.
 * tooltips on the the playlist buttons
-* secure storage of access tokens
+* secure/encrypted storage of access tokens
 
 ## Installing
 
