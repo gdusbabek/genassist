@@ -57,12 +57,12 @@ block content
                 a(id="playlist-link", href="#") link
             p(font-size="10px", id="playlist-caption") link
             
-    div(class="row-fluid", id="playlist-save")
+    div(id="playlist-save")
         div.pagination-centered
             button(class="btn", onclick="toggleSave();", id="savePlaylistModalBtn") Save this playlist!
-        div.row-fluid(class="modal hide fade", id="save-modal")
-            fieldset
-                legend Save this puppy!
+        div.pagination-centered(class="modal hide fade", id="save-modal")
+            fieldset.input-append
+                legend Save this puppy to Rdio!
                 label Playlist name
                 input(type="text", placeholder="My awesome new playlist", id="playlist_name")
                 button(class="btn btn-primary", onclick="savePlaylist();") Save

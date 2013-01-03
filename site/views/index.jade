@@ -17,11 +17,12 @@ block content
                 button(type="button", value="searchSong", class="btn", id="searchSongBtn") Search
                 button(type="button", class="btn dropdown-toggle", id="options", onclick="showOptions();")
                     span.caret
-            div.row(class="modal hide fade", id="options-modal")
-                h2 Playlist options
-                div
-                    span Include songs released since
-                        input(type="text", name="sinceYear", value="1990", class="span2", id="sinceYear") starting year
+    div(class="modal hide fade", id="options-modal")
+        div.pagination-centered
+            h2 Playlist options
+            div
+                span Include songs released since
+                    input(type="text", name="sinceYear", value="1990", class="span2", id="sinceYear") starting year
 
     div(class="modal hide fade", id="candidates-modal")
         div.pagination-centered(id="candidates")
