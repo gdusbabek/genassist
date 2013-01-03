@@ -21,7 +21,7 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
-* pretty rdio landing page
+* fix crash when rdio_comback is called by itself.
 * serve static content directly from nginx.
 * uncaught exception
 * deeper integration into last.fm, spotify, rdio, etc.

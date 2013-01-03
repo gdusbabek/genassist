@@ -103,6 +103,13 @@ app.get('/rdio_register.html', function(req, res) {
     });
 });
 
+app.get('/rdio_linked.html', function(req, res) {
+    res.render('rdio_link', {
+       linked: req.cookies.rdioLink ? true : false 
+    });
+});
+
+// todo: you need to fix the bug that happens if the user types this in manually. it should not crash the server the way it does now.
 app.get('/rdio_comeback.html', function(req, res) {
     // http://genassist.tagfriendly.com/rdio_comeback.html?oauth_verifier=6099&oauth_token=rbzccfjuwptcqcyth3bacmj7
     async.waterfall([
@@ -139,7 +146,7 @@ app.get('/rdio_comeback.html', function(req, res) {
             res.render('error', {unknownErr: err});
         } else {
             res.cookie('rdioLink', true, {path: '/'});
-            res.render('cookies', {});
+            res.redirect('/rdio_linked.html');;
         }
     }); 
 });

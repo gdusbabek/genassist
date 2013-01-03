@@ -1,0 +1,29 @@
+extends layout
+
+block scripts
+    script(src='/js/async.js')
+    script(src='/js/jquery-1.8.3.min.js')
+    script(src='/js/jquery.cookie.js')
+    script(src='/bootstrap/js/bootstrap.js')
+    script(src='/js/footer.js')
+
+block header
+    - if(linked)
+        h2(id="your-playlist") Rdio is linked.
+    - else
+        h2(id="your-playlist") Rdio is not linked.
+
+block content
+    div.row-fluid
+        div.pagination-centered
+            - if(linked)
+                span Go 
+                a(href="/index.html") make a playlist.
+            - else
+                div.row
+                    a(href="/rdio_register.html") Get integrated with Rdio
+                div.row
+                    a(href="/index.html") Home
+                div.hide(id="hide_rdio_invitation_in_footer") Do it.
+
+                        
