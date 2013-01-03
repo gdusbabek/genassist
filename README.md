@@ -21,7 +21,6 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
-* pretty save popup
 * pretty rdio landing page
 * serve static content directly from nginx.
 * uncaught exception
