@@ -21,7 +21,7 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
-* pretty save popup, also fix off-center bug.
+* pretty save popup
 * pretty rdio landing page
 * serve static content directly from nginx.
 * uncaught exception
@@ -29,6 +29,7 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## If you get bored...
 
+* sanity tests for staging and production deploys.
 * region support for rdio.
 * easy deployment to a new server.
 * tooltips on the the playlist buttons
