@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# remember this is not run as the node user!
+# remember: this is not run as the node user!
 
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DIR=`dirname ${DIR}`

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# remember: this is not run as the node user!
+# remember: this gets run from /home/node/site-staging
+
+OWD=`pwd`
+cd /home/node/site-staging
+STAGE_DIR=`pwd -P`
+cd $OWD
+
+sudo stop genassist-production
+sudo rm /home/node/site-production
+sudo ln -s $STAGE_DIR /home/node/site-production
+sudo touch /var/log/genassist-production-node.log
+sudo cp ${STAGE_DIR}/conf/upstart-genassist-production /etc/init/genassist-production.conf
+
+# chowning
+sudo chown -R node:node ${STAGE_DIR}
+sudo chown -R node:node /home/node/site-production
+sudo chown node /var/log/genassist-production-node.log
+
+# startup
+sudo start genassist-production
+sudo /etc/init.d/nginx restart
+
+echo Successfully updated production
