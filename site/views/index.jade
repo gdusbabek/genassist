@@ -11,12 +11,11 @@ block content
         h1 Genassist
 
     div.pagination-centered
-        form(method="post", name="query")
-            div.input-append
-                input(type="text", name="query", placeholder='Friday I&apos;m in Love The Cure', class="textbox-wide", id="query")
-                button(type="button", value="searchSong", class="btn", id="searchSongBtn") Search
-                button(type="button", class="btn dropdown-toggle", id="options", onclick="showOptions();")
-                    span.caret
+        div.input-append
+            input(type="text", name="query", placeholder='Friday I&apos;m in Love The Cure', class="textbox-wide", id="query")
+            button(type="button", value="searchSong", class="btn", id="searchSongBtn") Search
+            button(type="button", class="btn dropdown-toggle", id="options", onclick="showOptions();")
+                span.caret
     div(class="modal hide fade", id="options-modal")
         div.pagination-centered
             h2 Playlist options

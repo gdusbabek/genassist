@@ -53,4 +53,9 @@ function onSearchClick() {
 $(document).ready(function() {
     // arm the search button.
     $('#searchSongBtn').click(onSearchClick);
+    $('#query').bind('keyup', function(ev) {
+        if (ev.keyCode === 13) {
+            onSearchClick();
+        }
+    });
 });
