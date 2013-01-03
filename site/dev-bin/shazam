@@ -29,7 +29,8 @@ doStage() {
 }
 
 doPromote() {
-  echo foo
+  echo promoting site_${STAMP}
+  ssh ${SSHHOST} \'\'sudo /home/node/site_bundles/site_${STAMP}/dev-bin/promote_staging\'\'
 }
 
 doClean() {

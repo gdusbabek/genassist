@@ -1,11 +1,11 @@
-upstream app_genassist {
+upstream app_genassist_production {
     server 127.0.0.1:2000;
 }
 
 server {
     listen 0.0.0.0:80;
-    server_name genassist.tagfriendly.com genassist;
-    access_log /var/log/nginx/genassist.log;
+    server_name genassist.tagfriendly.com genassist-production;
+    access_log /var/log/nginx/genassist-production.log;
 
     location / {
         proxy_set_header X-Real-IP $remote_addr;

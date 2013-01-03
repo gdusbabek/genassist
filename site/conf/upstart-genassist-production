@@ -6,7 +6,7 @@ author "gdusbabek"
 env NODE_BIN=/usr/bin/node
 env APP_DIR=/home/node/site
 env SCRIPT_FILE=server.js
-env LOG_FILE=/var/log/genassist-node.log
+env LOG_FILE=/var/log/genassist-production-node.log
 env RUN_AS=node
 env SERVER_ENV=production
 
@@ -30,6 +30,6 @@ pre-start script
 end script
 
 pre-stop script
-    rm /var/run/genassist.pid
+    rm /var/run/genassist-production.pid
     echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Stopping" >> $LOG_FILE
 end script
