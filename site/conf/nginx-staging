@@ -1,5 +1,6 @@
 upstream app_genassist_staging {
     server 127.0.0.1:2001;
+    keepalive 64;
 }
 
 server {
@@ -7,11 +8,21 @@ server {
     server_name genassist.tagfriendly.com genassist-staging;
     access_log /var/log/nginx/genassist-staging.log;
 
+    location ~ ^/(img/|js/|css/|bootstrap/|robots.txt|humans.txt|favicon.ico) {
+        root /home/node/site-staging/public;
+        access_log off;
+        expires max;
+    }
+
     location / {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $http_host;
         proxy_set_header X-NginX-Proxy true;
+
+        proxy_http_version 1.1;
+        proxy_cache one;
+        proxy_cache_key sfs$request_uri$scheme;
 
         proxy_pass http://app_genassist_staging/;
         proxy_redirect off;
