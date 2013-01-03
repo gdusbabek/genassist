@@ -11,6 +11,9 @@ cd $OWD
 sudo stop genassist-production
 sudo rm /home/node/site-production
 sudo ln -s $STAGE_DIR /home/node/site-production
+ln -f -s ${DIR} /home/node/site-production
+sudo cp ${DIR}/conf/nginx-production /etc/nginx/sites-available/genassist-production
+sudo ln -f -s /etc/nginx/sites-available/genassist-production /etc/nginx/sites-enabled/genassist-production
 sudo touch /var/log/genassist-production-node.log
 sudo cp ${STAGE_DIR}/conf/upstart-genassist-production /etc/init/genassist-production.conf
 
