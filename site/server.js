@@ -198,7 +198,14 @@ app.get('/seed.html', function(req, res) {
             });
         }
     });
-})
+});
+
+app.get('/candy.html', function(req, res) {
+    // this could be busted if there is nothing in the session store        
+    res.render('candy', {
+        rdioLink: req.cookies.rdioLink
+    });
+});
 
 function resultCallback(req, res, err, results) {
     if (err) {

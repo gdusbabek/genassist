@@ -21,11 +21,15 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
+* eye candy
+* play now
+* prettier cookie page
 * uncaught exception
 * deeper integration into last.fm, spotify, rdio, etc.
 
 ## If you get bored...
 
+* a page that fetches images while you have music playing.
 * sanity tests for staging and production deploys.
 * region support for rdio.
 * easy deployment to a new server.
