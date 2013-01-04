@@ -4,6 +4,7 @@ var images = [
   'http://www.dusbabek.org/~garyd/heart.jpg'
 ];
 
+var curArtistKey = '';
 var index = 0;
 var loadedImages = [];
 
@@ -40,10 +41,33 @@ function showNextImage() {
     }
 }
 
+function maybeLoadNewImages() {
+    $.get('/api/current_song', {curArtistKey: curArtistKey}, function(json) {
+        var response = JSON.parse(json);
+        if (response.status === 'error') {
+            console.log(json);    
+        } else {
+            if (response.result.artistKey === curArtistKey) {
+                console.log('artist did not change');
+            } else {
+                console.log('will load new images');
+                curArtistKey = response.result.artistKey;
+                loadedImages = [];
+                index = 0;
+                response.result.images.forEach(function(url) {
+                    fetchImage(url);
+                });
+                
+            }
+        }
+    });
+}
+
 $(document).ready(function() {
     images.forEach(function(image) {
         fetchImage(image);
     });
     
     setInterval(showNextImage, 5000);
+    setInterval(maybeLoadNewImages, 30000);
 });

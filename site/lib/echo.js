@@ -209,3 +209,25 @@ exports.steer = function(sessionId, songId, direction, callback) {
         }
     });
 }
+
+// callback expects(err, [img, img, ...]
+exports.getArtistImages = function(artistName, callback){
+    var nest = new echonest.Echonest(params);
+    nest.artist.images({
+        format: 'json',
+        name: artistName,
+        results: 25
+    }, function(err, results) {
+        if (err) {
+            callback(err, null);
+        } else {
+            if (results.status && results.status.code === 0) {
+                callback(null, results.images.map(function(obj) { return obj.url; }));
+            } else {
+                console.log(results);
+                callback('Unexpected status from echonest');
+            } 
+        }
+        
+    });
+}

@@ -258,6 +258,70 @@ app.get('/api/next_songs_in_session', function(req, res) {
     echo.addSongsToPlaylist(sessionId, numSongs, resultCallback.bind(null, req, res));
 });
 
+app.get('/api/current_song', function(req, res) {
+    var curArtistKey = req.query.curArtistKey|| '',
+        baton = {};
+    async.waterfall([
+        function getRdio(callback) {
+            rdio.getAuthRdio({
+                callbackUrl: callbackUrl,
+                contextId: req.cookies.context,
+                contextDir: contextDir
+            }, callback);
+        },
+        function getCurrentSong(client, callback) {
+            client.makeRequest('currentUser', {
+                extras: 'lastSongPlayed,lastSongPlaytime'
+            }, function(err, results) {
+                if (err) {
+                    callback(err);
+                } else {
+                    if (results.status === 'ok') {
+                        baton.curSongKey = results.result.lastSongPlayed.key;
+                        baton.artistKey = results.result.lastSongPlayed.artistKey;
+                        baton.artist = results.result.lastSongPlayed.artist;
+                        baton.album = results.result.lastSongPlayed.album;
+                        baton.song = results.result.lastSongPlayed.name;
+                        if(baton.artistKey === curArtistKey) {
+                            callback(null, []);     
+                        } else {
+                            // song changed. need to fetch new images.
+                            echo.getArtistImages(baton.artist, function(err, imgUrls) {
+                                if (err) {
+                                    console.log(err);
+                                    callback(err);
+                                } else {
+                                    callback(null, imgUrls);
+                                }
+                            });
+                        }
+                    } else {
+                        console.log(results);
+                        callback('Unexpected result while getting current song');
+                    }
+                }
+            });
+        }
+    ], function(err, imgUrls) {
+        if (err) {
+            res.send(JSON.stringify({status: 'error', result: null, message: 'Problem with api call'}));
+        } else {
+            res.send(JSON.stringify({
+                status: 'ok',
+                message: '',
+                result: {
+                    artistKey: baton.artistKey,
+                    songKey: baton.curSongKey,
+                    artistName: baton.artist,
+                    album: baton.album,
+                    song: baton.song,
+                    images: imgUrls
+                }
+            }));
+        }
+    });
+});
+
 app.get('/api/save_playlist', function(req, res) {
     var playlistName = req.query.playlistName,
         songs = req.query.songs,
