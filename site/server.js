@@ -109,6 +109,8 @@ app.get('/rdio_linked.html', function(req, res) {
     });
 });
 
+var cheatingAuth = new Error('You cannot access that url directly.');
+
 // todo: you need to fix the bug that happens if the user types this in manually. it should not crash the server the way it does now.
 app.get('/rdio_comeback.html', function(req, res) {
     // http://genassist.tagfriendly.com/rdio_comeback.html?oauth_verifier=6099&oauth_token=rbzccfjuwptcqcyth3bacmj7
@@ -121,10 +123,15 @@ app.get('/rdio_comeback.html', function(req, res) {
                 }, callback);
             },
             function completeAuth(rdioClient, callback) {
-                rdioClient.completeAuthentication(req.query.oauth_verifier, function() {                  
-                    // we should be able to get playlists now.
-                    callback(null, rdioClient);
-                });
+                try {
+                    rdioClient.completeAuthentication(req.query.oauth_verifier, function() {
+                        // we should be able to get playlists now.
+                        callback(null, rdioClient);
+                    });
+                } catch (err) {
+                    
+                    callback(cheatingAuth, null);
+                }
             },
             function saveData(client, callback) {
                 // set the cookie.
@@ -143,10 +150,14 @@ app.get('/rdio_comeback.html', function(req, res) {
             }
     ], function(err) {
         if (err) {
-            res.render('error', {unknownErr: err});
+            if (err === cheatingAuth) {
+                res.redirect('/rdio_linked.html');
+            } else {
+                res.render('error', {unknownErr: err});
+            }
         } else {
             res.cookie('rdioLink', true, {path: '/'});
-            res.redirect('/rdio_linked.html');;
+            res.redirect('/rdio_linked.html');
         }
     }); 
 });
