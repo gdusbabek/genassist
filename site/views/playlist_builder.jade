@@ -8,13 +8,30 @@ block scripts
     script(src='/js/playlist.js')
 
 block header
-    h2(id="your-playlist") Your playlist
+    h2(id="your-playlist") Your Playlist
 
 block content
     div.row-fluid
+        span.span2
+        span.span8
+            p Genassist seeds your playlist with 5 songs.  You can influence subsequent tracks using the controls to the left of each song.
+            ul
+                li 
+                    span
+                        i(class="icon-thumbs-up", style="background-color:#ffffff; margin-right:2px;") 
+                        span will influence the generator to add more songs like this one.
+                li 
+                    span
+                        i(class="icon-thumbs-down", style="background-color:#ffffff; margin-right:2px;") 
+                        span will remove this song from the playlist and tell the generator to include less longs like this one.
+                li 
+                    span
+                        i(class="icon-remove", style="background-color:#ffffff; margin-right:2px;")
+                        span will remove this song from the playlist without influencing the generator.
+        span.span2
+    div.row-fluid
         div.pagination-centered
-            p Songs released since #{sinceYear} based on "#{songName}"
-            button(class="btn pagination-centered", onclick="toggleOptions();", id="moar-btn") Moar!
+            h4 Songs released since #{sinceYear} based on "#{songName}"
     div.row-fluid
         div(class='span2')
         div.span8
@@ -40,7 +57,7 @@ block content
 
             div.row-fluid(class="hide")
                 p(id="sessionId") #{sessionId}
-            div.row-fluid(class="modal hide fade", id="options-modal")
+            div.pagination-centered(class="modal hide fade", id="options-modal")
                 h2 Playlist Options
                 div.pagination-centered
                     div.input-prepend
@@ -57,8 +74,11 @@ block content
                 a(id="playlist-link", href="#") link
             p(font-size="10px", id="playlist-caption") link
             
+    
     div(id="playlist-save")
         div.pagination-centered
+            button(class="btn pagination-centered", onclick="toggleOptions();", id="moar-btn") Done steering. Add Moar!
+            span  
             button(class="btn", onclick="toggleSave();", id="savePlaylistModalBtn") Save this playlist!
         div.pagination-centered(class="modal hide fade", id="save-modal")
             fieldset.input-append
