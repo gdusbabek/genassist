@@ -47,6 +47,8 @@ function maybeLoadNewImages() {
         if (response.status === 'error') {
             console.log(json);    
         } else {
+            $('#songName').text(response.result.song);
+            $('#artistName').text(response.result.artistName);
             if (response.result.artistKey === curArtistKey) {
                 console.log('artist did not change');
             } else {

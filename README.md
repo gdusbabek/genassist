@@ -22,6 +22,7 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 ## Currently working on...
 
 * eye candy
+  * underlay or color oppositing for eye candy text.
 * play now
 * prettier cookie page
 * uncaught exception
