@@ -22,23 +22,35 @@ html(lang="en")
 
   body
     div(id="bgdiv")
-        img(id="bgimg", src="https://twimg0-a.akamaihd.net/profile_images/190746611/Picture_1.png")
+        img(id="bgimg", src="http://www.dusbabek.org/~garyd/dus_fam.jpg", width="1500px")
     div(id="realBody", style="background-color: rgba(0,0,0,0.6  )")
+    div.row-fluid(id="song_info")
+      div.span2
+      div.span8
+        div.pagination-centered
+          p(id="songName", style="font-family: Arvo; font-size: 200%; font-weight: bold; padding-top:25px;") Song
+          span(style="font-family: Arvo;") by 
+          span(id="artistName", style="font-family: Arvo; font-size: 120%") Artist
+      div.span2
+    div.row-fluid(id="rdio_missing", class="hide")
+      div.span2
+      div.span8
+        div.pagination-centered
+          h3 Want to see fancy sliding images of the band you're listing to on Rdio?
+          br
+          h4 OK.
+          br
+          h1
+            a(href="/rdio_register.html?return=/candy.html") You need to link Genassist with Rdio!
+          br
+          p Privacy policy: Your Rdio information won't be shared.
+        div(id="hide_rdio_invitation_in_footer", class="hide") Please hide the footer.
+      div.span2
     div.row-fluid
       div.span2
       div.span8
         div.pagination-centered
-            p(id="songName", style="font-family: Arvo; font-size: 200%; font-weight: bold; padding-top:25px;") Song
-            span(style="font-family: Arvo;") by 
-            span(id="artistName", style="font-family: Arvo; font-size: 120%") Artist
-            
         br
-        br
-      div.span2
-    div.row-fluid
-      div.span2
-      div.span8
-        div.pagination-centered
         include footer
       div.span2
  

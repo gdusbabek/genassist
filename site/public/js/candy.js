@@ -1,9 +1,7 @@
 var IMAGE_SHOW_TIME = 10000;
 
 var images = [
-  'http://www.dusbabek.org/~garyd/family.jpg',
-  'http://www.dusbabek.org/~garyd/dus_fam.jpg',
-  'http://www.dusbabek.org/~garyd/heart.jpg'
+  'http://www.dusbabek.org/~garyd/dus_fam.jpg'
 ];
 
 var curArtistKey = '';
@@ -78,19 +76,23 @@ function maybeLoadNewImages() {
                 response.result.images.forEach(function(url) {
                     fetchImage(url);
                 });
-                
             }
         }
     });
 }
 
 $(document).ready(function() {
-    images.forEach(function(image) {
-        fetchImage(image);
-    });
-    
-    setInterval(showNextImage, IMAGE_SHOW_TIME);
-    setTimeout(maybeLoadNewImages, 3000); // to quickly show new stuff.
-    setInterval(maybeLoadNewImages, 30000); // repeats forever.
-    moveImage();
+    if ($.cookie('rdioLink')) {
+        images.forEach(function(image) {
+            fetchImage(image);
+        });
+        
+        setInterval(showNextImage, IMAGE_SHOW_TIME);
+        setTimeout(maybeLoadNewImages, 1); // to quickly show new stuff.
+        setInterval(maybeLoadNewImages, 30000); // repeats forever.
+        moveImage();
+    } else {
+        $('#song_info').addClass('hide');
+        $('#rdio_missing').removeClass('hide');
+    }
 });

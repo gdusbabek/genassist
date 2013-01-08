@@ -45,15 +45,16 @@ app.configure(function() {
 	
 // routes are here.
 var contextDir = settings.CONTEXT_DIR;
-var callbackUrl = 'http://' + settings.PROXY_HOST + 
-        (settings.PROXY_PORT === 80 ? '' : (':' + settings.PROXY_PORT)) + 
-        '/rdio_comeback.html';
+var callbackBase = 'http://' + settings.PROXY_HOST +
+        (settings.PROXY_PORT === 80 ? '' : (':' + settings.PROXY_PORT));
+var callbackUrl = callbackBase + '/rdio_comeback.html';
 
 app.get('/rdio_register.html', function(req, res) {
+    var comeback = req.query.return ? (callbackUrl + '?return=' + req.query.return) : callbackUrl;
     async.waterfall([
         function getRdio(callback) {
             rdio.getAuthRdio({
-                callbackUrl: callbackUrl,
+                callbackUrl: comeback,
                 contextId: req.cookies.context,
                 contextDir: contextDir // for now.
             }, callback);
@@ -157,7 +158,11 @@ app.get('/rdio_comeback.html', function(req, res) {
             }
         } else {
             res.cookie('rdioLink', true, {path: '/'});
-            res.redirect('/rdio_linked.html');
+            if (req.query.return) {
+                res.redirect(req.query.return);
+            } else {
+                res.redirect('/rdio_linked.html');
+            }
         }
     }); 
 });
