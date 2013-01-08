@@ -1,3 +1,5 @@
+var IMAGE_SHOW_TIME = 10000;
+
 var images = [
   'http://www.dusbabek.org/~garyd/family.jpg',
   'http://www.dusbabek.org/~garyd/dus_fam.jpg',
@@ -17,6 +19,19 @@ function fetchImage(src) {
     img.src = src;
 } 
 
+var optIndex = 0;
+var opts = [
+    { bottom: '-=250'},
+    { bottom: '+=250', left: '-=250'},
+    { bottom: '-=250'},
+    { bottom: '+=250', left: '+=250'}
+];
+
+function moveImage() {
+    $('#bgimg').animate(opts[optIndex], IMAGE_SHOW_TIME, 'swing', moveImage);
+    optIndex = (optIndex + 1) % opts.length;
+}
+
 function showNextImage() {
     if (loadedImages.length === 0) {
         return;
@@ -27,8 +42,8 @@ function showNextImage() {
             return;
         }
         
-        var windowHeight = $(window).height();
-        var windowWidth = $(window).width();
+        var windowHeight = Math.round($(window).height() * 1.5);
+        var windowWidth = Math.round($(window).width() * 1.5);
         $('#bgimg').attr('src', img.src);
         $('#bgimg').attr('width', windowWidth);
         $('#bgimg').attr('height', windowHeight);
@@ -38,6 +53,10 @@ function showNextImage() {
             height: windowHeight,
             bgId: '#bgimg'
         });
+        $('#bgimg').css('height', 'auto');
+        $('#bgimg').css('max-width', windowWidth);
+        $('#bgimg').css('width', windowWidth);
+        $('#bgimg').css('bottom', '-200px');
     }
 }
 
@@ -70,6 +89,8 @@ $(document).ready(function() {
         fetchImage(image);
     });
     
-    setInterval(showNextImage, 5000);
-    setInterval(maybeLoadNewImages, 30000);
+    setInterval(showNextImage, IMAGE_SHOW_TIME);
+    setTimeout(maybeLoadNewImages, 3000); // to quickly show new stuff.
+    setInterval(maybeLoadNewImages, 30000); // repeats forever.
+    moveImage();
 });
