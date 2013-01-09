@@ -21,7 +21,8 @@ function displayAllCookies() {
     var showThese = [
         ['service', 'currentService'],
         ['context', 'context'],
-        ['rdioLink', 'rdioLink']
+        ['rdioLink', 'rdioLink'],
+        ['lastLink', 'lastLink']
     ];
 
     showThese.forEach(function(tuple) {
