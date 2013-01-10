@@ -13,7 +13,7 @@ function ensureDatabaseExists(callback) {
                     db.run.bind(db, 'create table dbversion (version int)'),
                     db.run.bind(db, 'insert into dbversion values (0)'),
                     db.run.bind(db, 'create table contexts (ctxid varchar(64), rdioObj text, lastObj text)'),
-                    db.run.bind(db, 'create index ctxid_index on contexts(ctxid)')
+                    db.run.bind(db, 'create unique index ctxid_index on contexts(ctxid)')
                 ], callback);
             } else {
                 callback(err);
@@ -47,6 +47,9 @@ function migrateDatabase(version, callback) {
         function migrateLoop(oldVersion, callback) {
             versionBeforeMigration = oldVersion;
             var curVersion = oldVersion;
+            if (process.env.FORCE_DB_VERSION) {
+                curVersion = Math.min(curVersion, version - 1);
+            }
             async.whilst(function() {
                 return curVersion < version;
             }, 
@@ -75,9 +78,14 @@ function migrateDatabase(version, callback) {
 
 exports.setup = function(callback) {
     console.log('setting up database at ' + settings.DB_PATH);
+    var upgradeVersion = settings.DB_VERSION;
+    if (process.env.FORCE_DB_VERSION) {
+        console.log('Will force DB to version ' + process.env.FORCE_DB_VERSION);
+        upgradeVersion = process.env.FORCE_DB_VERSION;
+    }
     async.waterfall([
         ensureDatabaseExists,
-        migrateDatabase.bind(null, settings.DB_VERSION)
+        migrateDatabase.bind(null, upgradeVersion)
     ], callback);
 };
 
