@@ -133,5 +133,5 @@ exports.getRdioObject = function(ctxId, callback) {
 
 // callback expects(err).
 exports.setRdioObject = function(ctxId, rdioObject, callback) {
-    db.run('update contexts set rdioObj = ? where ctxid = ?', [new JSON.stringify(rdioObject), ctxId], callback);
+    db.run('update contexts set rdioObj = ? where ctxid = ?', [JSON.stringify(rdioObject), ctxId], callback);
 }

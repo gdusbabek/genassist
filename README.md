@@ -21,7 +21,6 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
-* sqlite3 integration. For real though, use a wrapper that will be easy to plug in something else.
 * deeper integration into last.fm, spotify, rdio, etc.
 * play now
 * prettier cookie page
