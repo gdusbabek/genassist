@@ -1,9 +1,11 @@
+// todo: all of this fs/path stuff can go away at some pont.
 var fs = require('fs');
 var path = require('path');
 
 var settings = require('../config').settings;
 var async = require('async');
 var Rdio = require('rdio-node').Rdio;
+var database = require('../database');
 
 var params = {
     consumerKey: settings.RDIO_KEY,
@@ -72,27 +74,19 @@ Store.prototype.removeAll = function() {
 
 // callback expects(err)
 Store.dump = function(store, dir, callback) {
-    // todo: handle err & prevent double callback.
-    var location = path.join(dir, fileNameFromContextId(store.contextId)),
-        stream = fs.createWriteStream(location);
-    stream.on('close', callback);
-    stream.write(JSON.stringify(store.data), 'utf8');
-    stream.end();
+    database.setRdioObject(fileNameFromContextId(store.contextId), store.data, callback);
 }
 
 
 Store.load = function(contextId, dir, callback) {
-    var location = path.join(dir, fileNameFromContextId(contextId)),
-        stream = fs.createReadStream(location),
-        buf = '',
-        store = new Store(contextId);
-    stream.setEncoding('utf8');
-    stream.on('data', function(data) {
-        buf += data;
-    });
-    stream.on('end', function() {
-        store.data = JSON.parse(buf);
-        callback(null, store);
+    var store = new Store(contextId);
+    database.getRdioObject(fileNameFromContextId(contextId), function(err, rdioJson) {
+        if (err) {
+            callback(err);
+        } else {
+            store.data = JSON.parse(rdioJson);
+            callback(null, store);
+        }
     });
 }
 

@@ -98,3 +98,40 @@ exports.getVersion = function(callback) {
         }
     });
 }
+
+function ensureUser(ctxId, callback) {
+    db.get('select ctxid from contexts where ctxid = ?', [ctxId], function(err, res) {
+        if (err) {
+            callback(err);
+        } else if (!res) {
+            // does not exist.
+            db.run('insert into contexts values(?,?,?)', [ctxId, '{}', '{}'], function() {
+                callback(null);
+            });
+        } else {
+            // exists.
+            callback(null);
+        }
+    });
+}
+
+// callback expects(err, rdioObject)
+exports.getRdioObject = function(ctxId, callback) {
+    async.waterfall([
+        ensureUser.bind(null, ctxId),
+        function getField(callback) {
+            db.get('select rdioObj from contexts where ctxid = ?', [ctxId], function(err, result) {
+                if (err) {
+                    callback(err, null);
+                } else {
+                    callback(null, result.rdioObj); // remember, it is a string.
+                }
+            });
+        }
+    ], callback);
+}
+
+// callback expects(err).
+exports.setRdioObject = function(ctxId, rdioObject, callback) {
+    db.run('update contexts set rdioObj = ? where ctxid = ?', [new JSON.stringify(rdioObject), ctxId], callback);
+}
