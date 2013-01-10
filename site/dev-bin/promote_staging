@@ -18,7 +18,7 @@ sudo touch /var/log/genassist-production-node.log
 sudo cp ${STAGE_DIR}/conf/upstart-genassist-production /etc/init/genassist-production.conf
 
 # database
-sudo -u node NODE_ENV=production ${STAGE_DIR}/bin/setup_db
+sudo -u node NODE_ENV=production -i ${STAGE_DIR}/bin/setup_db
 
 # chowning
 sudo chown -R node:node ${STAGE_DIR}

@@ -27,7 +27,6 @@ sudo cp ${DIR}/conf/upstart-genassist-staging /etc/init/genassist-staging.conf
 sudo -u node NODE_ENV=staging -i ${DIR}/bin/setup_db
 
 # chowning
-sudo chown node:node ~/.db
 sudo chown -R node:node ${DIR}
 sudo chown -R node:node /home/node/site-staging
 sudo chown node /var/log/genassist-staging-node.log
