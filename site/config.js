@@ -74,7 +74,6 @@ var settings = {
 var configFile = searchPathsForConfig(configSearchDirs);
 
 if (configFile) {
-    console.log('augmenting config with ' + configFile);
     settings = mergeSettings(settings, require(configFile).settings);
 }
 

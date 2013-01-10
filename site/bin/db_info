@@ -1,0 +1,12 @@
+#!/usr/bin/node
+
+var async = require('async');
+
+var database = require('../database');
+
+async.parallel([
+    database.getVersion.bind(null)
+], 
+function(err, results) {
+    console.log('Database version: ' + results[0]);
+});

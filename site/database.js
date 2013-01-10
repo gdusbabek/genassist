@@ -80,3 +80,13 @@ exports.setup = function(callback) {
         migrateDatabase.bind(null, settings.DB_VERSION)
     ], callback);
 };
+
+exports.getVersion = function(callback) {
+    db.get('select version from dbversion', [], function(err, res) {
+        if (err) {
+            callback(null, 'unknown');
+        } else {
+            callback(null, res.version);
+        }
+    });
+}
