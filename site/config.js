@@ -67,7 +67,7 @@ var settings = {
     PROXY_PORT: null,
     
     DB_PATH: null,
-    DB_VERSION: null
+    DB_VERSION: 3
 };
 
 // search for the first config available.
