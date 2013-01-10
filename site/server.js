@@ -45,7 +45,6 @@ app.configure(function() {
 });
 	
 // routes are here.
-var contextDir = settings.CONTEXT_DIR;
 var callbackBase = 'http://' + settings.PROXY_HOST +
         (settings.PROXY_PORT === 80 ? '' : (':' + settings.PROXY_PORT));
 var callbackUrl = callbackBase + '/rdio_comeback.html';
@@ -56,8 +55,7 @@ app.get('/rdio_register.html', function(req, res) {
         function getRdio(callback) {
             rdio.getAuthRdio({
                 callbackUrl: comeback,
-                contextId: req.cookies.context,
-                contextDir: contextDir // for now.
+                contextId: req.cookies.context
             }, callback);
         },
         function checkIfLinked(client, callback) {
@@ -83,7 +81,7 @@ app.get('/rdio_register.html', function(req, res) {
                         });
                     },
                     function(client, loginUrl, callback) {
-                        rdio.Store.dump(client.dataStore_, contextDir, function(err) {
+                        rdio.Store.dump(client.dataStore_, function(err) {
                             if (err) {
                                 callback(err);
                             } else {
@@ -150,8 +148,7 @@ app.get('/rdio_comeback.html', function(req, res) {
             function getRdio(callback) {
                 rdio.getAuthRdio({
                     callbackUrl: callbackUrl,
-                    contextId: req.cookies.context,
-                    contextDir: contextDir
+                    contextId: req.cookies.context
                 }, callback);
             },
             function completeAuth(rdioClient, callback) {
@@ -167,7 +164,7 @@ app.get('/rdio_comeback.html', function(req, res) {
             },
             function saveData(client, callback) {
                 // set the cookie.
-                rdio.Store.dump(client.dataStore_, contextDir, function(err) {
+                rdio.Store.dump(client.dataStore_, function(err) {
                     if (err) {
                         callback(err);
                     } else {
@@ -302,8 +299,7 @@ app.get('/api/current_song', function(req, res) {
         function getRdio(callback) {
             rdio.getAuthRdio({
                 callbackUrl: callbackUrl,
-                contextId: req.cookies.context,
-                contextDir: contextDir
+                contextId: req.cookies.context
             }, callback);
         },
         function getCurrentSong(client, callback) {
@@ -368,8 +364,7 @@ app.get('/api/save_playlist', function(req, res) {
         function getRdio(callback) {
             rdio.getAuthRdio({
                 callbackUrl: callbackUrl,
-                contextId: req.cookies.context,
-                contextDir: contextDir // for now.
+                contextId: req.cookies.context
             }, callback);
         },
         function savePlaylist(client, callback) {

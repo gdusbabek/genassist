@@ -70,12 +70,12 @@ Store.prototype.removeAll = function() {
 }
 
 // callback expects(err)
-Store.dump = function(store, dir, callback) {
+Store.dump = function(store, callback) {
     database.setRdioObject(fileNameFromContextId(store.contextId), store.data, callback);
 }
 
 
-Store.load = function(contextId, dir, callback) {
+Store.load = function(contextId, callback) {
     var store = new Store(contextId);
     database.getRdioObject(fileNameFromContextId(contextId), function(err, rdioJson) {
         if (err) {
@@ -96,7 +96,6 @@ function fileNameFromContextId(str) {
 // options:
 //   {String} callbackUrl,
 //   {String} contextId,
-//   {String} contextDir
 // callback expects(err, rdio)
 exports.getAuthRdio = function(options, callback) {
     var p = {
@@ -107,7 +106,7 @@ exports.getAuthRdio = function(options, callback) {
     };
     async.waterfall([
         function loadStore(callback) {
-            Store.load(options.contextId, options.contextDir, function(err, store) {
+            Store.load(options.contextId, function(err, store) {
                 if (err) {
                     callback(err);
                 } else {
