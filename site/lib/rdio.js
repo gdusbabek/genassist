@@ -1,6 +1,3 @@
-// todo: all of this fs/path stuff can go away at some pont.
-var fs = require('fs');
-var path = require('path');
 
 var settings = require('../config').settings;
 var async = require('async');
@@ -109,28 +106,20 @@ exports.getAuthRdio = function(options, callback) {
         //dataStore: new Store(options.contextId)
     };
     async.waterfall([
-    function maybeCreate(callback) {
-        fs.exists(path.join(options.contextDir, fileNameFromContextId(options.contextId)), function(exists) {
-            if (exists) {
-                Store.load(options.contextId, options.contextDir, function(err, store) {
-                    if (err) {
-                        callback(err);
-                    } else {
-                        p.dataStore = store;
-                        callback(null);
-                    }
-                });
-            } else {
-                // create it.
-                p.dataStore = new Store(options.contextId);
-                Store.dump(p.dataStore, options.contextDir, callback);
-            }
-        });
-    },
-    function create(callback) {
-        var r = new Rdio(p);
-        callback(null, r);
-    }
+        function loadStore(callback) {
+            Store.load(options.contextId, options.contextDir, function(err, store) {
+                if (err) {
+                    callback(err);
+                } else {
+                    p.dataStore = store;
+                    callback(null);
+                }
+            });
+        },
+        function create(callback) {
+            var r = new Rdio(p);
+            callback(null, r);
+        }
     ], callback);
 }
 
