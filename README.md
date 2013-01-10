@@ -21,16 +21,14 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
-* eye candy
-  * underlay or color oppositing for eye candy text.
+* sqlite3 integration. For real though, use a wrapper that will be easy to plug in something else.
+* deeper integration into last.fm, spotify, rdio, etc.
 * play now
 * prettier cookie page
 * uncaught exception
-* deeper integration into last.fm, spotify, rdio, etc.
 
 ## If you get bored...
 
-* a page that fetches images while you have music playing.
 * sanity tests for staging and production deploys.
 * region support for rdio.
 * easy deployment to a new server.
@@ -48,3 +46,4 @@ The echonost dependency has been hacked to add support to the newer dynamic play
     sudo apt-get update
     sudo apt-get install nodejs npm nginx
     sudo apt-get install git-core make build-essential
+    sudo apt-get install sqlite3 libsqlite3-dev
