@@ -3,6 +3,7 @@ var app = express();
 var async = require('async');
 var rdio = require('./lib/rdio');
 var echo = require('./lib/echo');
+var lastfm = require('./lib/lastfm');
 var util = require('./lib/util');
 var settings = require('./config').settings;
 
@@ -101,6 +102,36 @@ app.get('/rdio_register.html', function(req, res) {
         if (err) {
             res.render('err', {unknownErr: err});
         }
+    });
+});
+
+app.get('/lastfm_register.html', function(req, res) {
+    res.redirect('http://www.last.fm/api/auth/?api_key=' + settings.LAST_KEY + '&cb=' + encodeURI('http://localhost:2000/lastfm_comeback.html'));
+});
+
+app.get('/lastfm_comeback.html', function(req, res) {
+    var lastToken = req.query.token;
+    // ok. let's create a session token.
+    var client = new lastfm.Client();
+    client.execute('auth.getSession', {
+        token: lastToken,
+        api_sig: lastfm.sign({ api_key: settings.LAST_KEY, token: lastToken, method: 'auth.getSession'})
+    }, function(err, response) {
+        if (err) {
+            res.render('error', {lastfmErr: err});
+        } else {
+            // set the cookies.
+            // response.session.key
+            res.cookie('lastLink', true, {path: '/'});
+            res.cookie('lastSk', response.session.key, {path: '/'});
+            res.redirect('/lastfm_linked.html');
+        }
+    });
+});
+
+app.get('/lastfm_linked.html', function(req, res) {
+    res.render('lastfm_link', {
+        linked: req.cookies.lastLink ? true : false
     });
 });
 
@@ -208,7 +239,8 @@ app.get('/seed.html', function(req, res) {
 app.get('/candy.html', function(req, res) {
     // this could be busted if there is nothing in the session store        
     res.render('candy', {
-        rdioLink: req.cookies.rdioLink
+        rdioLink: req.cookies.rdioLink,
+        lastLink: req.cookies.lastLink
     });
 });
 

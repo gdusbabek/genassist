@@ -8,7 +8,8 @@
 		"express": "3.0.4",
 		"echonest": "git://github.com/gdusbabek/node-echonest.git#00b0b13d1ca6075255e50923f06a1d952a177270",
 		"jade": "0.27.7",
-		"rdio-node": "git://github.com/monsur/rdio-node.git"
+		"rdio-node": "git://github.com/monsur/rdio-node.git",
+        "fermata": "0.9.1"
 	},
 	"devDependencies": {
 		"whiskey": "0.6.11"	
