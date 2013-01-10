@@ -64,7 +64,10 @@ var settings = {
     APP_PORT: null,
     
     PROXY_HOST: null,
-    PROXY_PORT: null
+    PROXY_PORT: null,
+    
+    DB_PATH: null,
+    DB_VERSION: null
 };
 
 // search for the first config available.

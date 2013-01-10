@@ -1,0 +1,15 @@
+#!/usr/bin/node
+
+var database = require('../database');
+
+database.setup(function(err) {
+    if (err) {
+        console.log('ERR: problem setting up database');
+        console.log(err);
+        process.exit(-1);
+    } else {
+        console.log('OK: database set up.');
+        process.exit(0);
+    }
+});
+

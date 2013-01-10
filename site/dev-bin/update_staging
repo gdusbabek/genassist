@@ -23,6 +23,9 @@ sudo stop genassist-staging
 sudo touch /var/log/genassist-staging-node.log
 sudo cp ${DIR}/conf/upstart-genassist-staging /etc/init/genassist-staging.conf
 
+# upgrade database
+sudo ${DIR}/bin/setup_db
+
 # chowning
 sudo chown -R node:node ${DIR}
 sudo chown -R node:node /home/node/site-staging
