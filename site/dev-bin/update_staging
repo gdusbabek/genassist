@@ -24,7 +24,7 @@ sudo touch /var/log/genassist-staging-node.log
 sudo cp ${DIR}/conf/upstart-genassist-staging /etc/init/genassist-staging.conf
 
 # upgrade database
-NODE_ENV=staging sudo ${DIR}/bin/setup_db
+sudo -u node NODE_ENV=staging ${DIR}/bin/setup_db
 
 # chowning
 sudo chown node:node ~/.db
