@@ -2,14 +2,20 @@
 
 var database = require('../database');
 
-database.setup(function(err) {
-    if (err) {
-        console.log('ERR: problem setting up database');
-        console.log(err);
-        process.exit(-1);
-    } else {
-        console.log('OK: database set up.');
-        process.exit(0);
-    }
-});
+if (!process.env.NODE_ENV) {
+    console.log('Cannot detect NODE_ENV. Will not setup database.');
+    console.log(process.env);
+    process.exit(-1);
+} else {
+    database.setup(function(err) {
+        if (err) {
+            console.log('ERR: problem setting up database');
+            console.log(err);
+            process.exit(-1);
+        } else {
+            console.log('OK: database set up.');
+            process.exit(0);
+        }
+    });
+}
 
