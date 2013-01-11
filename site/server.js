@@ -31,16 +31,17 @@ app.configure('staging', function() {
 app.configure(function() {
     console.log('Environment is: ' + process.env.NODE_ENV);
     app.enable('trust proxy')
-	app.set('view engine', 'jade');
-	app.set('views', __dirname + '/views');
-	app.set('view options', {layout: false});
-	//app.use(express.bodyParser());
-	app.use(express.cookieParser());
-	app.use(app.router);
-	app.use(express.static(__dirname + '/public'));
+    app.set('view engine', 'jade');
+    app.set('views', __dirname + '/views');
+    app.set('view options', {layout: false});
+    //app.use(express.bodyParser());
+    app.use(express.cookieParser());
     app.use(middleware.set_context_cookie());
     app.use(middleware.shorten_context_id());
     app.use(middleware.move_lastfm_from_cookie());
+    app.use(app.router);
+    app.use(express.static(__dirname + '/public'));
+    
 });
 
 app.get('/', index_routes.root);

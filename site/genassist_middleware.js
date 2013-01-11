@@ -10,6 +10,7 @@ exports.set_context_cookie = function() {
         var ctxId = req.cookies.context;
         if (!ctxId) {
             ctxId = util.randomHash(64);
+            req.cookies.context = ctxId;
             res.cookie('context', ctxId, {path: '/', maxAge: TWO_YEARS});
         }
         next();
@@ -24,7 +25,7 @@ exports.shorten_context_id = function() {
             res.clearCookie('context');
             res.cookie('context', newContext, {path: '/', maxAge: TWO_YEARS})
         }
-        database.ensureUser(ctxId, function(err) {
+        database.ensureUser(req.cookies.context, function(err) {
             if (err) {
                 console.log('problem ensuring user');
                 console.log(err);
