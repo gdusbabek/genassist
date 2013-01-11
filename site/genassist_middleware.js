@@ -7,11 +7,18 @@ var TWO_YEARS = 1000 * 60 * 60 * 24 * 365 * 2;
 exports.set_context_cookie = function() {
     return function(req, res, next) {
         // see if there is a context cookie
-        if (!req.cookies || !req.cookies.context) {
-            res.cookie('context', util.randomHash(64), {path: '/', maxAge: TWO_YEARS});
-            // todo: should store stub in database.
+        var ctxId = req.cookies.context;
+        if (!ctxId) {
+            ctxId = util.randomHash(64);
+            res.cookie('context', ctxId, {path: '/', maxAge: TWO_YEARS});
         }
-        next();
+        database.ensureUser(ctxId, function(err) {
+            if (err) {
+                console.log('problem ensuring user');
+                console.log(err);
+            }
+            next();
+        });
     }
 };
 

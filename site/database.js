@@ -109,7 +109,8 @@ exports.getUserCount = function(callback) {
     });
 }
 
-function ensureUser(ctxId, callback) {
+// expects err.
+exports.ensureUser = function(ctxId, callback) {
     db.get('select ctxid from contexts where ctxid = ?', [ctxId], function(err, res) {
         if (err) {
             callback(err);
