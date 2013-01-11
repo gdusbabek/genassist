@@ -12,13 +12,7 @@ exports.set_context_cookie = function() {
             ctxId = util.randomHash(64);
             res.cookie('context', ctxId, {path: '/', maxAge: TWO_YEARS});
         }
-        database.ensureUser(ctxId, function(err) {
-            if (err) {
-                console.log('problem ensuring user');
-                console.log(err);
-            }
-            next();
-        });
+        next();
     }
 };
 
@@ -30,7 +24,13 @@ exports.shorten_context_id = function() {
             res.clearCookie('context');
             res.cookie('context', newContext, {path: '/', maxAge: TWO_YEARS})
         }
-        next();
+        database.ensureUser(ctxId, function(err) {
+            if (err) {
+                console.log('problem ensuring user');
+                console.log(err);
+            }
+            next();
+        });
     }
 }
 
