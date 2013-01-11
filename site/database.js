@@ -129,7 +129,7 @@ exports.ensureUser = function(ctxId, callback) {
 // callback expects(err, rdioObject)
 exports.getRdioObject = function(ctxId, callback) {
     async.waterfall([
-        ensureUser.bind(null, ctxId),
+        exports.ensureUser.bind(null, ctxId),
         function getField(callback) {
             db.get('select rdioObj from contexts where ctxid = ?', [ctxId], function(err, result) {
                 if (err) {
