@@ -12,7 +12,7 @@ function ensureDatabaseExists(callback) {
                 async.waterfall([
                     db.run.bind(db, 'create table dbversion (version int)'),
                     db.run.bind(db, 'insert into dbversion values (0)'),
-                    db.run.bind(db, 'create table contexts (ctxid varchar(64), rdioObj text, lastObj text)'),
+                    db.run.bind(db, 'create table contexts (ctxid varchar(64), rdioObj text, lastObj text, lastsk varchar(128) default null)'),
                     db.run.bind(db, 'create unique index ctxid_index on contexts(ctxid)')
                 ], callback);
             } else {
@@ -115,7 +115,7 @@ function ensureUser(ctxId, callback) {
             callback(err);
         } else if (!res) {
             // does not exist.
-            db.run('insert into contexts values(?,?,?)', [ctxId, '{}', '{}'], function() {
+            db.run('insert into contexts values(?,?,?,?)', [ctxId, '{}', '{}', ''], function() {
                 callback(null);
             });
         } else {
@@ -144,4 +144,20 @@ exports.getRdioObject = function(ctxId, callback) {
 // callback expects(err).
 exports.setRdioObject = function(ctxId, rdioObject, callback) {
     db.run('update contexts set rdioObj = ? where ctxid = ?', [JSON.stringify(rdioObject), ctxId], callback);
+}
+
+// expects (err, sk)
+exports.getLastSk = function(ctxId, callback) {
+    db.get('select lastsk from contexts where ctxid = ?', [ctxId], function(err, result) {
+        if (err) {
+            callback(err, null);
+        } else {
+            callback(null, result.lastsk);
+        }
+    });
+}
+
+// expects(err)
+exports.setLastSk = function(ctxId, sk, callback) {
+    db.run('update contexts set lastsk = ? where ctxid = ?', [sk, ctxId], callback);
 }

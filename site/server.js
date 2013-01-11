@@ -39,6 +39,8 @@ app.configure(function() {
 	app.use(app.router);
 	app.use(express.static(__dirname + '/public'));
     app.use(middleware.set_context_cookie());
+    app.use(middleware.shorten_context_id());
+    app.use(middleware.move_lastfm_from_cookie());
 });
 
 app.get('/', index_routes.root);

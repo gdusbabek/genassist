@@ -71,13 +71,13 @@ Store.prototype.removeAll = function() {
 
 // callback expects(err)
 Store.dump = function(store, callback) {
-    database.setRdioObject(fileNameFromContextId(store.contextId), store.data, callback);
+    database.setRdioObject(store.contextId, store.data, callback);
 }
 
 
 Store.load = function(contextId, callback) {
     var store = new Store(contextId);
-    database.getRdioObject(fileNameFromContextId(contextId), function(err, rdioJson) {
+    database.getRdioObject(contextId, function(err, rdioJson) {
         if (err) {
             callback(err);
         } else {
@@ -88,10 +88,6 @@ Store.load = function(contextId, callback) {
 }
 
 exports.Store = Store;
-
-function fileNameFromContextId(str) {
-    return str.substr(0, Math.min(64, str.length));
-}
 
 // options:
 //   {String} callbackUrl,

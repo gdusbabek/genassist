@@ -22,8 +22,7 @@ function displayAllCookies() {
         ['service', 'currentService'],
         ['context', 'context'],
         ['rdioLink', 'rdioLink'],
-        ['lastLink', 'lastLink'],
-        ['lastSk', 'lastSk']
+        ['lastLink', 'lastLink']
     ];
 
     showThese.forEach(function(tuple) {

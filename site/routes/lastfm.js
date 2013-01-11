@@ -1,6 +1,7 @@
 var async = require('async');
 var lastfm = require('../lib/lastfm');
 var settings = require('../config').settings;
+var database = require('../database');
 
 var TWO_YEARS = 1000 * 60 * 60 * 24 * 365 * 2;
 
@@ -25,8 +26,13 @@ exports.comeback = function(req, res) {
             // set the cookies.
             // response.session.key
             res.cookie('lastLink', true, {path: '/', maxAge: TWO_YEARS});
-            res.cookie('lastSk', response.session.key, {path: '/', maxAge: TWO_YEARS});
-            res.redirect('/lastfm_linked.html');
+            database.setLastSk(req.cookies.contextId, response.session.key, function(err) {
+                if (err) {
+                    console.log('db error. setting lastsk in cookie');
+                    res.cookie('lastSk', response.session.key, {path: '/', maxAge: TWO_YEARS});
+                }    
+                res.redirect('/lastfm_linked.html');
+            });
         }
     });
 }
