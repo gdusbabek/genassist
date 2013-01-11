@@ -5,8 +5,10 @@ var async = require('async');
 var database = require('../database');
 
 async.parallel([
-    database.getVersion.bind(null)
+    database.getVersion.bind(null),
+    database.getUserCount.bind(null)
 ], 
 function(err, results) {
     console.log('Database version: ' + results[0]);
+    console.log('Database users  : ' + results[1]);
 });

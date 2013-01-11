@@ -99,6 +99,16 @@ exports.getVersion = function(callback) {
     });
 }
 
+exports.getUserCount = function(callback) {
+    db.get('select count(*) as cnt from contexts', [], function(err, res) {
+        if (err) {
+            callback(null, 'unknown');
+        } else {
+            callback(null, res.cnt);
+        }
+    });
+}
+
 function ensureUser(ctxId, callback) {
     db.get('select ctxid from contexts where ctxid = ?', [ctxId], function(err, res) {
         if (err) {
