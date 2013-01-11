@@ -7,6 +7,8 @@ var lastfm = require('./lib/lastfm');
 var util = require('./lib/util');
 var settings = require('./config').settings;
 
+var TWO_YEARS = 1000 * 60 * 60 * 24 * 365 * 2;
+
 app.configure('development', function() {
     if (!process.env.NODE_ENV) {
         process.env.NODE_ENV = 'development';
@@ -38,7 +40,7 @@ app.configure(function() {
     app.use(function(req, res, next) {
         // see if there is a context cookie
         if (!req.cookies || !req.cookies.context) {
-            res.cookie('context', util.randomHash(128), {path: '/', });
+            res.cookie('context', util.randomHash(128), {path: '/', maxAge: TWO_YEARS});
         }
         next();
     });
@@ -120,8 +122,8 @@ app.get('/lastfm_comeback.html', function(req, res) {
         } else {
             // set the cookies.
             // response.session.key
-            res.cookie('lastLink', true, {path: '/'});
-            res.cookie('lastSk', response.session.key, {path: '/'});
+            res.cookie('lastLink', true, {path: '/', maxAge: TWO_YEARS});
+            res.cookie('lastSk', response.session.key, {path: '/', maxAge: TWO_YEARS});
             res.redirect('/lastfm_linked.html');
         }
     });
@@ -185,7 +187,7 @@ app.get('/rdio_comeback.html', function(req, res) {
                 res.render('error', {unknownErr: err});
             }
         } else {
-            res.cookie('rdioLink', true, {path: '/'});
+            res.cookie('rdioLink', true, {path: '/', maxAge: TWO_YEARS});
             if (req.query.return) {
                 res.redirect(req.query.return);
             } else {
@@ -198,6 +200,12 @@ app.get('/rdio_comeback.html', function(req, res) {
 app.get('/cookies.html', function(req, res) {
     //console.log(req.headers.cookie);
     // dump the cookie.
+    if (req.query.renew) {
+        Object.keys(req.cookies).forEach(function(key) {
+            // res.cookie('context', util.randomHash(128), {path: '/', maxAge: TWO_YEARS});
+            res.cookie(key, req.cookies[key], {path: '/', maxAge: TWO_YEARS});
+        });
+    }
     res.render('cookies', {});
 });
 
