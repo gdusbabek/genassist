@@ -6,6 +6,7 @@ var echo = require('./lib/echo');
 var lastfm = require('./lib/lastfm');
 var util = require('./lib/util');
 var settings = require('./config').settings;
+var middleware = require('./genassist_middleware');
 
 var TWO_YEARS = 1000 * 60 * 60 * 24 * 365 * 2;
 
@@ -36,14 +37,7 @@ app.configure(function() {
 	app.use(express.cookieParser());
 	//app.use(app.router);
 	app.use(express.static(__dirname + '/public'));
-
-    app.use(function(req, res, next) {
-        // see if there is a context cookie
-        if (!req.cookies || !req.cookies.context) {
-            res.cookie('context', util.randomHash(128), {path: '/', maxAge: TWO_YEARS});
-        }
-        next();
-    });
+    app.use(middleware.set_context_cookie());
 });
 	
 // routes are here.
