@@ -5,9 +5,13 @@ var database = require('../database');
 
 var TWO_YEARS = 1000 * 60 * 60 * 24 * 365 * 2;
 
+var callbackBase = 'http://' + settings.PROXY_HOST +
+        (settings.PROXY_PORT === 80 ? '' : (':' + settings.PROXY_PORT));
+var callbackUrl = callbackBase + '/lastfm_comeback.html';
+
 exports.register = function(req, res) {
-    // todo: fix this crappy url.
-    res.redirect('http://www.last.fm/api/auth/?api_key=' + settings.LAST_KEY + '&cb=' + encodeURI('http://localhost:2000/lastfm_comeback.html'));
+    // todo: maybe append req.query.return.
+    res.redirect('http://www.last.fm/api/auth/?api_key=' + settings.LAST_KEY + '&cb=' + encodeURI(callbackUrl));
 }
 
 // todo: you need to fix the bug that happens if the user types this in manually. it should not crash the server the way it does now.
