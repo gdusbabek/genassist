@@ -27,6 +27,7 @@ exports.shorten_context_id = function() {
         if (req.cookies.context && req.cookies.context.length > 64) {
             var newContext = req.cookies.context.substr(0, 64);
             req.cookies.context = newContext;
+            res.clearCookie('context');
             res.cookie('context', newContext, {path: '/', maxAge: TWO_YEARS})
         }
         next();
