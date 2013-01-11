@@ -116,7 +116,7 @@ exports.ensureUser = function(ctxId, callback) {
             callback(err);
         } else if (!res) {
             // does not exist.
-            db.run('insert into contexts values(?,?,?,?)', [ctxId, '{}', '{}', ''], function() {
+            db.run('insert into contexts values(?,?,?,?)', [ctxId, '{}', '{}', null], function() {
                 callback(null);
             });
         } else {
