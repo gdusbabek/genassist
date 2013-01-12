@@ -2,6 +2,9 @@ var async = require('async');
 
 var echo = require('../lib/echo');
 var rdio = require('../lib/rdio');
+var lastfm = require('../lib/lastfm');
+var database = require('../database');
+var settings = require('../config').settings;
 
 
 function resultCallback(req, res, err, results) {
@@ -166,6 +169,60 @@ exports.currentSong = function(req, res) {
                     images: imgUrls
                 }
             }));
+        }
+    });
+}
+
+exports.scrobble = function(req, res) {
+    async.waterfall([
+        function validateParams(callback) {
+            if (!req.query.artist) {
+                callback(new Error('Missing artist'));
+            } else if (!req.query.song) {
+                callback(new Error('Missing song'));
+            } else if (!req.query.which) {
+                callback(new Error('Missing scrobble param'));
+            } else {
+                callback();
+            }
+        },
+        database.getLastSk.bind(null, req.cookies.context),
+        function ensureLastsk(lastsk, callback) {
+            if (!lastsk || lastsk.length === 0 || !req.cookies.lastLink) {
+                callback(new Error('Not linked with Last.fm'));
+            } else {
+                callback(null, lastsk)
+            }
+        },
+        function doScrobble(lastsk, callback) {
+            var client = new lastfm.Client(),
+                method = req.query.which === 'love' ? 'track.love' : 'track.unlove';
+            client.executePostSigned(method, {
+                method: method,
+                track: req.query.song,
+                artist: req.query.artist,
+                api_key: settings.LAST_KEY,
+                sk: lastsk
+            }, function(err, response) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, response);
+                }
+            });
+        }
+    ], function(err, response) {
+        if (err) {
+            console.log(err);
+            res.send(JSON.stringify({status: 'error', result: null, message: 'Problem with api'}));
+        } else if (response.error) {
+            console.log(response);
+            res.send(JSON.stringify({status: 'error', result: null, message: response.message}));
+        } else if (response.status && response.status === 'ok') {
+            res.send(JSON.stringify({status: 'ok', result: null, message: 'Scrobbled ok'}));
+        } else {
+            console.log(response);
+            res.end(JSON.stringify({status: 'error', result: response, message: 'Unexpected response'}));
         }
     });
 }

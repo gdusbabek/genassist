@@ -55,4 +55,19 @@ Client.prototype.execute = function(method, params, callback) {
     fermata.json(URL)(VERSION)(p).get(callback);
 };
 
+Client.prototype.executePostSigned = function(method, params, callback) {
+    var api_sig = exports.sign(params),
+        self = this,
+        p = {
+            method: method,
+            api_key: self.api_key,
+            format: 'json'
+        };
+    Object.keys(params).forEach(function(key) {
+        p[key] = params[key];
+    });
+    p.api_sig = api_sig;
+    fermata.json(URL)(VERSION)(p).post(callback);
+}
+
 exports.Client = Client;

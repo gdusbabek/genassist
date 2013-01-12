@@ -31,6 +31,15 @@ html(lang="en")
           p(id="songName", style="font-family: Arvo; font-size: 200%; font-weight: bold; padding-top:25px;") Song
           span(style="font-family: Arvo;") by 
           span(id="artistName", style="font-family: Arvo; font-size: 120%") Artist
+          div(id="lastfm_controls", class="hide")
+            button(id="last_love", class="btn btn-mini btn-candy hide", onclick="scrobble('love');")
+              span
+                i(class="icon-heart")
+                span Love
+            button(id="last_unlove", class="btn btn-mini btn-candy hide", onclick="scrobble('unlove');")
+              span
+                i(class="icon-ban-circle")
+                span Unlove
       div.span2
     div.row-fluid(id="rdio_missing", class="hide")
       div.span2
