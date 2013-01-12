@@ -137,6 +137,7 @@ exports.currentSong = function(req, res) {
                             callback(null, []);     
                         } else {
                             // song changed. need to fetch new images.
+                            // todo: also need to fetch new scrobble status from last.fm
                             echo.getArtistImages(baton.artist, function(err, imgUrls) {
                                 if (err) {
                                     console.log(err);
