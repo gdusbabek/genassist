@@ -147,12 +147,7 @@ $(document).ready(function() {
         setTimeout(maybeLoadNewImages, 1); // to quickly show new stuff.
         setInterval(maybeLoadNewImages, 30000); // repeats forever.
         var animate = getParameterByName('animate');
-        if (animate === undefined || animate === null || animate === 'true') {
-            animate = true;
-        } else if (animate === 'false') {
-            animate = false;
-        }
-        if (animate) {
+        if (animate === undefined || animate === null || animate === 'true' || animate.length === 0) {
             moveImage();
         }
         
