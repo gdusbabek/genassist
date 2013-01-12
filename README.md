@@ -21,6 +21,8 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
+* refactor TWO_YEARS as settings concept.
+* get the req, res stuff out of my echo lib.
 * deeper integration into last.fm, spotify, rdio, etc.
 * play now
 * prettier cookie page
@@ -28,6 +30,7 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## If you get bored...
 
+* staging and prod seem to be sharing a cookie space. The only way to fix this will be to use different host names.
 * sanity tests for staging and production deploys.
 * region support for rdio.
 * easy deployment to a new server.
