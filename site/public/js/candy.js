@@ -97,7 +97,8 @@ function scrobble(which) {
 }
 
 function maybeLoadNewImages() {
-    $.get('/api/current_song', {curArtistKey: curArtistKey}, function(json) {
+    $.get('/api/current_song', {curArtistKey: curArtistKey, curSongKey: curSongKey}, function(json) {
+        console.log(json);
         var response = JSON.parse(json);
         if (response.status === 'error') {
             console.log(json);    
@@ -122,6 +123,7 @@ function maybeLoadNewImages() {
             // changes in response to new song.
             if (response.result.songKey !== curSongKey) {
                 curSong = response.result.song;
+                curSongKey = response.result.songKey;
                 if ($.cookie('lastLink')) {
                     var isLoved = response.result.isLoved || false;
                     if (isLoved) {

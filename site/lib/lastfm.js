@@ -70,4 +70,24 @@ Client.prototype.executePostSigned = function(method, params, callback) {
     fermata.json(URL)(VERSION)(p).post(callback);
 }
 
+// expects(err, boolean)
+Client.prototype.isLoved = function(artist, song, user, callback) {
+    var self = this;
+    self.execute('track.getInfo', {
+        artist: artist,
+        track: song,
+        username: user
+    }, function(err, response) {
+        if (err) {
+            callback(err);
+        } else if (response.error) {
+            callback(new Error(response.message));
+        } else if (response.track) {
+            callback(null, response.track.userloved == 1);
+        } else {
+            callback(new Error('Unexpected: ' + JSON.stringify(response)));
+        }
+    });
+}
+
 exports.Client = Client;

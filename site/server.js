@@ -67,6 +67,7 @@ app.get('/api/next_songs_in_session', api_routes.nextInSession);
 app.get('/api/current_song', api_routes.currentSong);
 app.get('/api/save_playlist', api_routes.savePlaylist);
 app.get('/api/scrobble', api_routes.scrobble);
+app.get('/api/is_loved', api_routes.isSongLoved);
 
 app.listen(settings.APP_PORT, settings.APP_HOST);
 console.log('Listening on ' + settings.APP_HOST + ':' + settings.APP_PORT);

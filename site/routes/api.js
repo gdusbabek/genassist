@@ -110,8 +110,46 @@ exports.savePlaylist = function(req, res) {
     });
 }
 
+// todo: use client.isLoved.
+exports.isSongLoved = function(req, res) {
+    var song = req.query.song,
+        artist = req.query.artist,
+        lastUser = req.query.lastUser;
+    async.waterfall([
+            function queryLastfm(callback) {
+                var client = new lastfm.Client();
+                client.execute('track.getInfo', {
+                    track: song,
+                    artist: artist,
+                    username: lastUser
+                }, function(err, response) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        callback(null, response);
+                    }
+                });
+            }
+    ], function(err, response) {
+        if (err) {
+            console.log(err);
+            res.send(JSON.stringify({status: 'error', result: null, message: 'Problem with api'}));
+        } else if (response.error) {
+            console.log(response);
+            res.send(JSON.stringify({status: 'error', result: null, message: response.message}));
+        } else if (response.track) {
+            res.send(JSON.stringify({status: 'ok', result: response.track.userloved == 1, message: 'API OK'}));
+        } else {
+            console.log(response);
+            res.end(JSON.stringify({status: 'error', result: response, message: 'Unexpected response'}));
+        }
+    });
+}
+
+// todo: this method call is too hairy.
 exports.currentSong = function(req, res) {
     var curArtistKey = req.query.curArtistKey|| '',
+        curSongKey = req.query.curSongKey || '',
         baton = {};
     async.waterfall([
         function getRdio(callback) {
@@ -134,16 +172,39 @@ exports.currentSong = function(req, res) {
                         baton.album = results.result.lastSongPlayed.album;
                         baton.song = results.result.lastSongPlayed.name;
                         if(baton.artistKey === curArtistKey) {
-                            callback(null, []);     
+                            // artist didn't change. no need to fetch images.
+                            if (baton.curSongKey === curSongKey) {
+                                // song didn't change either. this is easy.
+                                callback(null, [], 'dunno');
+                            } else if (req.cookies.lastLink) {
+                                // need to get loved status of new song.
+                                var lastClient = new lastfm.Client();
+                                lastClient.isLoved(baton.artist, baton.song, req.cookies.lastUser, function(err, isLoved) {
+                                    if (err) {
+                                        callback(err);
+                                    } else {
+                                        callback(null, [], isLoved);
+                                    }
+                                });
+                            } else {
+                                callback(null, [], false);
+                            }
                         } else {
-                            // song changed. need to fetch new images.
-                            // todo: also need to fetch new scrobble status from last.fm
-                            echo.getArtistImages(baton.artist, function(err, imgUrls) {
+                            async.parallel([
+                                echo.getArtistImages.bind(echo, baton.artist),
+                                function getLove(callback) {
+                                    if (req.cookies.lastLink) {
+                                        var lastClient = new lastfm.Client();
+                                        lastClient.isLoved(baton.artist, baton.song, req.cookies.lastUser, callback);
+                                    } else {
+                                        callback(null, false);
+                                    }
+                                }
+                            ], function(err, resultArr) {
                                 if (err) {
-                                    console.log(err);
                                     callback(err);
                                 } else {
-                                    callback(null, imgUrls);
+                                    callback(null, resultArr[0], resultArr[1])
                                 }
                             });
                         }
@@ -154,8 +215,9 @@ exports.currentSong = function(req, res) {
                 }
             });
         }
-    ], function(err, imgUrls) {
+    ], function(err, imgUrls, isLoved) {
         if (err) {
+            console.log(err);
             res.send(JSON.stringify({status: 'error', result: null, message: 'Problem with api call'}));
         } else {
             res.send(JSON.stringify({
@@ -167,7 +229,8 @@ exports.currentSong = function(req, res) {
                     artistName: baton.artist,
                     album: baton.album,
                     song: baton.song,
-                    images: imgUrls
+                    images: imgUrls,
+                    isLoved: isLoved
                 }
             }));
         }
