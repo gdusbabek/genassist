@@ -30,7 +30,8 @@ exports.comeback = function(req, res) {
             // set the cookies.
             // response.session.key
             res.cookie('lastLink', true, {path: '/', maxAge: TWO_YEARS});
-            database.setLastSk(req.cookies.context, response.session.key, function(err) {
+            res.cookie('lastUser', response.session.name, {path: '/', maxAge: TWO_YEARS});
+            database.setLastSk(req.cookies.context, response.session.key, response.session.name, function(err) {
                 if (err) {
                     console.log('db error. setting lastsk in cookie');
                     res.cookie('lastSk', response.session.key, {path: '/', maxAge: TWO_YEARS});
