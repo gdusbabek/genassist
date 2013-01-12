@@ -11,7 +11,8 @@ var callbackUrl = callbackBase + '/lastfm_comeback.html';
 
 exports.register = function(req, res) {
     // todo: maybe append req.query.return.
-    res.redirect('http://www.last.fm/api/auth/?api_key=' + settings.LAST_KEY + '&cb=' + encodeURI(callbackUrl));
+    var comeback = req.query.return ? (callbackUrl + '?return=' + decodeURIComponent(req.query.return)) : callbackUrl;
+    res.redirect('http://www.last.fm/api/auth/?api_key=' + settings.LAST_KEY + '&cb=' + encodeURIComponent(comeback));
 }
 
 // todo: you need to fix the bug that happens if the user types this in manually. it should not crash the server the way it does now.
@@ -35,8 +36,12 @@ exports.comeback = function(req, res) {
                 if (err) {
                     console.log('db error. setting lastsk in cookie');
                     res.cookie('lastSk', response.session.key, {path: '/', maxAge: TWO_YEARS});
-                }    
-                res.redirect('/lastfm_linked.html');
+                }
+                if (req.query.return) {
+                    res.redirect(req.query.return);
+                } else {
+                    res.redirect('/lastfm_linked.html');
+                }
             });
         }
     });
