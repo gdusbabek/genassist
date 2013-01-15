@@ -43,16 +43,18 @@ doReplaceDb() {
 
 case "$CMD" in
 
-artifact) doArtifact
-          ;;
-stage)    doStage
-          ;;
-promote)  doPromote
-          ;;
-clean)    doClean
-          ;;
-*)        echo nothing to do
-          ;;
+artifact)   doArtifact
+            ;;
+stage)      doStage
+            ;;
+promote)    doPromote
+            ;;
+clean)      doClean
+            ;;
+replace_db) doReplaceDb
+            ;;
+*)          echo nothing to do
+            ;;
 esac
 
 exit $?
