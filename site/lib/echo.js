@@ -223,6 +223,9 @@ exports.getArtistImages = function(artistName, callback){
         } else {
             if (results.status && results.status.code === 0) {
                 callback(null, results.images.map(function(obj) { return obj.url; }));
+            } else if (results.status && results.status.code === 5) {
+                // no images.
+                callback(null, []);
             } else {
                 console.log(results);
                 callback('Unexpected status from echonest');
