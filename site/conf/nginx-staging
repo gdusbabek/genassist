@@ -4,8 +4,8 @@ upstream app_genassist_staging {
 }
 
 server {
-    listen 0.0.0.0:81;
-    server_name genassist.tagfriendly.com genassist-staging;
+    listen 0.0.0.0:80;
+    server_name staging.genassist.tagfriendly.com genassist-staging;
     access_log /var/log/nginx/genassist-staging.log;
 
     location ~ ^/(img/|js/|css/|bootstrap/|robots.txt|humans.txt|favicon.ico) {
