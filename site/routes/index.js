@@ -11,7 +11,9 @@ exports.cookies = function(req, res) {
             res.cookie(key, req.cookies[key], {path: '/', maxAge: TWO_YEARS});
         });
     }
-    res.render('cookies', {});
+    res.render('cookies', {
+        env: process.env.NODE_ENV || 'none'
+    });
 }
 
 exports.root = function(req, res) {

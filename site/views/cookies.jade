@@ -10,21 +10,18 @@ block scripts
 block content
     div
         a(href="/index.html") Home
-    div Service: 
-        button(type="button", class="btn", onclick="setCookie('service','RDIO');") Rdio
-        button(type="button", class="btn", onclick="setCookie('service','SPOTIFY');") Spotify
-        button(type="button", class="btn", onclick="setCookie('service','!!CLEAR');") Clear it
-        span(id="currentService") Dunno
+    div Environment: 
+        span(id="environment") #{env}
     div Context: 
         span(id="context") Dunno
         button(type="button", class="btn", onclick="setCookie('context', '!!CLEAR');") Clear it
-    div Rdio Linked:
+    div Rdio Linked: 
         span(id="rdioLink") Dunno
         button(type="button", class="btn", onclick="setCookie('rdioLink', '!!CLEAR');") Clear it
-    div Last.fm Linked:
+    div Last.fm Linked: 
         span(id="lastLink") Dunno
         button(type="button", class="btn", onclick="setCookie('lastLink', '!!CLEAR');") Clear it
-    div Last.fm User:
+    div Last.fm User: 
         span(id="lastUser") Dunno
         button(type="button", class="btn", onclick="setCookie('lastUser', '!!CLEAR');") Clear it
     div
