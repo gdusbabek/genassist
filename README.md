@@ -21,12 +21,15 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
+* db upgrade is broke on a brand new database (sees 5 cols, expects 3 cols).
 * refactor TWO_YEARS as settings concept.
+* promoting uses minified JS libraries.
+* use gzip
 * get the req, res stuff out of my echo lib.
-* deeper integration into last.fm, spotify, rdio, etc.
 * play now
 * prettier cookie page
 * uncaught exception
+* nightly summary of all errors in current log.
 
 ## If you get bored...
 
