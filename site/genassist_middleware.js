@@ -38,18 +38,11 @@ exports.shorten_context_id = function() {
 exports.move_lastfm_from_cookie = function() {
     return function(req, res, next) {
         if (settings.DB_VERSION >= 4 && req.cookies.lastSk) {
-            database.setLastSk(req.cookies.context, req.cookies.lastSk, function(err) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    res.clearCookie('lastSk');
-                    delete req.cookies['lastSk'];
-                }
-                next();
-            });
+            res.clearCookie('lastSk');
+            res.clearCookie('lastLink');
+            next();
         } else {
             next();    
         }
-        
     }
 };
