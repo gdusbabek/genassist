@@ -37,6 +37,10 @@ doClean() {
   echo foo
 }
 
+doReplaceDb() {
+  ssh ${SSHHOST} \'\'sudo /home/node/site-production/dev-bin/replace_stage_db\'\'
+}
+
 case "$CMD" in
 
 artifact) doArtifact
