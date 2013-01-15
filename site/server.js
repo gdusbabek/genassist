@@ -49,6 +49,7 @@ app.get('/index.html', index_routes.root);
 app.get('/cookies.html', index_routes.cookies);
 app.get('/candy.html', index_routes.candy);
 app.get('/seed.html', index_routes.seed);
+app.get('/claim_context.html', index_routes.claimContext);
 
 app.get('/rdio_register.html', rdio_routes.register);
 app.get('/rdio_comeback.html', rdio_routes.comeback);

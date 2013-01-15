@@ -52,3 +52,11 @@ exports.seed = function(req, res) {
         }
     });
 }
+
+exports.claimContext = function(req, res) {
+    if (req.query.new_context) {
+        req.cookies.context = req.query.new_context;
+        res.cookie('context', req.query.new_context, {path: '/', maxAge: TWO_YEARS});
+    }
+    res.redirect('/cookies.html');
+}
