@@ -36,6 +36,7 @@ app.configure(function() {
     app.set('view options', {layout: false});
     //app.use(express.bodyParser());
     app.use(express.cookieParser());
+    app.use(express.compress());
     app.use(middleware.set_context_cookie());
     app.use(middleware.shorten_context_id());
     app.use(middleware.move_lastfm_from_cookie());
