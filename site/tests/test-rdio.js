@@ -4,6 +4,7 @@ var async = require('async');
 var rdio = require('../lib/rdio');
 
 exports['test_dump_and_load'] = function(test, assert) {
+    test.skip();
     var key = 'test_dump_key',
         dir = '/tmp',
         store = new rdio.Store(key);
@@ -29,6 +30,7 @@ exports['test_dump_and_load'] = function(test, assert) {
 }
 
 exports['test_get_auth_rdio'] = function(test, assert) {
+    test.skip();
     var options = {
         callbackUrl: 'http://www.example.com/bogus_callback.html',
         contextId: 'test_get_auth_rdio',
@@ -42,6 +44,7 @@ exports['test_get_auth_rdio'] = function(test, assert) {
 }
 
 exports['test_streams_write'] = function(test, assert) {
+    test.skip();
     var stream = fs.createWriteStream('/tmp/testwrite.txt');
     stream.on('drain', function() {
         assert.ok(false);
@@ -61,6 +64,7 @@ exports['test_streams_write'] = function(test, assert) {
 }
 
 exports['test_streams_read'] = function(test, assert) {
+    test.skip();
     var contents = 'this is some text I want to test with.',
         stream, buf = '';
     fs.writeFileSync('/tmp/testread.txt', contents);

@@ -12,7 +12,9 @@ function ensureDatabaseExists(callback) {
                 async.waterfall([
                     db.run.bind(db, 'create table dbversion (version int)'),
                     db.run.bind(db, 'insert into dbversion values (0)'),
-                    db.run.bind(db, 'create table contexts (ctxid varchar(64), rdioObj text, lastObj text, lastsk varchar(128) default null, lastuser varchar(256) default null)'),
+                    db.run.bind(db, 'create table contexts (ctxid varchar(64), rdioObj text, lastObj text)'),
+                    // migrations now include:
+                    // lastsk varchar(128) default null, lastuser varchar(256) default null
                     db.run.bind(db, 'create unique index ctxid_index on contexts(ctxid)')
                 ], callback);
             } else {
