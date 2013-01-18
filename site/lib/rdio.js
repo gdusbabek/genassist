@@ -71,13 +71,14 @@ Store.prototype.removeAll = function() {
 
 // callback expects(err)
 Store.dump = function(store, callback) {
-    database.setRdioObject(store.contextId, store.data, callback);
+    database.newDbFromPath().setRdioObject(store.contextId, store.data, callback);
 }
 
 
 Store.load = function(contextId, callback) {
-    var store = new Store(contextId);
-    database.getRdioObject(contextId, function(err, rdioJson) {
+    var store = new Store(contextId),
+        db = database.newSharedDb();
+    db.getRdioObject(contextId, function(err, rdioJson) {
         if (err) {
             callback(err);
         } else {

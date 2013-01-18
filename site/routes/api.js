@@ -238,6 +238,7 @@ exports.currentSong = function(req, res) {
 }
 
 exports.scrobble = function(req, res) {
+    var db = database.newSharedDb();
     async.waterfall([
         function validateParams(callback) {
             if (!req.query.artist) {
@@ -250,7 +251,7 @@ exports.scrobble = function(req, res) {
                 callback();
             }
         },
-        database.getLastSk.bind(null, req.cookies.context),
+        db.getLastSk.bind(db, req.cookies.context),
         function ensureLastsk(lastsk, callback) {
             if (!lastsk || lastsk.length === 0 || !req.cookies.lastLink) {
                 callback(new Error('Not linked with Last.fm'));
@@ -289,4 +290,8 @@ exports.scrobble = function(req, res) {
             res.end(JSON.stringify({status: 'error', result: response, message: 'Unexpected response'}));
         }
     });
+}
+
+exports.sandbox = function(req, res) {
+  // meh. started.
 }

@@ -21,6 +21,6 @@ var settings = {
     APP_PORT: 2000,
 
     DB_PATH: '/tmp/genassist_test.db',
-    DB_VERSION: 5
+    DB_VERSION: 6
 };
 exports.settings = settings;

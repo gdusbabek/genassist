@@ -2,14 +2,11 @@ var path = require('path');
 var fs = require('fs');
 
 var async = require('async');
-var sqlite3 = require('sqlite3').verbose();
-
 var settings = require('../config').settings;
-var db = new sqlite3.Database(settings.DB_PATH);
 
 // this script is in charge of loading all existing contexts into the database.
 
-exports.run = function(callback) {
+exports.run = function(db, callback) {
     if (settings.CONTEXT_DIR && fs.existsSync(settings.CONTEXT_DIR)) {
         async.waterfall([
             db.run.bind(db, 'delete from contexts'),

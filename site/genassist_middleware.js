@@ -25,7 +25,8 @@ exports.shorten_context_id = function() {
             res.clearCookie('context');
             res.cookie('context', newContext, {path: '/', maxAge: TWO_YEARS})
         }
-        database.ensureUser(req.cookies.context, function(err) {
+        var db = database.newSharedDb();
+        db.ensureUser(req.cookies.context, function(err) {
             if (err) {
                 console.log('problem ensuring user');
                 console.log(err);

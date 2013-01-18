@@ -20,7 +20,8 @@ exports.register = function(req, res) {
 // todo: also, handle redirec to req.query.return.
 exports.comeback = function(req, res) {
     var lastToken = req.query.token,
-        client = new lastfm.Client();
+        client = new lastfm.Client(),
+        db = database.newSharedDb();
     client.execute('auth.getSession', {
         token: lastToken,
         api_sig: lastfm.sign({ api_key: settings.LAST_KEY, token: lastToken, method: 'auth.getSession'})
@@ -32,7 +33,7 @@ exports.comeback = function(req, res) {
             // response.session.key
             res.cookie('lastLink', true, {path: '/', maxAge: TWO_YEARS});
             res.cookie('lastUser', response.session.name, {path: '/', maxAge: TWO_YEARS});
-            database.setLastSk(req.cookies.context, response.session.key, response.session.name, function(err) {
+            db.setLastSk(req.cookies.context, response.session.key, response.session.name, function(err) {
                 if (err) {
                     console.log('db error. setting lastsk in cookie');
                     res.cookie('lastSk', response.session.key, {path: '/', maxAge: TWO_YEARS});

@@ -5,9 +5,11 @@ var async = require('async');
 var database = require('../database');
 var settings = require('../config').settings;
 
+var db = database.newDbFromPath(settings.DB_PATH);
+
 async.parallel([
-    database.getVersion.bind(null),
-    database.getUserCount.bind(null)
+    db.getVersion.bind(db),
+    db.getUserCount.bind(db)
 ], 
 function(err, results) {
     console.log('Database version: ' + results[0]);
