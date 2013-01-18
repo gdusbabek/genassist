@@ -10,6 +10,10 @@ var curArtistKey = '';
 var curSongKey = '';
 var index = 0;
 var loadedImages = [];
+var animating = true;
+var lastSongChangedAt = Date.now();
+var imgLoadInterval;
+var STALE_IMAGE_TIMEOUT = 10 * 60 * 1000;
 
 function fetchImage(src) {
     var img = new Image();
@@ -42,12 +46,18 @@ function getParameterByName(name) {
 }
 
 function moveImage() {
+  if (!animating) {
+    return;
+  } else {
     $('#bgimg').animate(opts[optIndex], IMAGE_SHOW_TIME, 'swing', moveImage);
     optIndex = (optIndex + 1) % opts.length;
+  }
 }
 
 function showNextImage() {
-    if (loadedImages.length === 0) {
+    if (Date.now() - lastSongChangedAt > STALE_IMAGE_TIMEOUT) {
+      return;
+    } else if (loadedImages.length === 0) {
         return;
     } else {
         index = (index + 1) % loadedImages.length;
@@ -97,6 +107,13 @@ function scrobble(which) {
 }
 
 function maybeLoadNewImages() {
+    var songStaleness = (Date.now() - lastSongChangedAt);
+    if (songStaleness > STALE_IMAGE_TIMEOUT) {
+      $('#stagnation').removeClass('hide');
+      clearInterval(imgLoadInterval);
+      animateStop();
+      return;
+    }
     $.get('/api/current_song', {curArtistKey: curArtistKey, curSongKey: curSongKey}, function(json) {
         var response = JSON.parse(json);
         if (response.status === 'error') {
@@ -121,6 +138,7 @@ function maybeLoadNewImages() {
             
             // changes in response to new song.
             if (response.result.songKey !== curSongKey) {
+                lastSongChangedAt = Date.now();
                 curSong = response.result.song;
                 curSongKey = response.result.songKey;
                 if ($.cookie('lastLink')) {
@@ -138,6 +156,29 @@ function maybeLoadNewImages() {
     });
 }
 
+function resumeImages() {
+  $('#stagnation').addClass('hide');
+  lastSongChangedAt = Date.now();
+  setTimeout(maybeLoadNewImages, 1);
+  imgLoadInterval = setInterval(maybeLoadNewImages, 30000);
+  animateResume();
+}
+
+function animateStop() {
+  animating = false;
+  $('#bgimg').stop();
+  $('#ani_stop').addClass('hide');
+  $('#ani_start').removeClass('hide');
+}
+
+function animateResume() {
+  console.log('resuming animation');
+  animating = true;
+  $('#ani_start').addClass('hide');
+  $('#ani_stop').removeClass('hide');
+  moveImage();
+}
+
 $(document).ready(function() {
     if ($.cookie('rdioLink')) {
         images.forEach(function(image) {
@@ -146,18 +187,18 @@ $(document).ready(function() {
         
         setInterval(showNextImage, IMAGE_SHOW_TIME);
         setTimeout(maybeLoadNewImages, 1); // to quickly show new stuff.
-        setInterval(maybeLoadNewImages, 30000); // repeats forever.
-        var animate = getParameterByName('animate');
-        if (animate === undefined || animate === null || animate === 'true' || animate.length === 0) {
-            moveImage();
-        }
+        imgLoadInterval = setInterval(maybeLoadNewImages, 30000); // repeats forever.
+        moveImage();
         
         if ($.cookie('lastLink')) {
             $('#lastfm_controls').removeClass('hide');
         }
+      
+        $('#ani_stop').removeClass('hide');
         
     } else {
         $('#song_info').addClass('hide');
         $('#rdio_missing').removeClass('hide');
+        $('#floating_controls').addClass('hide');
     }
 });

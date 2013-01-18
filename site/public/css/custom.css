@@ -37,3 +37,14 @@ html, body {
     background-image: none;
     background-color: rgba(255,255,255,0.5);
 }
+
+.floating-bottom {
+  bottom:0; 
+  display:block; 
+  height:25px; 
+  left:0; 
+  position:fixed; 
+  text-align:center; 
+  width:100%; 
+  z-index:999;
+}

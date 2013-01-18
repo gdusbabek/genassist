@@ -41,6 +41,25 @@ html(lang="en")
                 i(class="icon-ban-circle")
                 span Unlove
       div.span2
+      div.floating-bottom(id="floating_controls")
+        button(id="ani_stop", class="btn btn-mini btn-candy", onclick="animateStop();")
+          span
+            span No Slide
+        button(id="ani_start", class="btn btn-mini btn-candy hide", onclick="animateResume();")
+          span
+            span Slide
+    div.row-fluid(id="stagnation", class="hide")
+      div.span2
+      div.span8
+        div.pagination-centered
+          h3 The song hasn't changed in a while.
+          br
+          h3 I think you shut the music off.
+          br
+          button(id="user_is_back", class="btn", onClick="resumeImages();")
+            span Ok. I'm back. More pictures please.
+          br
+          br
     div.row-fluid(id="rdio_missing", class="hide")
       div.span2
       div.span8
@@ -61,7 +80,9 @@ html(lang="en")
         div.pagination-centered
         br
         include footer
-      div.span2
+      div.span2 
+      
+        
  
     
     
