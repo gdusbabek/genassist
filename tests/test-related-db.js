@@ -67,24 +67,27 @@ exports['test_construction'] = function(test, assert) {
 }
 
 exports['test_insert'] = function(test, assert) {
-  var now = Date.now();
+  var now = Date.now(),
+      threeDaysAgo = new Date(now - THREE_DAYS),
+      twoDaysAgo = new Date(now - TWO_DAYS),
+      oneDayAgo = new Date(now - ONE_DAY);
   async.waterfall([
       makeDb,
       function doSaves(db, callback) {
         async.waterfall([
-          db.saveRelated.bind(db, 'ar1', 'al1', new Date(now - THREE_DAYS), 'ar1'),
-          db.saveRelated.bind(db, 'ar1', 'al1', new Date(now - THREE_DAYS), 'ar2'),
-          db.saveRelated.bind(db, 'ar1', 'al1', new Date(now - THREE_DAYS), 'ar3'),
-          db.saveRelated.bind(db, 'ar1', 'al1', new Date(now - THREE_DAYS), 'ar4'),
+          db.saveRelated.bind(db, 'ar1', 'al1', 'ar1', threeDaysAgo, threeDaysAgo),
+          db.saveRelated.bind(db, 'ar1', 'al1', 'ar2', threeDaysAgo, threeDaysAgo),
+          db.saveRelated.bind(db, 'ar1', 'al1', 'ar3', threeDaysAgo, threeDaysAgo),
+          db.saveRelated.bind(db, 'ar1', 'al1', 'ar4', threeDaysAgo, threeDaysAgo),
                 
-          db.saveRelated.bind(db, 'ar2', 'al2', new Date(now - TWO_DAYS), 'ar1'),
-          db.saveRelated.bind(db, 'ar2', 'al2', new Date(now - TWO_DAYS), 'ar2'),
+          db.saveRelated.bind(db, 'ar2', 'al2', 'ar1', twoDaysAgo, twoDaysAgo),
+          db.saveRelated.bind(db, 'ar2', 'al2', 'ar2', twoDaysAgo, twoDaysAgo),
                 
-          db.saveRelated.bind(db, 'ar3', 'al3', new Date(now - ONE_DAY), 'ar3'),
-          db.saveRelated.bind(db, 'ar3', 'al3', new Date(now - ONE_DAY), 'ar4'),
+          db.saveRelated.bind(db, 'ar3', 'al3', 'ar3', oneDayAgo, oneDayAgo),
+          db.saveRelated.bind(db, 'ar3', 'al3', 'ar4', oneDayAgo, oneDayAgo),
                 
-          db.saveRelated.bind(db, 'ar4', 'al4', new Date(now), 'ar1'),
-          db.saveRelated.bind(db, 'ar4', 'al4', new Date(now), 'ar4')
+          db.saveRelated.bind(db, 'ar4', 'al4', 'ar1', new Date(now), new Date(now)),
+          db.saveRelated.bind(db, 'ar4', 'al4', 'ar4', new Date(now), new Date(now))
         ], function(err) {
           callback(err, db);
         });
