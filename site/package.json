@@ -1,5 +1,5 @@
 {
-	"name": "genassist",
+	"name": "genassist-web",
 	"description": "playlist generator",
 	"version": "0.1.0",
 	"private": true,
