@@ -1,4 +1,3 @@
-
 var settings = require('../config').settings;
 var async = require('async');
 var Rdio = require('rdio-node').Rdio;
@@ -71,7 +70,7 @@ Store.prototype.removeAll = function() {
 
 // callback expects(err)
 Store.dump = function(store, callback) {
-    database.newDbFromPath().setRdioObject(store.contextId, store.data, callback);
+    database.newSharedDb().setRdioObject(store.contextId, store.data, callback);
 }
 
 
