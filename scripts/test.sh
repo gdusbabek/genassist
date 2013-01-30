@@ -12,6 +12,8 @@ cd ${RETCWD}
 
 echo GENASSIST_CONFIG_DIR=${CONFIG_DIR}
 
+#  NODE_PATH=lib NODE_ENV=testing GENASSIST_CONFIG_DIR=/Users/gdusbabek/codes/github/genassist/tests node_modules/.bin/whiskey --tests "tests/test-album-io.js" 
+
 NODE_PATH=lib NODE_ENV=testing GENASSIST_CONFIG_DIR=${CONFIG_DIR} node_modules/whiskey/bin/whiskey \
     --tests "${TEST_FILES}" \
     --real-time \

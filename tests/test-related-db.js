@@ -9,7 +9,7 @@ var dbFile = '/tmp/test_related_db.db';
 var ONE_DAY = 1000 * 60 * 60 * 24;
 var TWO_DAYS = ONE_DAY * 2;
 var THREE_DAYS = ONE_DAY * 3;
-var FOUR_DAYS = ONE_DAY * 4;
+
 
 // callback(err,RelatedDb);
 function makeDb(callback) {
@@ -66,68 +66,88 @@ exports['test_construction'] = function(test, assert) {
   });
 }
 
-exports['test_insert'] = function(test, assert) {
+exports['test_related_insert'] = function(test, assert) {
   var now = Date.now(),
       threeDaysAgo = new Date(now - THREE_DAYS),
       twoDaysAgo = new Date(now - TWO_DAYS),
       oneDayAgo = new Date(now - ONE_DAY);
   async.waterfall([
-      makeDb,
-      function doSaves(db, callback) {
-        async.waterfall([
-          db.saveRelated.bind(db, 'ar1', 'al1', 'ar1', threeDaysAgo, threeDaysAgo),
-          db.saveRelated.bind(db, 'ar1', 'al1', 'ar2', threeDaysAgo, threeDaysAgo),
-          db.saveRelated.bind(db, 'ar1', 'al1', 'ar3', threeDaysAgo, threeDaysAgo),
-          db.saveRelated.bind(db, 'ar1', 'al1', 'ar4', threeDaysAgo, threeDaysAgo),
-                
-          db.saveRelated.bind(db, 'ar2', 'al2', 'ar1', twoDaysAgo, twoDaysAgo),
-          db.saveRelated.bind(db, 'ar2', 'al2', 'ar2', twoDaysAgo, twoDaysAgo),
-                
-          db.saveRelated.bind(db, 'ar3', 'al3', 'ar3', oneDayAgo, oneDayAgo),
-          db.saveRelated.bind(db, 'ar3', 'al3', 'ar4', oneDayAgo, oneDayAgo),
-                
-          db.saveRelated.bind(db, 'ar4', 'al4', 'ar1', new Date(now), new Date(now)),
-          db.saveRelated.bind(db, 'ar4', 'al4', 'ar4', new Date(now), new Date(now))
-        ], function(err) {
-          callback(err, db);
-        });
-      },
-      function checkCount(db, callback) {
-        db.db.get('select count(*) from recent_related', [], function(err, res) {
-          if (err) {
-            callback(err);
-          } else {
-            assert.strictEqual(10, res['count(*)']);
-            callback(null, db);
-          }
-        });
-      },
-      function check4days(db, callback) {
-        db.getRelated('ar1', 4, function(err, rows) {
-          if (err) {
-            callback(err);
-          } else {
-            assert.strictEqual(3, rows.length);
-            // should be in reverse order.
-            //assert.deepEqual(['ar4', 'ar2', 'ar1'], rows.map(function(obj) { return obj.artist; }));
-            callback(null, db);
-          }
-        });
-      },
-      function check2days(db, callback) {
-        db.getRelated('ar1', 2, function(err, rows) {
-          if (err) {
-            callback(err);
-          } else {
-            assert.strictEqual(1, rows.length);
-            callback(null);
-          }
-        });
-      },
-      tearDownDb
+    makeDb,
+    function doSaves(db, callback) {
+      async.waterfall([
+        db.saveRelated.bind(db, 'ar1', 'al1', 'ar1', threeDaysAgo, threeDaysAgo),
+        db.saveRelated.bind(db, 'ar1', 'al1', 'ar2', threeDaysAgo, threeDaysAgo),
+        db.saveRelated.bind(db, 'ar1', 'al1', 'ar3', threeDaysAgo, threeDaysAgo),
+        db.saveRelated.bind(db, 'ar1', 'al1', 'ar4', threeDaysAgo, threeDaysAgo),
+              
+        db.saveRelated.bind(db, 'ar2', 'al2', 'ar1', twoDaysAgo, twoDaysAgo),
+        db.saveRelated.bind(db, 'ar2', 'al2', 'ar2', twoDaysAgo, twoDaysAgo),
+              
+        db.saveRelated.bind(db, 'ar3', 'al3', 'ar3', oneDayAgo, oneDayAgo),
+        db.saveRelated.bind(db, 'ar3', 'al3', 'ar4', oneDayAgo, oneDayAgo),
+              
+        db.saveRelated.bind(db, 'ar4', 'al4', 'ar1', new Date(now), new Date(now)),
+        db.saveRelated.bind(db, 'ar4', 'al4', 'ar4', new Date(now), new Date(now))
+      ], function(err) {
+        callback(err, db);
+      });
+    },
+    function checkCount(db, callback) {
+      db.db.get('select count(*) from recent_related', [], function(err, res) {
+        if (err) {
+          callback(err);
+        } else {
+          assert.strictEqual(10, res['count(*)']);
+          callback(null, db);
+        }
+      });
+    },
+    function check4days(db, callback) {
+      db.getRelated('ar1', 4, function(err, rows) {
+        if (err) {
+          callback(err);
+        } else {
+          assert.strictEqual(3, rows.length);
+          // should be in reverse order.
+          //assert.deepEqual(['ar4', 'ar2', 'ar1'], rows.map(function(obj) { return obj.artist; }));
+          callback(null, db);
+        }
+      });
+    },
+    function check2days(db, callback) {
+      db.getRelated('ar1', 2, function(err, rows) {
+        if (err) {
+          callback(err);
+        } else {
+          assert.strictEqual(1, rows.length);
+          callback(null);
+        }
+      });
+    },
+    tearDownDb
   ], function(err) {
     assert.ifError(err);
     test.finish();
   });
 }
 
+exports['test_related_from_path'] = function(test, assert) {
+  var path = '/tmp/related_from_path.db';
+  async.waterfall([
+    function removeIfExists(callback) {
+      fs.unlink(path, function(err) {
+        callback(null);
+      });
+    },
+    related.fromPath.bind(null, path),
+    function(db, callback) {
+      assert.ok(db.db.open);
+      assert.strictEqual(path, db.db.filename);
+      callback(null);
+    },
+    fs.unlink.bind(null, path)
+  ], function(err) {
+    assert.ifError(err);
+    test.finish();
+  });
+}
