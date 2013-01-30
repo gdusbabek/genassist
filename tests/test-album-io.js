@@ -48,7 +48,6 @@ exports['tearDown'] = function(test, assert) {
 
 // ensure that FakeRdio client isn't busted.
 exports['test_fake_rdio'] = function(test, assert) {
-  test.skip();
   var rdio = new FakeRdio();
   rdio.set('currentReleaseFile', 'tests/data/album_1359259761642.json');
   albumIO.setRdioUnsafe(rdio);
@@ -61,7 +60,6 @@ exports['test_fake_rdio'] = function(test, assert) {
 
 // get albums from rdio, save them to the database.
 exports['test_collect_new_albums'] = function(test, assert) {
-  test.skip();
   var rdio = new FakeRdio(),
       dataFile = ORDERED_PULLS[0]; // represents a single pull from rdio.
     
@@ -93,7 +91,6 @@ exports['test_collect_new_albums'] = function(test, assert) {
 }
 
 exports['test_save_and_load_locally'] = function(test, assert) {
-  test.skip();
   var savePath = '/tmp/test_save_load_locally.json',
       albumArr = [],
       push = function(obj, callback) {
