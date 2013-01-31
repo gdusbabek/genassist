@@ -1,3 +1,5 @@
+#!/bin/sh
+
 echo running tests
 
 if [ ! $TEST_FILES ]; then
