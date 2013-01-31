@@ -1,4 +1,4 @@
-var settings = require('../config').settings;
+var settings = require('../../lib/config').settings;
 var async = require('async');
 var Rdio = require('rdio-node').Rdio;
 var database = require('../database');

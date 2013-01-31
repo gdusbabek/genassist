@@ -1,6 +1,6 @@
 var async = require('async');
 var lastfm = require('../lib/lastfm');
-var settings = require('../config').settings;
+var settings = require('../../lib/config').settings;
 var database = require('../database');
 
 var TWO_YEARS = 1000 * 60 * 60 * 24 * 365 * 2;

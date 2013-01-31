@@ -1,7 +1,7 @@
 var async = require('async');
 var sqlite3 = require('sqlite3').verbose();
 
-var sharedDb = new sqlite3.Database(require('./config').settings.DB_PATH);
+var sharedDb = new sqlite3.Database(require('../lib/config').settings.DB_PATH);
 
 exports.MAX_VERSION = 6;
 

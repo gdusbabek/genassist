@@ -3,7 +3,7 @@
 var async = require('async');
 
 var database = require('../database');
-var settings = require('../config').settings;
+var settings = require('../../lib/config').settings;
 
 var db = database.newDbFromPath(settings.DB_PATH);
 

@@ -1,5 +1,5 @@
 
-var settings = require('./config').settings;
+var settings = require('../lib/config').settings;
 var util = require('./lib/util');
 var database = require('./database');
 var TWO_YEARS = 1000 * 60 * 60 * 24 * 365 * 2;

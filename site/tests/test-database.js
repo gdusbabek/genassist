@@ -2,7 +2,7 @@ var fs = require('fs');
 
 var async = require('async');
 
-var settings = require('../config').settings;
+var settings = require('../../lib/config').settings;
 var database = require('../database');
 
 exports['test_database_migration'] = function(test, assert) {

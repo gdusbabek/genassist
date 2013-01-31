@@ -2,7 +2,7 @@ var path = require('path');
 var fs = require('fs');
 
 var async = require('async');
-var settings = require('../config').settings;
+var settings = require('../../lib/config').settings;
 
 // this script is in charge of loading all existing contexts into the database.
 

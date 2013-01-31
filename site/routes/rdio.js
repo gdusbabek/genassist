@@ -1,6 +1,6 @@
 var async = require('async');
 var rdio = require('../lib/rdio');
-var settings = require('../config').settings;
+var settings = require('../../lib/config').settings;
 
 
 var TWO_YEARS = 1000 * 60 * 60 * 24 * 365 * 2;

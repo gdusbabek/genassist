@@ -4,7 +4,7 @@ var echo = require('../lib/echo');
 var rdio = require('../lib/rdio');
 var lastfm = require('../lib/lastfm');
 var database = require('../database');
-var settings = require('../config').settings;
+var settings = require('../../lib/config').settings;
 
 
 function resultCallback(req, res, err, results) {

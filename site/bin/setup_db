@@ -1,7 +1,7 @@
 #!/usr/bin/node
 
 var database = require('../database');
-var settings = require('../config').settings;
+var settings = require('../../lib/config').settings;
 
 if (!process.env.NODE_ENV) {
     console.log('Cannot detect NODE_ENV. Will not setup database.');

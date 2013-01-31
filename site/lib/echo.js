@@ -6,7 +6,7 @@ rake build
 
 var async = require('async');
 var echonest = require('echonest');
-var settings = require('../config').settings;
+var settings = require('../../lib/config').settings;
 
 var params = {
     api_key: settings.ECHO_KEY,
