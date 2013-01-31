@@ -22,15 +22,16 @@ FakeRdio.prototype.getNewReleases = function(argObj, callback) {
   },
       self = this,
       count = argObj.count || 10000,
-      start = argObj.start || 0;
+      start = argObj.start || 1;
   async.waterfall([
     function loadFile(callback) {
       fs.readFile(self._props.currentReleaseFile, 'utf8', callback);
     },
     function parseJson(json, callback) {
-      var arr = JSON.parse(json);
-      // now splice out what we want.
-      callback(null, arr.slice(start, start + Math.min(count, arr.length-start)))
+      var arr = JSON.parse(json),
+          offset = start - 1;
+      // now slice out what we want.
+      callback(null, arr.slice(offset, offset + Math.min(count, arr.length-offset)))
     },
     function assemble(subArr, callback) {
       retObj.result = subArr;
