@@ -1,6 +1,6 @@
 
 var settings = require('../lib/config').settings;
-var util = require('./lib/util');
+var util = require('../lib/util');
 
 var UserDb = require('../lib/database/context').UserDb;
 var Database = require('../lib/database/index').Database;
