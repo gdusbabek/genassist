@@ -1,6 +1,6 @@
 var async = require('async');
 
-var echo = require('../lib/echo');
+var echo = require('../../lib/echo');
 var rdio = require('../lib/rdio');
 var lastfm = require('../lib/lastfm');
 var UserDb = require('../../lib/database/context').UserDb;

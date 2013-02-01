@@ -1,4 +1,4 @@
-var echo = require('../lib/echo');
+var echo = require('../../lib/echo');
 
 var TWO_YEARS = 1000 * 60 * 60 * 24 * 365 * 2;
 
