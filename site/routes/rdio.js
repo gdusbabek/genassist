@@ -1,5 +1,5 @@
 var async = require('async');
-var rdio = require('../lib/rdio');
+var rdio = require('../../lib/rdio');
 var settings = require('../../lib/config').settings;
 
 
