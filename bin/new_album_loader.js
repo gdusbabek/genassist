@@ -7,6 +7,7 @@ var async = require('async');
 
 var settings = require('../lib/config').settings;
 var albumIO = require('../lib/album_io');
+var Database = require('../lib/database/index').Database;
 var related = require('../lib/database/related');
 
 var argv = require('optimist')
@@ -76,7 +77,7 @@ function saveNewToFile(albumArr, callback) {
 function saveNewToDatabase(albumArr, callback) {
   console.log('saving new albums to database at ' + dbPath);
   async.waterfall([
-    related.fromPath.bind(null, dbPath),
+    Database.fromPath.bind(null, dbPath, related),
     function saveToDb(db, callback) {
       albumIO.saveAlbumsDatabase(albumArr, db, callback);
     }

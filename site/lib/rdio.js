@@ -1,7 +1,7 @@
 var settings = require('../../lib/config').settings;
 var async = require('async');
 var Rdio = require('rdio-node').Rdio;
-var database = require('../database');
+var UserDb = require('../../lib/database/context').UserDb;
 
 var params = {
     consumerKey: settings.RDIO_KEY,
@@ -70,21 +70,33 @@ Store.prototype.removeAll = function() {
 
 // callback expects(err)
 Store.dump = function(store, callback) {
-    database.newSharedDb().setRdioObject(store.contextId, store.data, callback);
+  UserDb.newShared(function(err, db) {
+    if (err) {
+      callback(err);
+    } else {
+      db.setRdioObject(store.contextId, store.data, callback);
+    }
+  });
 }
 
 
 Store.load = function(contextId, callback) {
-    var store = new Store(contextId),
-        db = database.newSharedDb();
-    db.getRdioObject(contextId, function(err, rdioJson) {
+  var store = new Store(contextId);
+  UserDb.newShared(function(err, db) {
+    if (err) {
+      callback(err);
+    } else {
+      db.getRdioObject(contextId, function(err, rdioJson) {
         if (err) {
             callback(err);
         } else {
             store.data = JSON.parse(rdioJson);
             callback(null, store);
         }
-    });
+      });  
+    }
+  });
+    
 }
 
 exports.Store = Store;

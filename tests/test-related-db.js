@@ -139,7 +139,7 @@ exports['test_related_from_path'] = function(test, assert) {
         callback(null);
       });
     },
-    related.fromPath.bind(null, path),
+    Database.fromPath.bind(null, path, related),
     function(db, callback) {
       assert.ok(db.db.open);
       assert.strictEqual(path, db.db.filename);

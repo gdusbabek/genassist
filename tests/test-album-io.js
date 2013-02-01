@@ -4,6 +4,7 @@ var path = require('path');
 var async = require('async');
 var sqlite3 = require('sqlite3');
 
+var Database = require('../lib/database/index').Database;
 var related = require('../lib/database/related');
 var FakeRdio = require('./fake-rdio').FakeRdio;
 var albumIO = require('../lib/album_io');
@@ -25,7 +26,7 @@ exports['setUp'] = function(test, assert) {
         callback(null);
       });
     },
-    related.fromPath.bind(null, dbFile),
+    Database.fromPath.bind(null, dbFile, related),
     function(db, callback) {
       assert.ok(db.db.open);
       assert.strictEqual(dbFile, db.db.filename);

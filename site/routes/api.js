@@ -3,7 +3,7 @@ var async = require('async');
 var echo = require('../lib/echo');
 var rdio = require('../lib/rdio');
 var lastfm = require('../lib/lastfm');
-var database = require('../database');
+var UserDb = require('../../lib/database/context').UserDb;
 var settings = require('../../lib/config').settings;
 
 
@@ -238,7 +238,6 @@ exports.currentSong = function(req, res) {
 }
 
 exports.scrobble = function(req, res) {
-    var db = database.newSharedDb();
     async.waterfall([
         function validateParams(callback) {
             if (!req.query.artist) {
@@ -251,6 +250,7 @@ exports.scrobble = function(req, res) {
                 callback();
             }
         },
+        UserDb.newShared.bind(null),
         db.getLastSk.bind(db, req.cookies.context),
         function ensureLastsk(lastsk, callback) {
             if (!lastsk || lastsk.length === 0 || !req.cookies.lastLink) {
