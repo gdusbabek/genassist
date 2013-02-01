@@ -1,5 +1,5 @@
 var async = require('async');
-var lastfm = require('../lib/lastfm');
+var lastfm = require('../../lib/lastfm');
 var settings = require('../../lib/config').settings;
 var UserDb = require('../../lib/database/context').UserDb;
 

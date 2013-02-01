@@ -1,7 +1,7 @@
 var path = require('path');
 var fs = require('fs');
 var async = require('async');
-var rdio = require('../lib/rdio');
+var rdio = require('../site/lib/rdio');
 
 exports['test_dump_and_load'] = function(test, assert) {
     test.skip();
