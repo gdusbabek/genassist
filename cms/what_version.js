@@ -2,6 +2,11 @@
 var fs = require('fs');
 var path = require('path');
 
+// how you use this:
+// what_version.js ${directory containing package file} ${name of package file} ${which attribute to dump}
+// output is a single line containing the attribute you ask for.
+// defaults are "../" "package.json" "version"
+
 var packageDir = '../'
 var packageFile = 'package.json';
 var field = 'version';
