@@ -125,3 +125,9 @@ end
 service 'nginx' do
   action :restart
 end
+
+cron "new_album_poller" do
+  minute "*/60"
+  user "node"
+  command "NODE_ENV=production /home/node/genassist/bin/new_album_loader.js -f /home/node/cache -d /home/node/dbs/albums.db >> /home/node/album_pull.log"
+end
