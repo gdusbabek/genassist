@@ -38,9 +38,14 @@ build_info = data_bag_item('build', 'build')
 genassist_version = build_info["version"]
 genassist_stamp = build_info["stamp"]
 
+execute "make-bundle-dir" do
+  action :run
+  command "mkdir -p /home/node/bundles"
+end
+
 execute "copy-extracted-files" do
   action :run
-  command "cp -Rf /opt/genassist/uploads/genassist-#{genassist_version}-#{genassist_stamp} /home/node/bundles/"
+  command "cp -Rf /opt/genassist/uploads/genassist-#{genassist_version}-#{genassist_stamp} /home/node/bundles/genassist-#{genassist_version}-#{genassist_stamp}"
 end
 
 execute "npm-install" do
