@@ -133,13 +133,15 @@ cron "new_album_poller" do
 end
 
 cron "backup_context_db" do
-  hour "*/24"
+  minute "0"
+  hour "0"
   user "node"
   command "/home/node/genassist/bin/backup_db.sh /home/node/dbs/context.db /home/node/db_backups/context 30"
 end
 
 cron "backup_albums_db" do
-  hour "*/24"
+  minute "0"
+  hour "0"
   user "node"
   command "/home/node/genassist/bin/backup_db.sh /home/node/dbs/albums.db /home/node/db_backups/album 30"
 end
