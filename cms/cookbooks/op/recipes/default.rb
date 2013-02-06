@@ -131,3 +131,15 @@ cron "new_album_poller" do
   user "node"
   command "NODE_ENV=production /home/node/genassist/bin/new_album_loader.js -f /home/node/cache -d /home/node/dbs/albums.db >> /home/node/album_pull.log"
 end
+
+cron "backup_context_db" do
+  hour "*/24"
+  user "node"
+  command "/home/node/genassist/bin/backup_db.sh /home/node/dbs/context.db /home/node/db_backups/context 30"
+end
+
+cron "backup_albums_db" do
+  hour "*/24"
+  user "node"
+  command "/home/node/genassist/bin/backup_db.sh /home/node/dbs/albums.db /home/node/db_backups/album 30"
+end
