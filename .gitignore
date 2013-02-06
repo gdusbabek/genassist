@@ -2,6 +2,7 @@
 gary.js
 node_modules
 dist/*
+cms/data_bags/build/info.json
 site/dist/*
 site/node_modules/*
 *.iml

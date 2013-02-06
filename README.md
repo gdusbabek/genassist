@@ -21,7 +21,9 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
-* db upgrade is broke on a brand new database (sees 5 cols, expects 3 cols).
+* Need a cleaner model of DbFromPath.
+* In the process of making RelatedDb.fromPath generic enough to be used by all databases.
+
 * refactor TWO_YEARS as settings concept.
 * promoting uses minified JS libraries.
 * use gzip
@@ -40,15 +42,16 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 * tooltips on the the playlist buttons
 * secure/encrypted storage of access tokens
 
-## Installing
+## Installing (New - with chef yo!)
 
-    sudo adduser --system --shell /bin/bash --gecos 'for running node.js apps' --group --disabled-password --home /home/node node
-    sudo apt-get update
-    sudo apt-get upgrade
-    sudo apt-get install python-software-properties rake
-    sudo add-apt-repository ppa:chris-lea/node.js
-    sudo add-apt-repository ppa:nginx/stable
-    sudo apt-get update
-    sudo apt-get install nodejs npm nginx
-    sudo apt-get install git-core make build-essential
-    sudo apt-get install sqlite3 libsqlite3-dev
+After your server is set up, you need to get it happy with chef.
+    
+    sudo apt-get -y update
+    sudo apt-get -y upgrade
+    sudo apt-get -y install ruby-full gem rake git-core make build-essential
+    sudo /usr/bin/gem install chef ohai --no-rdoc --no-ri
+
+Then from your dev environment, it is simple:
+    
+    cd cms
+    ./make_bundle.sh && ./deploy.sh user@host
