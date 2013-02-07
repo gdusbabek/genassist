@@ -32,6 +32,7 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## If you get bored...
 
+* do not save contexts for spiders/crawlers.
 * log daemons to an irc channel.
 * sanity tests for staging and production deploys.
 * region support for rdio.
@@ -47,8 +48,19 @@ After your server is set up, you need to get it happy with chef.
     sudo apt-get -y upgrade
     sudo apt-get -y install ruby-full gem rake git-core make build-essential
     sudo /usr/bin/gem install chef ohai --no-rdoc --no-ri
+    sudo mkdir -p /opt/genassist/uploads
+    gdusbabek@playlistica:/home/node$ sudo chown -R user:user /opt/genassist/
 
 Then from your dev environment, it is simple:
     
     cd cms
     ./make_bundle.sh && ./deploy.sh user@host
+
+## Importing the new database.
+
+    sqlite3 production.db
+    delete from contexts where rdioObj='{}' and lastObj='{}' and lastsk is NULL and lastUser is NULL;
+    .mode insert
+    .out production.sql
+    select * from contexts;
+    .quit

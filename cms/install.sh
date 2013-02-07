@@ -15,8 +15,9 @@ echo ${stamp}
 if ! test -f "$chef_binary"; then
   sudo apt-get -y update && \
   sudo apt-get -y upgrade && \
-  sudo apt-get -y install ruby-full gem rake git-core make build-essential && \
-  sudo /usr/bin/gem install chef ohai --no-rdoc --no-ri
+  sudo apt-get -y install ruby-full gem rake git-core make build-essential python-software-properties software-properties-common && \
+  sudo /usr/bin/gem install chef ohai --no-rdoc --no-ri && \
+  sudo mkdir -p /opt/genassist/uploads
 fi
 
 "$chef_binary" -c solo.rb -j solo.json

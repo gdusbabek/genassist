@@ -26,8 +26,7 @@ execute "add-node-user" do
 end
 
 # install the packages we want.
-package 'python-software-properties'
-package 'software-properties-common'
+
 package 'sqlite3'
 package 'libsqlite3-dev'
 package 'nodejs'
@@ -41,6 +40,7 @@ genassist_stamp = build_info["stamp"]
 execute "make-bundle-dir" do
   action :run
   command "mkdir -p /home/node/bundles"
+  only_if "test ! -e /home/node/bundles"
 end
 
 execute "copy-extracted-files" do
