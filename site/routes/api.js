@@ -251,7 +251,9 @@ exports.scrobble = function(req, res) {
             }
         },
         UserDb.newShared.bind(null),
-        db.getLastSk.bind(db, req.cookies.context),
+        function getLastSk(db, callback) {
+          db.getLastSk(req.cookies.context, callback);
+        },
         function ensureLastsk(lastsk, callback) {
             if (!lastsk || lastsk.length === 0 || !req.cookies.lastLink) {
                 callback(new Error('Not linked with Last.fm'));
