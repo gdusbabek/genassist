@@ -21,6 +21,7 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
+* lastfm integration is broken.
 * refactor TWO_YEARS as settings concept.
 * promoting uses minified JS libraries.
 * use gzip
