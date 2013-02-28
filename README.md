@@ -21,7 +21,14 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## Currently working on...
 
-* lastfm integration is broken.
+* database upgrades should not be performed by the application. they __must__ happen while the app is offline.
+  *  The process should be:
+    *  shutdown
+    *  back up database files
+    *  perform upgrade
+    *  if error, restore files
+    *  else all is good.
+* while you were sleeping...
 * refactor TWO_YEARS as settings concept.
 * promoting uses minified JS libraries.
 * use gzip
@@ -33,6 +40,7 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 
 ## If you get bored...
 
+* need a fake-echonest module.
 * do not save contexts for spiders/crawlers.
 * log daemons to an irc channel.
 * sanity tests for staging and production deploys.

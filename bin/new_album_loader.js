@@ -79,8 +79,31 @@ function saveNewToDatabase(albumArr, callback) {
   async.waterfall([
     Database.fromPath.bind(null, dbPath, related),
     function saveToDb(db, callback) {
-      albumIO.saveAlbumsDatabase(albumArr, db, callback);
+      albumIO.saveAlbumsDatabase(albumArr, db, function(err, count) {
+        if (count) {
+          console.log('Saved ' + count + ' to database');
+        }
+        callback(err, albumArr);
+      });
     }
+  ], callback);
+}
+
+function extractArtistsFromAlbums(albumArr, callback) {
+  var artists = [];
+  albumArr.forEach(function(album) {
+    if (artists.indexOf(album.artist) < 0) {
+      artists.push(album.artist);
+    }
+  });
+  callback(null, artists);
+}
+
+function getSimilarArtists(artist, callback) {
+  console.log('getting similar aritsts to ' + artist);
+  async.waterfall([
+    Database.fromPath.bind(null, dbPath, related),
+    albumIO.getSimilarArtists.bind(null, artist)
   ], callback);
 }
 
