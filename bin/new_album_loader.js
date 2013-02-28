@@ -70,7 +70,7 @@ function writeCurrentAlbums(albumArr, callback) {
 function saveNewToFile(albumArr, callback) {
   console.log('saving new albums to ' + newArchiveJsonPath);
   albumIO.saveAlbumsLocally(newArchiveJsonPath, albumArr, function(err) {
-    callback(err, albumArr);
+    callback(err);
   });
 }
 
@@ -83,7 +83,7 @@ function saveNewToDatabase(albumArr, callback) {
         if (count) {
           console.log('Saved ' + count + ' to database');
         }
-        callback(err, albumArr);
+        callback(err);
       });
     }
   ], callback);
@@ -157,6 +157,7 @@ function housekeeping(callback) {
   ], callback);
 }
 
+// expects(err, albumObjArr)
 function extractNew(oldPath, newPath, callback) {
   albumIO.extractNewAlbums(oldPath, newPath, function(err, albumArr) {
     if (!err) {
@@ -168,16 +169,22 @@ function extractNew(oldPath, newPath, callback) {
 
 console.log('starting album load at ' + now);
 console.log('using config at ' + settings.__configFile);
-// todo: an appropriate amount of logging.
-async.waterfall([
-  mkdir.bind(null, ioDir),
-  housekeeping,
-  fetchAlbums,
-  writeCurrentAlbums,
-  extractNew.bind(null, previousJson, currentJson),
-  saveNewToFile,
-  saveNewToDatabase
-], function(err) {
+async.auto({
+    make_directory: mkdir.bind(null, ioDir),
+    do_housekeeping: ['make_directory', housekeeping.bind(null)],
+    fetch_albums: ['do_housekeeping', fetchAlbums.bind(null)],
+    write_current_albums: ['fetch_albums', function(callback, results) {
+      writeCurrentAlbums(results.fetch_albums, callback);
+    }],
+    extract_new: ['write_current_albums', extractNew.bind(null, previousJson, currentJson)],
+    save_new_to_file: ['extract_new', function(callback, results) {
+      saveNewToFile(results.extract_new, callback);
+    }],
+    save_new_to_database: ['extract_new', function(callback, results) {
+      saveNewToDatabase(results.extract_new, callback);
+    }]
+}, 
+function(err) {
   if (err) {
     console.log(settings.__configFile);
     console.log(err);
