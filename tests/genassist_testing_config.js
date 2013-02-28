@@ -21,6 +21,6 @@ var settings = {
   DB_VERSION: 6,
 
   RELATED_DB_PATH: '/tmp/ga_related.db',
-  RELATED_DB_VERSION: 0
+  RELATED_DB_VERSION: 1
 };
 exports.settings = settings;
