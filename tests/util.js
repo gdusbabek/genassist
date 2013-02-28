@@ -18,3 +18,9 @@ exports.unlinkIfExists = function(path, callback) {
     }
   ], callback);  
 }
+
+exports.copyFile = function(src, dst) {
+ 	 //fs.createReadStream(src).pipe(fs.createWriteStream(dst));
+ 	 var data = fs.readFileSync(src);
+ 	 fs.writeFileSync(dst, data);
+}

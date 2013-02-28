@@ -4,11 +4,31 @@ var sqlite3 = require('sqlite3').verbose();
 
 var Database = require('../lib/database/index').Database;
 var related = require('../lib/database/related');
+var util = require('./util');
 var dbFile = '/tmp/test_related_db.db';
 
 var ONE_DAY = 1000 * 60 * 60 * 24;
 var TWO_DAYS = ONE_DAY * 2;
 var THREE_DAYS = ONE_DAY * 3;
+
+// todo: move to common.
+function finisher(test, assert) {
+  return function(err) {
+    assert.ifError(err);
+    test.finish();
+  }
+}
+
+function dbFromFile(file, callback) {
+  var options = {};
+  Object.keys(related.options).forEach(function(key) {
+    if (related.options.hasOwnProperty(key)) {
+      options[key] = related.options[key];
+    }
+  });
+  options.db = new sqlite3.Database(file);
+  callback(null, options);
+}
 
 
 // callback(err,RelatedDb);
@@ -26,16 +46,7 @@ function makeDb(callback) {
         callback(null);
       }
     },
-    function makeDb(callback) {
-      var options = {};
-      Object.keys(related.options).forEach(function(key) {
-        if (related.options.hasOwnProperty(key)) {
-          options[key] = related.options[key];
-        }
-      });
-      options.db = new sqlite3.Database(dbFile);
-      callback(null, options);
-    },
+    dbFromFile.bind(null, dbFile),
     function initDb(options, callback) {
       Database.initDb(options, function(err) {
         if (err) {
@@ -66,71 +77,6 @@ exports['test_construction'] = function(test, assert) {
   });
 }
 
-exports['test_related_insert'] = function(test, assert) {
-  var now = Date.now(),
-      threeDaysAgo = new Date(now - THREE_DAYS),
-      twoDaysAgo = new Date(now - TWO_DAYS),
-      oneDayAgo = new Date(now - ONE_DAY);
-  async.waterfall([
-    makeDb,
-    function doSaves(db, callback) {
-      async.waterfall([
-        db.saveRelated.bind(db, 'ar1', 'al1', 'ar1', threeDaysAgo, threeDaysAgo),
-        db.saveRelated.bind(db, 'ar1', 'al1', 'ar2', threeDaysAgo, threeDaysAgo),
-        db.saveRelated.bind(db, 'ar1', 'al1', 'ar3', threeDaysAgo, threeDaysAgo),
-        db.saveRelated.bind(db, 'ar1', 'al1', 'ar4', threeDaysAgo, threeDaysAgo),
-              
-        db.saveRelated.bind(db, 'ar2', 'al2', 'ar1', twoDaysAgo, twoDaysAgo),
-        db.saveRelated.bind(db, 'ar2', 'al2', 'ar2', twoDaysAgo, twoDaysAgo),
-              
-        db.saveRelated.bind(db, 'ar3', 'al3', 'ar3', oneDayAgo, oneDayAgo),
-        db.saveRelated.bind(db, 'ar3', 'al3', 'ar4', oneDayAgo, oneDayAgo),
-              
-        db.saveRelated.bind(db, 'ar4', 'al4', 'ar1', new Date(now), new Date(now)),
-        db.saveRelated.bind(db, 'ar4', 'al4', 'ar4', new Date(now), new Date(now))
-      ], function(err) {
-        callback(err, db);
-      });
-    },
-    function checkCount(db, callback) {
-      db.db.get('select count(*) from recent_related', [], function(err, res) {
-        if (err) {
-          callback(err);
-        } else {
-          assert.strictEqual(10, res['count(*)']);
-          callback(null, db);
-        }
-      });
-    },
-    function check4days(db, callback) {
-      db.getRelated('ar1', 4, function(err, rows) {
-        if (err) {
-          callback(err);
-        } else {
-          assert.strictEqual(3, rows.length);
-          // should be in reverse order.
-          //assert.deepEqual(['ar4', 'ar2', 'ar1'], rows.map(function(obj) { return obj.artist; }));
-          callback(null, db);
-        }
-      });
-    },
-    function check2days(db, callback) {
-      db.getRelated('ar1', 2, function(err, rows) {
-        if (err) {
-          callback(err);
-        } else {
-          assert.strictEqual(1, rows.length);
-          callback(null);
-        }
-      });
-    },
-    tearDownDb
-  ], function(err) {
-    assert.ifError(err);
-    test.finish();
-  });
-}
-
 exports['test_related_from_path'] = function(test, assert) {
   var path = '/tmp/related_from_path.db';
   async.waterfall([
@@ -146,8 +92,35 @@ exports['test_related_from_path'] = function(test, assert) {
       callback(null);
     },
     fs.unlink.bind(null, path)
-  ], function(err) {
-    assert.ifError(err);
-    test.finish();
-  });
+  ], finisher(test, assert));
 }
+
+exports['test_v0_v1_migration'] = function(test, assert) {
+  var src = 'tests/data/related_v0.db',
+      dst = '/tmp/related_v0.db';
+  
+  async.waterfall([
+    util.unlinkIfExists.bind(null, dst),
+    function copyFile(callback) {
+      util.copyFile(src, dst);
+      callback(null);
+    },
+    Database.fromPath.bind(null, dst, related),
+    function testUpgradedDb(options, callback) {
+      options.db.get('select distinct discovered as discovered from albums', [], function(err, res) {
+        assert.ifError(err);
+        assert.ok(res);
+        assert.strictEqual(res.discovered, 0);
+        //callback(null);
+        options.db.close(callback);
+      });
+    },
+    Database.fromPath.bind(null, dst, related),
+    function close(options, callback) {
+      options.db.close(callback);
+    },
+    util.unlinkIfExists.bind(null, dst)
+  ], finisher(test, assert));
+}
+
+//NODE_PATH=lib NODE_ENV=testing GENASSIST_CONFIG_DIR=/Users/gdusbabek/codes/github/genassist/tests ./node_modules/.bin/whiskey tests.test-related-db.test_v0_v1_migration --real-time --report-timing --failfast --timeout 100000 --sequential
