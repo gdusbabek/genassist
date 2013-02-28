@@ -15,6 +15,7 @@ var argv = require('optimist')
         .alias('c', 'current')
         .alias('p', 'previous')
         .alias('d', 'database')
+        .alias('z', 'fake')
         .argv;
 
 /*
@@ -74,11 +75,10 @@ function saveNewToFile(albumArr, callback) {
   });
 }
 
-function saveNewToDatabase(albumArr, callback) {
+function saveNewToDatabase(db, albumArr, callback) {
   console.log('saving new albums to database at ' + dbPath);
   async.waterfall([
-    Database.fromPath.bind(null, dbPath, related),
-    function saveToDb(db, callback) {
+    function saveToDb(callback) {
       albumIO.saveAlbumsDatabase(albumArr, db, function(err, count) {
         if (count) {
           console.log('Saved ' + count + ' to database');
@@ -99,16 +99,13 @@ function extractArtistsFromAlbums(albumArr, callback) {
   callback(null, artists);
 }
 
-function getSimilarArtists(artist, callback) {
+function getSimilarArtists(db, artist, callback) {
   console.log('getting similar aritsts to ' + artist);
-  async.waterfall([
-    Database.fromPath.bind(null, dbPath, related),
-    albumIO.getSimilarArtists.bind(null, artist)
-  ], callback);
+  albumIO.getSimilarArtists(artist, db, callback);
 }
 
 function mkdir(path, callback) {
-  fs.mkdir(path, function(err) { 
+  fs.mkdir(path, function(err) {
     if (!err) {
       callback(null);
     } else {
@@ -158,7 +155,7 @@ function housekeeping(callback) {
 }
 
 // expects(err, albumObjArr)
-function extractNew(oldPath, newPath, callback) {
+function extractNewAlbums(oldPath, newPath, callback) {
   albumIO.extractNewAlbums(oldPath, newPath, function(err, albumArr) {
     if (!err) {
       console.log('discovered ' + albumArr.length + ' new albums');
@@ -167,22 +164,55 @@ function extractNew(oldPath, newPath, callback) {
   });
 }
 
+if (argv.fake) {
+  console.log('Using fake services');
+  var FakeRdio = require('../tests/fake-rdio').FakeRdio;
+  var FakeNestFactory= require('../tests/fake_echo').FakeNestFactory;
+  var fakeRdio = new FakeRdio();
+  fakeRdio.set('currentReleaseFile', 'tests/data/album_1359259761642.json');
+  albumIO.setRdioUnsafe(fakeRdio);
+  albumIO.setNestFactoryUnsafe(new FakeNestFactory());
+}
+
 console.log('starting album load at ' + now);
 console.log('using config at ' + settings.__configFile);
 async.auto({
     make_directory: mkdir.bind(null, ioDir),
     do_housekeeping: ['make_directory', housekeeping.bind(null)],
+    get_database: ['do_housekeeping', Database.fromPath.bind(null, dbPath, related)],
     fetch_albums: ['do_housekeeping', fetchAlbums.bind(null)],
     write_current_albums: ['fetch_albums', function(callback, results) {
       writeCurrentAlbums(results.fetch_albums, callback);
     }],
-    extract_new: ['write_current_albums', extractNew.bind(null, previousJson, currentJson)],
-    save_new_to_file: ['extract_new', function(callback, results) {
-      saveNewToFile(results.extract_new, callback);
+    extract_new_albums: ['write_current_albums', extractNewAlbums.bind(null, previousJson, currentJson)],
+    save_new_to_file: ['extract_new_albums', function(callback, results) {
+      saveNewToFile(results.extract_new_albums, callback);
     }],
-    save_new_to_database: ['extract_new', function(callback, results) {
-      saveNewToDatabase(results.extract_new, callback);
+    save_new_to_database: ['get_database', 'extract_new_albums', function(callback, results) {
+      saveNewToDatabase(results.get_database, results.extract_new_albums, callback);
+    }],
+    extract_new_artists: ['extract_new_albums', function(callback, results) {
+      extractArtistsFromAlbums(results.extract_new_albums, callback);
+    }],
+    get_similar_artists: ['get_database', 'extract_new_artists', 'save_new_to_database', function(callback, results) {
+      var similars = {};
+      console.log(results.extract_new_artists.length + ' artists to look up');
+      async.forEachLimit(results.extract_new_artists, 1, function(artist, callback) {
+        getSimilarArtists(results.get_database, artist, function(err, artists) {
+          if (artists) {
+            similars[artist] = artists;
+          }
+          callback(err);
+        })
+      }, function(err) {
+        if (err) {
+          console.log('Problem getting similar aritsts');
+          console.log(err);
+        }
+        callback(err, similars);
+      });
     }]
+    // next will be to match up similars to new albums and save the relation.
 }, 
 function(err) {
   if (err) {

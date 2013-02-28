@@ -29,6 +29,11 @@ The echonost dependency has been hacked to add support to the newer dynamic play
     *  if error, restore files
     *  else all is good.
 * while you were sleeping...
+  * better way of dumping
+  * rate limiting sucks.
+  * generate echo artists from a list of artist names (get from real).
+  * figure out what is calling causing: { [Error: SQLITE_CONSTRAINT: column albumId is not unique] errno: 19, code: 'SQLITE_CONSTRAINT' }
+  
 * refactor TWO_YEARS as settings concept.
 * promoting uses minified JS libraries.
 * use gzip
@@ -73,3 +78,33 @@ Then from your dev environment, it is simple:
     .out production.sql
     select * from contexts;
     .quit
+
+# The Case for a Common Service Registry
+
+## Motivation
+
+As enterprises develop and deploy an ever-increasing amount a services, cataloging and discovering them becomes a challenge. 
+
+## Emerging Patterns
+
+Users want several things out of a service registry:
+
+* A way to store and publish service and related metadata including service "aliveness".
+* A way to store and publish general configuration values.
+* Event notifications on service lifecycle events.
+* A means for discovery
+
+## Rackspace Service Registry
+
+Rackspace has built a service registry aimed at satisfying these needs for internal and external customers.
+We are in the process of making parts of it open source.
+
+Some interesting problems we have tackled:
+
+* Is it better to have a fully-documented public API or supply high-quality open source idiomatic client libraries?
+* Deciding on optimizing for writes (constantly heartbeating services) or reads (retrieving data).  Why we chose writes.
+* Managing expectitions around locking (why "this distributed stuff" is hard) 
+
+There are still many open questions as demonstrated by proliferation of registry-like projects.
+Studying the mechanics of our service registry will help inform other engineers.
+They will benefit by learning from our mistakes and observations.
