@@ -1,0 +1,109 @@
+{
+    "status": {
+        "version": "4.2",
+        "code": 0,
+        "message": "Success"
+    },
+    "artists": [
+        {
+            "name": "La La Vasquez",
+            "id": "ARJEZFT12802FDE095"
+        },
+        {
+            "name": "Girls Names",
+            "id": "ARQPCBV12802FDDC04"
+        },
+        {
+            "name": "Coasting",
+            "id": "ARJSWQP1269FCD6B72"
+        },
+        {
+            "name": "Ale Mania",
+            "id": "ARGQXXP12AF7D9DDEC"
+        },
+        {
+            "name": "Brilliant Colors",
+            "id": "ARWEFTK1257509DE19"
+        },
+        {
+            "name": "Happy Birthday",
+            "id": "ARTQPMN126FE025323"
+        },
+        {
+            "name": "Reading Rainbow",
+            "id": "ARKNIXD126A031DF04"
+        },
+        {
+            "name": "Christmas Island",
+            "id": "ARXZXNC122BCFCB7B5"
+        },
+        {
+            "name": "The Girls at Dawn",
+            "id": "ARYETND12592CDA338"
+        },
+        {
+            "name": "Hotpants Romance",
+            "id": "ARQRUUD122988FD9CB"
+        },
+        {
+            "name": "Golden Glow",
+            "id": "ARFPDOS128ABE10147"
+        },
+        {
+            "name": "The Babies",
+            "id": "AR3KF8H1187B9A64D1"
+        },
+        {
+            "name": "Procedure Club",
+            "id": "ARAOHTR12A10043B44"
+        },
+        {
+            "name": "Spectrals",
+            "id": "ARYLHOA1257509D771"
+        },
+        {
+            "name": "grave babies",
+            "id": "ARZUNDQ126FE025399"
+        },
+        {
+            "name": "Dignan Porch",
+            "id": "ARHURDD12802FDEC76"
+        },
+        {
+            "name": "Dana Jewell",
+            "id": "ARFQCNO1271F573F9B"
+        },
+        {
+            "name": "Las Robertas",
+            "id": "ARLNVHF128CFED6D6E"
+        },
+        {
+            "name": "Eternal Summers",
+            "id": "ARCXMSD1281B8A3984"
+        },
+        {
+            "name": "The Mayfair Set",
+            "id": "ARYTDDW12592CDB446"
+        },
+        {
+            "name": "German Measles",
+            "id": "ARRQOEY1257509D772"
+        },
+        {
+            "name": "That Ghost",
+            "id": "ARPFJEG11E2835EB77"
+        },
+        {
+            "name": "Alex Bleeker",
+            "id": "ARFXOOD1271F573F9C"
+        },
+        {
+            "name": "The Twerps",
+            "id": "ARFOCDB1269FCD1D30"
+        },
+        {
+            "name": "Twerps",
+            "id": "ARDDSZA12AF7DACC4B"
+        }
+    ]
+}

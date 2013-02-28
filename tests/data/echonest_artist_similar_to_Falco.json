@@ -1,0 +1,109 @@
+{
+    "status": {
+        "version": "4.2",
+        "code": 0,
+        "message": "Success"
+    },
+    "artists": [
+        {
+            "name": "Nena",
+            "id": "ARQJP041187B9B5093"
+        },
+        {
+            "name": "Howard Jones",
+            "id": "ARIQ6JQ1187FB49235"
+        },
+        {
+            "name": "Thompson Twins",
+            "id": "ARWSN471187B9A6F7F"
+        },
+        {
+            "name": "Duran Duran",
+            "id": "AR9L6R11187B9AA3F2"
+        },
+        {
+            "name": "Frankie Goes to Hollywood",
+            "id": "ARXQBR11187B98A2CC"
+        },
+        {
+            "name": "a-ha",
+            "id": "ARZYT8C1187FB4D57F"
+        },
+        {
+            "name": "Buggles",
+            "id": "ARZPT2V1187B9B9F90"
+        },
+        {
+            "name": "Peter Schilling",
+            "id": "ARJ52H21187FB5893F"
+        },
+        {
+            "name": "Bronski Beat",
+            "id": "AR31JBY1187FB377A1"
+        },
+        {
+            "name": "Alphaville",
+            "id": "ARP061U1187FB4D572"
+        },
+        {
+            "name": "Animotion",
+            "id": "ARZWHHW1187B9AB42F"
+        },
+        {
+            "name": "ABC",
+            "id": "ARGP47U1187FB4D0EB"
+        },
+        {
+            "name": "Nik Kershaw",
+            "id": "ARU7CW61187FB51117"
+        },
+        {
+            "name": "The Human League",
+            "id": "AR049S81187B9AE8A5"
+        },
+        {
+            "name": "Spandau Ballet",
+            "id": "ARYAUMZ1187B9A2A40"
+        },
+        {
+            "name": "Men Without Hats",
+            "id": "ARHYIN41187B98CFD9"
+        },
+        {
+            "name": "Ultravox",
+            "id": "ARDEBMB1187B9B7CBA"
+        },
+        {
+            "name": "Heaven 17",
+            "id": "AR5MK521187B98E0B8"
+        },
+        {
+            "name": "Kajagoogoo",
+            "id": "ART6RAO1187B99C6D4"
+        },
+        {
+            "name": "A Flock of Seagulls",
+            "id": "ARWNAUJ1187FB560C7"
+        },
+        {
+            "name": "Dead Or Alive",
+            "id": "ARAEDZO12131B4B54D"
+        },
+        {
+            "name": "Tears for Fears",
+            "id": "ARVELV01187FB42126"
+        },
+        {
+            "name": "Eurythmics",
+            "id": "ARDGB6U1187FB3AD07"
+        },
+        {
+            "name": "Pet Shop Boys",
+            "id": "ARA60941187B9AD4A3"
+        },
+        {
+            "name": "Wang Chung",
+            "id": "AR7WGYZ1187FB3CAB0"
+        }
+    ]
+}

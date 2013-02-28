@@ -1,0 +1,109 @@
+{
+    "status": {
+        "version": "4.2",
+        "code": 0,
+        "message": "Success"
+    },
+    "artists": [
+        {
+            "name": "Arcade Fire",
+            "id": "ARFC93D1187FB49D2E"
+        },
+        {
+            "name": "Clap Your Hands Say Yeah",
+            "id": "ARGU0YB1187FB4D532"
+        },
+        {
+            "name": "TV on the Radio",
+            "id": "AR0PK561187B9B9EF9"
+        },
+        {
+            "name": "Band of Horses",
+            "id": "ARIUYZD1187FB59892"
+        },
+        {
+            "name": "Spoon",
+            "id": "ARRX8P01187B99B26E"
+        },
+        {
+            "name": "Okkervil River",
+            "id": "ARAZP5N1187B9B4D5D"
+        },
+        {
+            "name": "The Antlers",
+            "id": "ARKMIBT11F4C8430D9"
+        },
+        {
+            "name": "The Walkmen",
+            "id": "ARJR5ST1187B995D5F"
+        },
+        {
+            "name": "Interpol",
+            "id": "ARNBMT71187B993523"
+        },
+        {
+            "name": "The Shins",
+            "id": "AREPV2D1187FB5C1A1"
+        },
+        {
+            "name": "The Decemberists",
+            "id": "ARHWR8B1187FB557D3"
+        },
+        {
+            "name": "Sufjan Stevens",
+            "id": "AR7OA5G1187B98D3A0"
+        },
+        {
+            "name": "White Rabbits",
+            "id": "ARJJTP11187FB4F9DD"
+        },
+        {
+            "name": "Modest Mouse",
+            "id": "AR6AY7W1187B9AC569"
+        },
+        {
+            "name": "The New Pornographers",
+            "id": "ARFF4B41187FB48151"
+        },
+        {
+            "name": "Andrew Bird",
+            "id": "ARV41PG1187FB4E2BD"
+        },
+        {
+            "name": "Cold War Kids",
+            "id": "ARGWCTQ1187FB4B417"
+        },
+        {
+            "name": "Wolf Parade",
+            "id": "ARTVEH31187FB4C8F6"
+        },
+        {
+            "name": "The Wrens",
+            "id": "AR5WQB41187B9914C1"
+        },
+        {
+            "name": "Fleet Foxes",
+            "id": "ARO2U2Q119B86692A8"
+        },
+        {
+            "name": "Wilco",
+            "id": "AR6SPRZ1187FB4958B"
+        },
+        {
+            "name": "Shearwater",
+            "id": "ARM6D9O1187B9ABC29"
+        },
+        {
+            "name": "Midlake",
+            "id": "AR0ZD9P1187B99C161"
+        },
+        {
+            "name": "My Morning Jacket",
+            "id": "ARXWRR61187FB4BFF9"
+        },
+        {
+            "name": "Tapes 'n Tapes",
+            "id": "AR58BWP1187FB40B15"
+        }
+    ]
+}

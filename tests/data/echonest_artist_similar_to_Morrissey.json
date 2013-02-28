@@ -1,0 +1,109 @@
+{
+    "status": {
+        "version": "4.2",
+        "code": 0,
+        "message": "Success"
+    },
+    "artists": [
+        {
+            "name": "The Smiths",
+            "id": "ARPN0Y61187B9ABAA0"
+        },
+        {
+            "name": "Pulp",
+            "id": "AR6FIPL1187FB4D5AA"
+        },
+        {
+            "name": "James",
+            "id": "ARJXLX11187FB41442"
+        },
+        {
+            "name": "The La's",
+            "id": "AR8V85J1187B9ACB4A"
+        },
+        {
+            "name": "Mozz",
+            "id": "ARBLNNT1187B9AD7E9"
+        },
+        {
+            "name": "Joy Division",
+            "id": "ARKZXSQ1187B9AC9F3"
+        },
+        {
+            "name": "The Stone Roses",
+            "id": "ARTNHBW1187B9A5482"
+        },
+        {
+            "name": "Blur",
+            "id": "ARKVITV1187B9AE854"
+        },
+        {
+            "name": "Suede",
+            "id": "ARPYMCS1187FB5B0A7"
+        },
+        {
+            "name": "New Order",
+            "id": "ARNHHIV1187FB4EA23"
+        },
+        {
+            "name": "Echo & The Bunnymen",
+            "id": "ARNX14L1187FB4005D"
+        },
+        {
+            "name": "Jarvis Cocker",
+            "id": "ARH89631187FB4A5A4"
+        },
+        {
+            "name": "The Divine Comedy",
+            "id": "AR0NH5R1187B9A47C9"
+        },
+        {
+            "name": "The Housemartins",
+            "id": "ARBVX4Y1187FB42E5E"
+        },
+        {
+            "name": "Happy Mondays",
+            "id": "ARPATQ21187B9ACAFC"
+        },
+        {
+            "name": "Ian Brown",
+            "id": "ARZ9Q5Q1187B99F085"
+        },
+        {
+            "name": "The Cure",
+            "id": "ARWA6NT1187FB3F15C"
+        },
+        {
+            "name": "The Lightning Seeds",
+            "id": "ARTAACA1187B9B73DE"
+        },
+        {
+            "name": "The The",
+            "id": "ARKWFMY1187B98C2CA"
+        },
+        {
+            "name": "Manic Street Preachers",
+            "id": "ARGEJ8B1187B9AE2E7"
+        },
+        {
+            "name": "Brett Anderson",
+            "id": "ARUSYLL1187FB4B9F7"
+        },
+        {
+            "name": "The Auteurs",
+            "id": "ARBZ1751187FB4D641"
+        },
+        {
+            "name": "The Beautiful South",
+            "id": "ARKE2XZ1187FB5A330"
+        },
+        {
+            "name": "Julian Cope",
+            "id": "ARIYD341187B98CF7C"
+        },
+        {
+            "name": "Inspiral Carpets",
+            "id": "AR9AM2N1187B9AD2F1"
+        }
+    ]
+}

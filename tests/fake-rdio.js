@@ -2,10 +2,14 @@ var fs = require('fs');
 var path = require('path');
 var async = require('async');
 
+// Behaves just like the rdio library.
+
 function FakeRdio() {
   this._props = {};
 }
 
+// this is how you inject things into the fake client.
+// _props..currentReleaseFile is the file that gets loaded to fake new releases.
 FakeRdio.prototype.set = function(key, val) {
   this._props[key] = val;
 }

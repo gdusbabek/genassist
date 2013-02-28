@@ -1,0 +1,109 @@
+{
+    "status": {
+        "version": "4.2",
+        "code": 0,
+        "message": "Success"
+    },
+    "artists": [
+        {
+            "name": "Boxelder",
+            "id": "ARQWKPP122988F191F"
+        },
+        {
+            "name": "Barefoot Truth",
+            "id": "ARNBKMX1187FB4AF8C"
+        },
+        {
+            "name": "Hayward Williams",
+            "id": "ARB4WBM1187B989103"
+        },
+        {
+            "name": "Lionize",
+            "id": "ARFJNJR122ECCBACD8"
+        },
+        {
+            "name": "ZOX",
+            "id": "ARWYKY81187B99A5CE"
+        },
+        {
+            "name": "Tommy Womack",
+            "id": "ARKZBNQ1187B9905A7"
+        },
+        {
+            "name": "Spit Hot Fire",
+            "id": "AREIDMN11E8C26B25E"
+        },
+        {
+            "name": "Slightly Stoopid",
+            "id": "AR5BX3Y1187FB39E93"
+        },
+        {
+            "name": "The Mammals",
+            "id": "ARV2JH81187FB390BC"
+        },
+        {
+            "name": "Fiction 20 Down",
+            "id": "ARXZGUR11E8F5C14EC"
+        },
+        {
+            "name": "Mike Wilhelm",
+            "id": "AROXYVP122988F1318"
+        },
+        {
+            "name": "Three Legged Fox",
+            "id": "ARXB61L119B86693C7"
+        },
+        {
+            "name": "The Uptones",
+            "id": "AR46KUP1187B9A2D4D"
+        },
+        {
+            "name": "Natural Incense",
+            "id": "ARGPHUD11EB9C82AA4"
+        },
+        {
+            "name": "Military Junior",
+            "id": "ARXVTXM11E8C26B19E"
+        },
+        {
+            "name": "86 the Effort",
+            "id": "ARGYZHY122ECCB781B"
+        },
+        {
+            "name": "Rising Lion",
+            "id": "ARCICZN11EB9C810B3"
+        },
+        {
+            "name": "5th Generation",
+            "id": "ARJMBYE122ECCBB6EB"
+        },
+        {
+            "name": "Ned Evett",
+            "id": "AR1ON591187B9B3E0A"
+        },
+        {
+            "name": "Danny Dean",
+            "id": "ARULAXW12EC561DC16"
+        },
+        {
+            "name": "Quakes",
+            "id": "ARHAOIN11F50C4D88C"
+        },
+        {
+            "name": "Dale Hawkins",
+            "id": "ARVLMSG1187B98E07E"
+        },
+        {
+            "name": "Chuck Fenda",
+            "id": "ARNUI1D1187FB39A38"
+        },
+        {
+            "name": "Still Flyin'",
+            "id": "AREBHFQ122BCFCA93D"
+        },
+        {
+            "name": "Rootdown",
+            "id": "ARZMUWC12086C15274"
+        }
+    ]
+}

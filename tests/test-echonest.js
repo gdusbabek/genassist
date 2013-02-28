@@ -1,9 +1,19 @@
 var fs = require('fs');
 var echo = require('../lib/echo');
+var FakeNestFactory = require('./fake_echo').FakeNestFactory;
 
-exports['test-nothing'] = function(test, assert) {
-    assert.ok(true);
+exports['setUp'] = function(test, assert) {
+  echo.setNestFactoryUnsafe(new FakeNestFactory());
+  test.finish();
+}
+
+exports['test-get_similar_aritsts'] = function(test, assert) {
+  echo.getSimilarArtists('Beachniks', function(err, artistNameArr) {
+    assert.ifError(err);
+    assert.strictEqual(25, artistNameArr.length);
     test.finish();
+  });
+  test.finish();
 }
 
 exports['test-convert-songs-spotify'] = function(test, assert) {
