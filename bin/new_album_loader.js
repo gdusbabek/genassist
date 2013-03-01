@@ -70,18 +70,32 @@ function writeCurrentAlbums(albumArr, callback) {
 function saveNewToFile(albumArr, callback) {
   console.log('saving new albums to ' + newArchiveJsonPath);
   albumIO.saveAlbumsLocally(newArchiveJsonPath, albumArr, function(err) {
-    callback(err, albumArr);
+    callback(err);
   });
 }
 
-function saveNewToDatabase(albumArr, callback) {
+function saveNewToDatabase(db, albumArr, callback) {
   console.log('saving new albums to database at ' + dbPath);
   async.waterfall([
-    Database.fromPath.bind(null, dbPath, related),
-    function saveToDb(db, callback) {
-      albumIO.saveAlbumsDatabase(albumArr, db, callback);
+    function saveToDb(callback) {
+      albumIO.saveAlbumsDatabase(albumArr, db, function(err, count) {
+        if (count) {
+          console.log('Saved ' + count + ' to database');
+        }
+        callback(err);
+      });
     }
   ], callback);
+}
+
+function extractArtistsFromAlbums(albumArr, callback) {
+  var artists = [];
+  albumArr.forEach(function(album) {
+    if (artists.indexOf(album.artist) < 0) {
+      artists.push(album.artist);
+    }
+  });
+  callback(null, artists);
 }
 
 function mkdir(path, callback) {
@@ -134,7 +148,8 @@ function housekeeping(callback) {
   ], callback);
 }
 
-function extractNew(oldPath, newPath, callback) {
+// expects(err, albumObjArr)
+function extractNewAlbums(oldPath, newPath, callback) {
   albumIO.extractNewAlbums(oldPath, newPath, function(err, albumArr) {
     if (!err) {
       console.log('discovered ' + albumArr.length + ' new albums');
@@ -146,15 +161,26 @@ function extractNew(oldPath, newPath, callback) {
 console.log('starting album load at ' + now);
 console.log('using config at ' + settings.__configFile);
 // todo: an appropriate amount of logging.
-async.waterfall([
-  mkdir.bind(null, ioDir),
-  housekeeping,
-  fetchAlbums,
-  writeCurrentAlbums,
-  extractNew.bind(null, previousJson, currentJson),
-  saveNewToFile,
-  saveNewToDatabase
-], function(err) {
+async.auto({
+    make_directory: mkdir.bind(null, ioDir),
+    do_housekeeping: ['make_directory', housekeeping.bind(null)],
+    get_database: ['do_housekeeping', Database.fromPath.bind(null, dbPath, related)],
+    fetch_albums: ['do_housekeeping', fetchAlbums.bind(null)],
+    write_current_albums: ['fetch_albums', function(callback, results) {
+      writeCurrentAlbums(results.fetch_albums, callback);
+    }],
+    extract_new_albums: ['write_current_albums', extractNewAlbums.bind(null, previousJson, currentJson)],
+    save_new_to_file: ['extract_new_albums', function(callback, results) {
+      saveNewToFile(results.extract_new_albums, callback);
+    }],
+    save_new_to_database: ['get_database', 'extract_new_albums', function(callback, results) {
+      saveNewToDatabase(results.get_database, results.extract_new_albums, callback);
+    }],
+    extract_new_artists: ['extract_new_albums', function(callback, results) {
+      extractArtistsFromAlbums(results.extract_new_albums, callback);
+    }]
+}, 
+function(err) {
   if (err) {
     console.log(settings.__configFile);
     console.log(err);
