@@ -5,7 +5,7 @@
 	"private": true,
 	"dependencies": {
 		"async": "0.1.22",
-		"echonest": "git://github.com/gdusbabek/node-echonest.git#00b0b13d1ca6075255e50923f06a1d952a177270",
+		"echonest": "git://github.com/gdusbabek/node-echonest.git#039ba587e5df98c467db0aebc1fc499e35a52880",
     "express": "3.0.4",
     "fermata": "0.9.1",
 		"jade": "0.27.7",

@@ -7,6 +7,7 @@ var async = require('async');
 
 var settings = require('../lib/config').settings;
 var albumIO = require('../lib/album_io');
+var echo = require('../lib/echo');
 var Database = require('../lib/database/index').Database;
 var related = require('../lib/database/related');
 
@@ -46,7 +47,7 @@ function fetchAlbums(callback) {
     callback(null, null);
   } else {
     // load from rdio.
-    console.log('loading from rdio');
+    console.log('loading from rdio (takes about 50s)');
     albumIO.collectNewAlbums(callback);
   }
 }
@@ -86,16 +87,6 @@ function saveNewToDatabase(db, albumArr, callback) {
       });
     }
   ], callback);
-}
-
-function extractArtistsFromAlbums(albumArr, callback) {
-  var artists = [];
-  albumArr.forEach(function(album) {
-    if (artists.indexOf(album.artist) < 0) {
-      artists.push(album.artist);
-    }
-  });
-  callback(null, artists);
 }
 
 function mkdir(path, callback) {
@@ -158,6 +149,46 @@ function extractNewAlbums(oldPath, newPath, callback) {
   });
 }
 
+function lookupAndSaveSimilarsToDb(artist, db, callback) {
+  console.log('looking for similars to ' + artist);
+  echo.getSimilarArtists(artist, function(err, simArtistNameArr) {
+    if (err) { callback(err); return; }
+    db.setSimilarArtists(artist, simArtistNameArr, Date.now(), function(err) {
+      if (err) { callback(err); return; }
+      var utilization = simArtistNameArr._meta.limitUsed / simArtistNameArr._meta.limitTotal;
+      var sleep = 0;
+      if (utilization >= 0.50) {
+        sleep = 5000;
+      }
+      if (utilization >= 0.60) {
+        sleep = 10000;
+      }
+      if (utilization >= 0.70) {
+        sleep = 20000;
+      }
+      if (simArtistNameArr._meta.limitTotal < 60) {
+        sleep = 30000;
+      }
+      if (utilization >= 0.85) {
+        sleep = 40000;
+      }
+      if (sleep > 0) {
+        console.log('Sleeping (' + sleep + ') for rate limit ' + simArtistNameArr._meta.limitUsed + '/' + simArtistNameArr._meta.limitTotal + ' = ' + utilization);
+        setTimeout(callback, sleep);
+      } else {
+        callback(null); 
+      }
+    });
+  });
+}
+
+function lookupAndSaveSimilarsToDbForABunch(artistNameArr, db, callback) {
+  async.forEachSeries(artistNameArr, function(artist, callback) {
+    // the body of this method could be simplified with an auto or waterfall.
+    lookupAndSaveSimilarsToDb(artist, db, callback);
+  }, callback);
+}
+
 console.log('starting album load at ' + now);
 console.log('using config at ' + settings.__configFile);
 // todo: an appropriate amount of logging.
@@ -176,11 +207,34 @@ async.auto({
     save_new_to_database: ['get_database', 'extract_new_albums', function(callback, results) {
       saveNewToDatabase(results.get_database, results.extract_new_albums, callback);
     }],
-    extract_new_artists: ['extract_new_albums', function(callback, results) {
-      extractArtistsFromAlbums(results.extract_new_albums, callback);
+    get_artists_with_no_similars: ['get_database', 'save_new_to_database', function(callback, results) {
+      results.get_database.getArtistsWithNoSimilars(function(err, artists) {
+        callback(err, artists);
+      });
+    }],
+    find_and_save_similars: ['get_database', 'get_artists_with_no_similars', function(callback, results) {
+      var noSimilars = results.get_artists_with_no_similars;
+      if (noSimilars.length > 500) {
+        noSimilars = noSimilars.slice(0, 500);
+      }
+      console.log('requesting similars for ' + noSimilars.length + ' new artists'); 
+      lookupAndSaveSimilarsToDbForABunch(noSimilars, results.get_database, callback);
+    }],
+    get_stale_similars: ['get_database', function(callback, results) {
+      results.get_database.getStaleSimilars(30, function(err, artists) {
+        callback(err, artists);
+      });
+    }],
+    save_statle_similars: ['get_database', 'get_stale_similars', function(callback, results) {
+      var stales = results.get_stale_similars;
+      if (stales.length > 200) {
+        stales = stales.slice(0, 200);
+      }
+      console.log('requesting similars for ' + stales.length + ' stale artists');
+      lookupAndSaveSimilarsToDbForABunch(stales, results.get_database, callback);
     }]
 }, 
-function(err) {
+function(err, results) {
   if (err) {
     console.log(settings.__configFile);
     console.log(err);
