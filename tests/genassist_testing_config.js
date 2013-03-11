@@ -17,10 +17,8 @@ var settings = {
   APP_HOST: 'localhost',
   APP_PORT: 2000,
 
-  DB_PATH: '/tmp/genassist_test.db',
-  DB_VERSION: 6,
-
   RELATED_DB_PATH: '/tmp/ga_related.db',
-  RELATED_DB_VERSION: 0
+  CONTEXT_DB_PATH: '/tmp/ga_context.db',
+  TOP_ARTIST_DB_PATH: '/tmp/ga_artist.db'
 };
 exports.settings = settings;
