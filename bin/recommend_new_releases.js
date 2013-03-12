@@ -59,29 +59,28 @@ async.auto({
     console.log('looking up new releases...');
     var THREE_MONTHS = 3 * 30 * 24 * 60 * 60 * 1000,
         newAlbums = {};
-    async.forEach(Object.keys(results.invert_similars), function(artist, callback) {
-      results.song_db.getAlbumsByArtistSince(artist, THREE_MONTHS, function(err, rows) {
-        if (err) { callback(err); return; }
-        if (rows.length > 0) {
-          newAlbums[artist] = [];
-          rows.forEach(function(album) {
-            album.similarToArtists = results.invert_similars[artist];
-            newAlbums[artist].push(album);
-          });
-        }
-        callback(null);
-      });
-    }, function(err) {
+    
+    results.song_db.getAlbumsByArtistsSince(Object.keys(results.invert_similars), THREE_MONTHS, function(err, rows) {
       if (err) { callback(err); return; }
-      callback(null, newAlbums);// todo: return results.
+      if (rows.length > 0) {
+        rows.forEach(function(album) {
+          if (!newAlbums.hasOwnProperty(album.artist)) {
+            newAlbums[album.artist] = [];
+          }
+          album.similarToArtists = results.invert_similars[album.artist];
+          newAlbums[album.artist].push(album);
+        });
+      }
+      callback(null, newAlbums);
     });
   }]
+  
 }, function(err, results) {
   if (err) {
     console.log(err);
     process.exit(-1);
   } else {
-    console.log('Recommendations for ' + argv.user);
+    console.log(Object.keys(results.get_new_releases).length + ' recommendations for ' + argv.user);
     Object.keys(results.get_new_releases).forEach(function(artist) {
       results.get_new_releases[artist].forEach(function(album) {
         console.log(album.name + ' by ' + album.artist);
