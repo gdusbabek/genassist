@@ -1,0 +1,104 @@
+extends layout
+
+block css
+  // came from http://www.eyecon.ro/bootstrap-datepicker/
+  link(rel="stylesheet", href="/datepicker/css/datepicker.css", type="text/css")
+
+block scripts
+  script(src='/js/async.js')
+  script(src='/js/jquery-1.8.3.min.js')
+  script(src='/js/jquery.cookie.js')
+  script(src='/bootstrap/js/bootstrap.js')
+  script(src='/datepicker/js/bootstrap-datepicker.js')
+  script(src="/js/sleeping.js")
+
+block header 
+
+block content
+  
+  div.row-fluid
+    span.span2
+    span.span8
+      h1 While You Were Sleeping...
+      p Find new releases that you might like.
+      div.accordion(id="instructions")
+        div.accordion-heading
+          a.accordion-toggle(data-toggle="collapse", data-parent="#instructions", href="#instruction-content") Here's how it works...
+        div.accordion-body(id="instruction-content", class="collapse")
+          div.accordion-inner
+            div.well
+              ol
+                li Indicate what artists you like. There are three different ways you can do this:
+                  ul 
+                    li Specify artists directly
+                    li Top artists from a Last.fm profile
+                    li Heavy rotation from an Rdio profile
+                    li.text-info Any combination of these is great!
+                li Indicate a date range.  Again there are three ways you can do this (though mutually exclusive):
+                  ul
+                    li New releases since the last time you were here (we use a cookie)
+                    li New releases since a specified date
+                    li New releases within a set number of days
+      
+      h2 Ready? Let's do this...
+          
+      h3 Show me all new releases similar to:
+      div(class="indent")
+        button(class="btn", onclick="$('#specific-artists-modal').modal({});") Set
+        span  specified artists   
+        span.text-info(id="specific-artists", class="unset")
+      div(class="indent") 
+        button(class="btn", onclick="$('#specific-lastfm-user-modal').modal({});") Set
+        span  top artists for a Last.fm user 
+        span.text-info(id="lastfm-user", class="unset")
+      div(class="indent")
+        button(class="btn", onclick="$('#specific-rdio-user-modal').modal({});") Set
+        span  top artists for a Rdio user 
+        span.text-info(id="rdio-user", class="unset")
+      
+      h3 That have shown up since:
+      div(class="btn-group", data-toggle="buttons-radio")
+        button(id="new-since-last-btn", type="button", class="btn", onclick="showSince('new-since-last-div');") Last time I checked
+        button(id="new-since-date-btn", type="button", class="btn", onclick="showSince('new-since-date-div');") A specific date
+        button(id="new-since-days-btn", type="button", class="btn", onclick="showSince('new-since-days-div');") Some days ago
+      
+      div(class="indent")
+        div.well
+          div.hide(id="new-since-last-div") Which was 
+            span.text-info #{lastVisit}
+          div.hide(id="new-since-date-div")
+            span Back in the day 
+            input.span2(type="text", value="#{dateAgoStr}", data-date-format="mm/dd/yyyy", id="specific-date-field")
+          div.hide(id="new-since-days-div") 
+            input.span1(type="text", value="30", id="specific-days-field") 
+            span  days ago
+      
+      button(class="btn btn-primary", onclick="getResults();") Find Me Some Music!
+  
+  div(class="modal hide fade", id="specific-artists-modal")
+    div.indent
+      div.row-fluid
+        h2 These Artists
+      div.input-append
+        input.span2(id="artist-to-add", type="text")
+        button.btn(type="button", onclick="addSpecificArtist();") Add
+        button.btn(type="botton", onclick="$('#specific-artists-modal').modal('hide');") Done
+      div.indent
+        table(class="table table-hover table-condensed", id="artist-table")
+          tbody
+  
+  div(class="modal hide fade", id="specific-lastfm-user-modal")
+    div.indent
+      div.row-fluid
+        h2 This Last.fm User
+      div.input-append
+        input.span4(id="specific-lastfm-user", type="text")
+        button.btn(type="button", onclick="$('#specific-lastfm-user-modal').modal('hide');") Done
+  
+  div(class="modal hide fade", id="specific-rdio-user-modal")
+    div.indent
+      div.row-fluid
+        h2 This Rdio User
+      div.input-append
+        input.span4(id="specific-rdio-user", type="text")
+        button.btn(type="button", onclick="$('#specific-rdio-user-modal').modal('hide');") Done

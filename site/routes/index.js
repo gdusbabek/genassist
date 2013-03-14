@@ -1,6 +1,7 @@
 var echo = require('../../lib/echo');
 
 var TWO_YEARS = 1000 * 60 * 60 * 24 * 365 * 2;
+var THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
 
 exports.cookies = function(req, res) {
     //console.log(req.headers.cookie);
@@ -29,6 +30,26 @@ exports.candy = function(req, res) {
         rdioLink: req.cookies.rdioLink,
         lastLink: req.cookies.lastLink
     });
+}
+
+function maybePrependLeadingZero(s) {
+  if (s.toString().length === 1) {
+    return '0' + s;
+  } else {
+    return s;
+  }
+}
+
+exports.sleeping = function(req, res) {
+  // compute a date string from thirty dates ago.
+  var dateAgo = new Date(Date.now() - THIRTY_DAYS),
+      dateAgoStr = maybePrependLeadingZero(dateAgo.getMonth() + 1) + '/' + maybePrependLeadingZero(dateAgo.getDate()) + '/' + dateAgo.getFullYear();
+  res.render('sleeping', {
+    rdioUser: req.cookies.hasOwnProperty('rdioUser') ? req.cookies.rdioUser : null,
+    lastUser: req.cookies.lastLink ? req.cookies.lastUser : null,
+    lastVisit: req.cookies.hasOwnProperty('lastWyws') ? req.cookies.lastWyws : 'Never',
+    dateAgoStr: dateAgoStr
+  });
 }
 
 exports.seed = function(req, res) {

@@ -3,8 +3,12 @@ var async = require('async');
 var echo = require('../../lib/echo');
 var rdio = require('../../lib/rdio');
 var lastfm = require('../../lib/lastfm');
+var Database = require('../../lib/database/index').Database;
+var related = require('../../lib/database/related');
+var topArtist = require('../../lib/database/topArtist');
 var UserDb = require('../../lib/database/context').UserDb;
 var settings = require('../../lib/config').settings;
+var artistIO = require('../../lib/artist_io');
 
 
 function resultCallback(req, res, err, results) {
@@ -13,6 +17,62 @@ function resultCallback(req, res, err, results) {
     } else {
         res.send(JSON.stringify({status: 'ok', result: results}));
     }
+}
+
+// can be done synchronously to return results or async to populate data in the background.
+exports.fetchSimilars = function(req, res) {
+  var isAsync = req.query.hasOwnProperty('async') && req.query.async.toString() === 'true';
+  // artists, user, service
+  async.auto({
+    get_album_db: Database.getShared.bind(null, related),
+    get_artist_db: Database.getShared.bind(null, topArtist),
+    get_top_artists: ['get_artist_db', function(callback, results) {
+      // returns a list of top artists for a user.
+      if (req.query.hasOwnProperty('user')) {
+        artistIO.getTopArtists(req.query.user, [req.query.service], results.get_artist_db, callback);
+      } else {
+        callback(null, []);
+      }
+    }],
+    get_similar_artists: ['get_top_artists', 'get_album_db', function(callback, results) {
+      var sourceArtists = results.get_top_artists;
+      if (req.query.hasOwnProperty('artists')) {
+        req.query.artists.split(',').forEach(function(artist) {
+          sourceArtists.push(artist);
+        });
+      }
+      if (sourceArtists.length > 0) {
+        artistIO.getAllSimilars(sourceArtists, results.get_album_db, callback);
+      } else {
+        callback(null, []);
+      }
+    }]
+  }, function(err, results) {
+    if (err) {
+      if (!isAsync) {
+        res.send(JSON.stringify({
+          status: 'error',
+          result: err,
+          message: 'Problem doing things'
+        }));
+      }
+    } else if (isAsync) {
+      // return;
+    } else {
+      res.send(JSON.stringify({
+        status: 'ok',
+        result: results.get_similar_artists,
+        message: 'Here is all the data'
+      }));
+    }
+  });
+  if (isAsync) {
+    res.send(JSON.stringify({
+      status: 'ok',
+      result: {},
+      message: 'Will process this asynchronous request'
+    }));
+  }
 }
 
 exports.steerSession = function(req, res) {

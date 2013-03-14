@@ -6,6 +6,18 @@ var sqlite3 = require('sqlite3').verbose();
 var settings = require('../lib/config').settings;
 var Database = require('../lib/database').Database;
 
+var related = require('../lib/database/related');
+
+exports['test_get_shared'] = function(test, assert) {
+  Database.getShared(related, function(err, db) {
+    assert.ifError(err);
+    assert.ok(db);
+    assert.ok(db.saveAlbum);
+    assert.ok(!db.funkyFunction);
+    test.finish();
+  });
+}
+
 exports['test_db_init'] = function(test, assert) {
   // maybe delete old db file.
   var dbFile = '/tmp/test_db_init.db',

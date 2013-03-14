@@ -51,6 +51,7 @@ app.get('/cookies.html', index_routes.cookies);
 app.get('/candy.html', index_routes.candy);
 app.get('/seed.html', index_routes.seed);
 app.get('/claim_context.html', index_routes.claimContext);
+app.get('/sleeping.html', index_routes.sleeping);
 
 app.get('/rdio_register.html', rdio_routes.register);
 app.get('/rdio_comeback.html', rdio_routes.comeback);
@@ -70,6 +71,7 @@ app.get('/api/current_song', api_routes.currentSong);
 app.get('/api/save_playlist', api_routes.savePlaylist);
 app.get('/api/scrobble', api_routes.scrobble);
 app.get('/api/is_loved', api_routes.isSongLoved);
+app.get('/api/fetch_similars', api_routes.fetchSimilars);
 
 app.listen(settings.APP_PORT, settings.APP_HOST);
 console.log('Listening on ' + settings.APP_HOST + ':' + settings.APP_PORT);
