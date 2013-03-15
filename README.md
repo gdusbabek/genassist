@@ -36,6 +36,7 @@ Playlistica?  Genassist?
 
 ## If you get bored...
 
+* make a branch that uses an AWS datastore.
 * do not save contexts for spiders/crawlers.
 * log daemons to an irc channel.
 * sanity tests for staging and production deploys.
