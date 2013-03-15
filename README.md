@@ -1,31 +1,34 @@
 # Playlist generator website
 
+## Dependencies
+
+* The echonost dependency has been hacked to add support to the newer dynamic playlist API.
+* Fermata has been hacked to return headers and http status code as response metadata.
+
+### Completed Parts
+
+* The first iteration included simply generating a playlist and saving it.  This work is done.
+* The second iteration involved
+  * A new music crawler (source is Rdio releases)
+  * Code to find new releases similar to specified artists.
+  * Supporting web page.
+  * Switching to chef for deployment. Woo!
+
 ## Plans
-
-### First iteration
-
-The first iteration included simply generating a playlist and saving it.  This work is done.
 
 ### Later
 
-* Playback. This will be easy for Rdio.
-* Crawler that searches for songs. 
-* Turn those into a playlist somehow.
+* Playback. This will be easy for Rdio. 
+* Turn new music into a playlist.
 * Make the UI suck less.
 
-Playlistica?
-
-## Dependencies
-
-The echonost dependency has been hacked to add support to the newer dynamic playlist API.
+Playlistica?  Genassist?
 
 ## Currently working on...
 
-* lastfm integration is broken.
 * refactor TWO_YEARS as settings concept.
 * promoting uses minified JS libraries.
 * use gzip
-* get the req, res stuff out of my echo lib.
 * play now
 * prettier cookie page
 * uncaught exception
@@ -37,7 +40,6 @@ The echonost dependency has been hacked to add support to the newer dynamic play
 * log daemons to an irc channel.
 * sanity tests for staging and production deploys.
 * region support for rdio.
-* easy deployment to a new server.
 * tooltips on the the playlist buttons
 * secure/encrypted storage of access tokens
 
