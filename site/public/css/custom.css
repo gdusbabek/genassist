@@ -52,3 +52,11 @@ html, body {
 .indent {
   padding-left: 20px;
 }
+
+.pct80 {
+  font-size: 80%;
+}
+
+.pct120 {
+  font-size: 120%;
+}

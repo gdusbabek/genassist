@@ -5,7 +5,6 @@ block css
   link(rel="stylesheet", href="/datepicker/css/datepicker.css", type="text/css")
 
 block scripts
-  script(src='/js/async.js')
   script(src='/js/jquery-1.8.3.min.js')
   script(src='/js/jquery.cookie.js')
   script(src='/bootstrap/js/bootstrap.js')
@@ -65,7 +64,8 @@ block content
       div(class="indent")
         div.well
           div.hide(id="new-since-last-div") Which was 
-            span.text-info #{lastVisit}
+            span.text-info(id="last-visit") #{lastVisit}
+            span.hide(id="last-visit-millis") #{lastVisitMillis}
           div.hide(id="new-since-date-div")
             span Back in the day 
             input.span2(type="text", value="#{dateAgoStr}", data-date-format="mm/dd/yyyy", id="specific-date-field")

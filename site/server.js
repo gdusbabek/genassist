@@ -52,6 +52,7 @@ app.get('/candy.html', index_routes.candy);
 app.get('/seed.html', index_routes.seed);
 app.get('/claim_context.html', index_routes.claimContext);
 app.get('/sleeping.html', index_routes.sleeping);
+app.get('/sleeping_results.html', index_routes.sleepingResults);
 
 app.get('/rdio_register.html', rdio_routes.register);
 app.get('/rdio_comeback.html', rdio_routes.comeback);

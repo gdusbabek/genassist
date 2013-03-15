@@ -37,10 +37,53 @@ function showSince(div) {
 }
 
 function getResults() {
-  // collect the artists.
+  var query = '?';
+  
   // determine millis.
-  // contact the api.
+  // which button is hot?
+  var millis = 7 * 24 * 60 * 60 * 1000;
+  if ($('#new-since-last-btn').attr('class').indexOf('active') >= 0) {
+    var lastVisitStr = $('#last-visit').text();
+    var lastVisitMillis = parseInt($('#last-visit-millis').text(), 10);
+    if (lastVisitStr !== 'Never') {
+      // it will be in mm/dd/yyyy format.
+      // max it out at 5 weeks.
+      millis = Math.min(5 * millis, Date.now() - lastVisitMillis);
+      console.log(millis);
+    } // else leave it at 7 days.
+  } else if ($('#new-since-date-btn').attr('class').indexOf('active') >= 0) {
+    millis = Date.now() - Date.parse($('#specific-date-field').val());
+    if (millis < 0) {
+      // can't diff the future.
+      millis = 7 * 24 * 60 * 60 * 1000;
+    }
+  } else if ($('#new-since-days-btn').attr('class').indexOf('active') >= 0) {
+    millis = Math.min(parseInt($('#specific-days-field').val(), 10), 35) * 24 * 60 * 60 * 1000;
+  } else {
+    return;
+  }
+  query += 'millis=' + millis;
+  
+  // artists.
+  if (selectedArtists.length > 0) {
+    query += '&artists=' + encodeURIComponent(selectedArtists.join(','));
+  }
+  
+  // rdio user
+  var rdioUser = $('#specific-rdio-user').val();
+  if (rdioUser.length > 0) {
+    query += '&rdioUser=' + encodeURIComponent(rdioUser);
+  }
+  
+  // last user.
+  var lastfmUser = $('#specific-lastfm-user').val();
+  if (lastfmUser.length > 0) {
+    query += '&lastfmUser=' + encodeURIComponent(lastfmUser);
+  }
+  
   // redirect.
+  // window.location.href
+  document.location.href = '/sleeping_results.html' + query;
 }
 
 $(document).ready(function() {
@@ -53,7 +96,7 @@ $(document).ready(function() {
     $('#specific-artists').html(selectedArtists.join(', '));
     $.get('/api/fetch_similars', {
       artists: selectedArtists.join(','),
-      async: false
+      async: true
     }, function(json) {
       // todo: at some point, turn async off and use this data.
       console.log(json);
